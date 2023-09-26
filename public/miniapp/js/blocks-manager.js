@@ -9,10 +9,14 @@ registerBlock("carousel", Carousel);
 import Card from "./blocks/card.js";
 registerBlock("card", Card);
 
-function registerBlock(typeName, blockClass){
+function registerBlock(typeName, blockClass) {
     _blocks[typeName] = blockClass;
 }
 
-export function getBlockClassByType(typeName){
+export function getAllBlocks() {
+    return Object.entries(_blocks);
+}
+
+export function getBlockClassByType(typeName) {
     return _blocks[typeName];
 }

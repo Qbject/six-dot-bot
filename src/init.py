@@ -1,4 +1,4 @@
-import tgapi
+import tgapi, database
 import os, json
 from dotenv import load_dotenv
 
@@ -16,6 +16,8 @@ def init():
             }
         })
     })
+    
+    database.create_database()
 
 if __name__ == "__main__":
     init()

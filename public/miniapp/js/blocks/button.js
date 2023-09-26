@@ -6,14 +6,9 @@ export default class Button {
         this.element = null;
     }
 
-    getElement() {
-        return this.element || this.buildElement();
-    }
-
-    buildElement() {
-        const element = build("button");
+    build(blockElement) {
+        const element = build("button", blockElement);
         element.textContent = this.props.text;
         this.element = element;
-        return element;
     }
 }

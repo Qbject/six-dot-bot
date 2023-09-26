@@ -6,18 +6,16 @@ export default class Card {
         this.element = null;
     }
 
-    getElement() {
+    getContents() {
         return this.element || this.buildElement();
     }
 
-    buildElement() {
-        const element = build("div.card");
+    build(blockElement) {
+        const element = build("div.card", blockElement);
         const title = build("h3.title", element);
         title.textContent = this.props.title;
         const description = build("p.description", element);
         description.textContent = this.props.description;
-
         this.element = element;
-        return element;
     }
 }

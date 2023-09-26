@@ -6,15 +6,8 @@ export default class Carousel {
         this.element = null;
     }
 
-    getElement() {
-        return this.element || this.buildElement();
-    }
-
-    buildElement() {
-        const element = build("div.carousel");
+    build(blockElement) {
+        const element = build("div.carousel", blockElement);
         build("div.children.blockContainer", element);
-
-        this.element = element;
-        return element;
     }
 }
