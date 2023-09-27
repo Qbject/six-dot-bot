@@ -1,6 +1,6 @@
 import { build } from "../util.js";
 
-export default class Button {
+export default class ButtonBlock {
     constructor(props) {
         this.props = props;
         this.element = null;

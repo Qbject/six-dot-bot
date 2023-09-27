@@ -148,3 +148,24 @@ button {
 .addBlockCatalog.active {
     transform: translateY(0%);
 }
+
+.pageItem.unnamed {
+    font-style: italic;
+}
+
+.page.active {
+    border: 1px solid red;
+}
+
+.block.editing {
+    border: 1px solid cyan;
+}
+
+.deleteBlockArea {
+    height: 10px;
+    border: 1px dashed red;
+}
+
+.deleteBlockArea .sortable-ghost {
+    display: none;
+}

@@ -3,24 +3,7 @@ import sqlite3, string, random, json
 # Database file name
 DB_FILE = "../bot.db"
 
-default_page_schema = json.dumps({
-    "blocks": [
-        {
-            "type": "title",
-            "props": {
-                "text": "You just created a new page!"
-            }
-        },
-        {
-            "type": "paragraph",
-            "props": {
-                "text": "TODO: explain some basics here?"
-            }
-        }
-    ]
-})
-
-def create_database():
+def init_database():
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
 
@@ -36,13 +19,12 @@ def create_database():
     conn.commit()
     conn.close()
 
-def create_new_page(ownerId):
+def create_new_page(ownerId, schema):
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
     
     unique_id = generate_unique_page_id(cursor)
     title = ""
-    schema = default_page_schema
 
     cursor.execute('''
         INSERT INTO pages (id, title, ownerId, schema)
@@ -132,4 +114,4 @@ def generate_unique_page_id(cursor):
 
 
 if __name__ == "__main__":
-    create_database()
+    init_database()

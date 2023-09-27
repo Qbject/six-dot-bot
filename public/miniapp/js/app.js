@@ -1,57 +1,102 @@
-import { getAllBlocks, getBlockClassByType } from "./blocks-manager.js";
+import { blockRegistry } from "./block-registry.js";
 import { build, callAPI } from "./util.js";
 
 // TODO: DOCSTRINGS
 // TODO: better snapping animation?
 
 class App {
-    constructor(appRoot, editMode, pageId = null) {
-        this.editMode = editMode;
-        this.appRoot = appRoot;
+    constructor(rootElement) {
+        this.rootElement = rootElement;
         this.activePage = null;
         this.pagesStack = [];
-        this.userPagesPromise = callAPI("GET", "pages/my")
-            .then(pages => this.userPages = pages);
-        this.userPages = null;
 
         // blindly trusting initData
         // any user-specific action will be validated on the server
         this.tgData = window.Telegram.WebApp.initDataUnsafe;
 
+        window.Telegram.WebApp.BackButton.onClick(() => this.goBack());
+
         this.build();
-        this.openPage(pageId);
+        this.setupDragNDrop();
+
+        this.userPagesPromise = callAPI("GET", "pages/my")
+            .then(resp => resp.json())
+            .then(data => this.userPages = data.pages);
+        this.userPages = null;
     }
 
     build() {
-        this.pagesContainer = build("div.pages", this.appRoot);
+        this.pagesContainer = build("div.pages", this.rootElement);
+        this.buildBlockCatalog();
 
-        this.addBlockCatalog = build("div.addBlockCatalog", this.appRoot);
-
-        const blockClass = getBlockClassByType("card");
-        const block = new blockClass({
-            "title": "CREATE NEW CARD!",
-            "description": "Create new card with some description"
-        });
-        const blockElement = build("div.block", this.addBlockCatalog);
-        block.build(blockElement);
-
-        this.addBlockButton = build("button.addBlock", this.appRoot);
+        this.addBlockButton = build("button.addBlock", this.rootElement);
         this.addBlockButton.textContent = "Add block";
         this.addBlockButton.addEventListener("click", () =>
-            this.addBlockCatalog.classList.toggle("active"))
+            this.addBlockCatalog.classList.toggle("active"));
+
+        this.savePageButton = build("button.savePage", this.rootElement);
+        this.savePageButton.textContent = "Save page";
+        this.savePageButton.addEventListener("click", () =>
+            this.activePage.save());
+
+        this.deleteBlockArea = build("div.deleteBlockArea", this.rootElement);
+        this.deleteBlockArea.textContent = "Remove Block";
+        new Sortable(this.deleteBlockArea, {
+            group: "editablePage",
+            onAdd: event => event.item.remove()
+        });
+    }
+
+    buildBlockCatalog() {
+        this.addBlockCatalog = build("div.addBlockCatalog", this.rootElement);
+
+        for (const [typeName, blockClass] of blockRegistry.getAllTypes()) {
+            // block objects are needed only to produce elements
+            // and can be disposed afterwards
+            const block = new blockClass();
+            block.setup();
+            block.blockElement.dataset.typeName = typeName;
+            this.addBlockCatalog.append(block.blockElement)
+        }
+    }
+
+    setupDragNDrop() {
+        new Sortable(this.addBlockCatalog, {
+            group: {
+                name: "editablePage",
+                pull: "clone",
+                put: false
+            },
+            animation: 150,
+            onStart: () => this.addBlockCatalog.classList.remove("active"),
+        });
     }
 
     async retrievePage(pageId) {
+        // TODO: explain everything
         if (!pageId) {
             const userPages = await this.userPagesPromise;
-            return userPages.length ?
-                new HomePage(this) : new WelcomePage(this);
+            if (userPages.length) return new HomePage(this);
+
+            const pageResp = await callAPI("POST", "pages", {
+                onboarding: true
+            });
+
+            if (pageResp.ok) {
+                const pageData = (await pageResp.json()).page;
+                return new ConstructorPage(JSON.parse(pageData.schema),
+                    pageData.id, true, this)
+            }
+
+            return new NotFoundPage();
         }
 
         const pageResp = await callAPI("GET", `pages/${pageId}`);
         if (pageResp.ok) {
+            const pageData = (await pageResp.json()).page;
             const isOwn = pageData.ownerId === this.tgData.user.id;
-            return new Page(pageData.schema, isOwn, this);
+            return new ConstructorPage(JSON.parse(pageData.schema),
+                pageData.id, isOwn, this);
         }
 
         if (pageResp.status == 404) {
@@ -69,7 +114,7 @@ class App {
 
         // rendering and showing the new page
         const newPage = await this.retrievePage(pageId);
-        newPage.build();
+        newPage.setup();
         this.pagesContainer.append(newPage.pageElement);
 
         this.pagesStack.push(newPage);
@@ -83,9 +128,11 @@ class App {
 
     updateActivePage() {
         this.activePage?.pageElement?.classList?.remove("active");
-
         this.activePage = this.pagesStack[this.pagesStack.length - 1];
         this.activePage.pageElement.classList.add("active");
+
+        const backBtn = window.Telegram.WebApp.BackButton
+        this.pagesStack.length > 1 ? backBtn.show() : backBtn.hide();
     }
 
     updateMainButton() {
@@ -104,83 +151,146 @@ class App {
     }
 }
 
-class Page {
-    constructor(schema, editable, app) {
+class ConstructorPage {
+    constructor(schema, id, editable, app) {
         this.schema = schema;
+        this.id = id;
         this.editable = editable;
         this.app = app;
-        this.blocksMap = {};
+        this.allBlocks = [];
+        this.editingBlock = null;
     }
 
-    build() {
-        this.pageElement = build("div.page.blockContainer");
-        this.buildBlockList(this.schema.children, this.pageElement);
+    setup() {
+        this.build();
 
         if (this.editable) {
-            this.initDragNDrop();
+            this.setupDragNDrop();
 
             this.pageElement.addEventListener("click", event => {
-                const clickedBlock = event.closest(".block");
-                if (!clickedBlock) return;
-                this.editBlock(clickedBlock);
+                const blockElement = event.target.closest(".block");
+                if (!blockElement) return;
+                const block = this.getBlockObject(blockElement);
+
+                if (!this.editingBlock) {
+                    this.editingBlock = block;
+                    block.enterEditMode();
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    if (this.editingBlock != block) {
+                        this.editingBlock.exitEditMode();
+                        this.editingBlock = null;
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                }
             })
         }
     }
 
-    buildBlockList(blockList, container) {
-        container.innerHTML = "";
-
-        for (const blockSchema of blockList) {
-            const blockClass = getBlockClassByType(blockSchema.typeName);
-            const block = new blockClass(blockSchema.props);
-            this.blocksMap[blockSchema.id] = block;
-
-            const blockElement = build("div.block", container);
-            blockElement.dataset.blockId = blockSchema.id;
-            block.build(blockElement);
-
-            const containerQuery = ":scope .blockContainer:not(:scope " +
-                ".blockContainer .blockContainer)";
-            const nestedContainer = blockElement.querySelector(containerQuery);
-            if (nestedContainer) {
-                this.buildBlockList(blockSchema.children, nestedContainer);
-            }
-        }
+    build() {
+        this.pageElement = build("div.page");
+        this.blocksContainer = build("div.blocksContainer", this.pageElement);
+        this.applySchema(this.schema);
     }
 
-    initDragNDrop() {
-        const sortableOptions = {
+    setupDragNDrop() {
+        new Sortable(this.blocksContainer, {
             group: {
                 name: "editablePage"
             },
-            animation: 150
-        }
-
-        const containers = this.appRoot.querySelectorAll(".blockContainer");
-        for (const container of containers) {
-            new Sortable(container, sortableOptions);
-
-        }
-
-        new Sortable(this.addBlockCatalog, {
-            group: {
-                name: "editablePage",
-                pull: "clone",
-                put: false
-            },
             animation: 150,
-            onStart: () => this.addBlockCatalog.classList.remove("active")
+            onAdd: event => {
+                const blockTypeName = event.item.dataset.typeName;
+                const blockClass = blockRegistry.getType(blockTypeName);
+                const block = new blockClass();
+                block.setup();
+                this.allBlocks.push(block);
+                event.item.replaceWith(block.blockElement);
+            }
+        });
+    }
+
+    getBlockObject(blockElement) {
+        return this.allBlocks.find(block =>
+            block.blockElement == blockElement);
+    }
+
+    async save() {
+        // saves page to the database on the server
+        await callAPI("POST", `pages/${this.id}`, {
+            schema: JSON.stringify(this.readSchema()),
+            title: this.getTitle()
         })
     }
 
-    editBlock(blockElement) {
+    applySchema(schema) {
+        // building DOM according to given page schema
 
+        const fillContainer = (blockList, container) => {
+            container.innerHTML = "";
+
+            for (const blockSchema of blockList) {
+                const blockClass = blockRegistry.getType(blockSchema.typeName);
+                const block = new blockClass(blockSchema.props);
+                this.allBlocks.push(block);
+
+                block.setup();
+                container.append(block.blockElement);
+
+                if (block.childrenElement)
+                    fillContainer(blockSchema.children, block.childrenElement);
+            }
+        }
+
+        fillContainer(schema.children, this.blocksContainer);
+    }
+
+    readSchema() {
+        // traversing blocks hierarchy to construct page schema
+
+        const readBlockSchema = (block) => {
+            const blockSchema = {
+                typeName: block.constructor.typeName,
+                props: block.props,
+                children: block.childrenElement ?
+                    traverseContainer(block.childrenElement) : null
+            }
+            return blockSchema;
+        }
+
+        const readContainerSchema = (containerElement) => {
+            const containerBlocks = [];
+
+            for (const blockElement of containerElement.children) {
+                const block = this.getBlockObject(blockElement);
+                const blockSchema = readBlockSchema(block);
+                containerBlocks.push(blockSchema);
+            }
+            return containerBlocks;
+        }
+
+        return {
+            "children": readContainerSchema(this.blocksContainer)
+        };
+    }
+
+    getTitle() {
+        // getting title from a first heding on the page
+
+        const heading = this.pageElement.querySelector("h1");
+        return heading?.textContent || "";
     }
 }
 
 class HomePage {
     constructor(app) {
         this.app = app;
+    }
+
+    setup() {
+        this.build();
     }
 
     build() {
@@ -190,18 +300,34 @@ class HomePage {
         for (const pageData of this.app.userPages) {
             this.pagesList.append(this.buildPageItem(pageData));
         }
+
+        this.pagesList.addEventListener("click", event => {
+            const itemElement = event.target.closest(".pageItem");
+            if (!itemElement) return;
+            this.app.openPage(itemElement.dataset.pageId)
+        })
     }
 
     buildPageItem(pageData) {
-        // TODO: <i> for unnamed
         const itemElement = build("li.pageItem");
-        itemElement.textContent = pageData.title || "Unnamed";
+        itemElement.dataset.pageId = pageData.id;
+
+        if (pageData.title) {
+            itemElement.textContent = pageData.title;
+        } else {
+            itemElement.classList.add("unnamed");
+            itemElement.textContent = "Unnamed";
+        }
 
         return itemElement;
     }
 }
 
 class NotFoundPage {
+    setup() {
+        this.build();
+    }
+
     build() {
         this.pageElement = build("div.page.notFound");
         this.pageElement.textContent = "Page not found";
@@ -209,16 +335,13 @@ class NotFoundPage {
 }
 
 class ErrorPage {
+    setup() {
+        this.build();
+    }
+
     build() {
         this.pageElement = build("div.page.error");
         this.pageElement.textContent = "Error";
-    }
-}
-
-class WelcomePage {
-    build() {
-        this.pageElement = build("div.page.welcome");
-        this.pageElement.textContent = "Welcome";
     }
 }
 
@@ -228,5 +351,6 @@ class WelcomePage {
     const pageParams = new URLSearchParams(document.location.search);
     const startPage = pageParams.get("tgWebAppStartParam")
 
-    window.editor = new App(appRoot, true, startPage); // TODO: read url params
+    window.app = new App(appRoot, startPage);
+    window.app.openPage(startPage);
 })();

@@ -17,7 +17,7 @@ def init():
         })
     })
     
-    database.create_database()
+    database.init_database()
 
 if __name__ == "__main__":
     init()

@@ -1,6 +1,6 @@
 import { build } from "../util.js";
 
-export default class Card {
+export default class CardBlock {
     constructor(props) {
         this.props = props;
         this.element = null;

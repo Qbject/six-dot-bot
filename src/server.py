@@ -4,6 +4,7 @@ import os
 import json
 import dotenv
 import database
+import template_schemas
 from util import validate_init_data, parse_init_data
 
 base_dir = Path(__file__).parent
@@ -29,7 +30,17 @@ def handle_update(secret):
 # Create a new page
 @app.post('/api/pages')
 def create_page():
-	page = database.create_new_page(0) # TODO: owner!
+	web_app_data = get_web_app_data()
+	if not web_app_data:
+		response.status = 403
+		return None
+	
+	is_onboarding = request.json.get("onboarding", False)
+	schema = template_schemas.onboarding if is_onboarding \
+		else template_schemas.default
+	
+	user_data = json.loads(web_app_data["user"])
+	page = database.create_new_page(user_data["id"], schema)
 	
 	return {
 		"ok": True,
@@ -39,15 +50,22 @@ def create_page():
 # Update an existing page
 @app.post('/api/pages/<id>')
 def update_page(id):
-	schema = request.text
-	database.update_page(id, schema)
-
+	# TODO: validate schema + prevent malicious code
+	page_data = {
+		"schema": request.json["schema"],
+		"title": request.json["title"],
+	}
+	database.update_page(id, page_data)
 
 # Retrieve a page by id
 @app.get('/api/pages/<id>')
 def get_page(id):
 	page = database.get_page(id)
-	if page: return page
+	if page:
+		return {
+			"ok": True,
+			"page": page
+		}
 	
 	response.status = 404
 	return None
@@ -66,7 +84,11 @@ def list_pages():
 		return None
 	
 	user_data = json.loads(web_app_data["user"])
-	return database.get_user_pages(user_data["id"])
+	pages = database.get_user_pages(user_data["id"])
+	return {
+		"ok": True,
+		"pages": pages
+	}
 
 def get_web_app_data():
 	web_app_data = request.headers.get("X-Tg-Init-Data")
