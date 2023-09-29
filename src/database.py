@@ -19,12 +19,11 @@ def init_database():
     conn.commit()
     conn.close()
 
-def create_new_page(ownerId, schema):
+def create_new_page(ownerId, schema, title):
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
     
     unique_id = generate_unique_page_id(cursor)
-    title = ""
 
     cursor.execute('''
         INSERT INTO pages (id, title, ownerId, schema)
@@ -96,6 +95,23 @@ def get_user_pages(ownerId):
     conn.close()
 
     return pages
+
+def user_owns(pageId, userId):
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    
+    cursor.execute('''
+        SELECT 1 FROM pages
+        WHERE id = ? AND ownerId = ?
+        ''', (pageId, userId))
+    
+    is_owner = bool(cursor.fetchone())
+    
+    conn.commit()
+    conn.close()
+    
+    return is_owner
+
 
 def generate_page_id(length=16):
     characters = string.ascii_letters + string.digits

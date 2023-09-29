@@ -1,6 +1,6 @@
 import json
 
-default = json.dumps({
+default = {
     "children": [
         {
             "typeName": "heading",
@@ -15,9 +15,9 @@ default = json.dumps({
             }
         }
     ]
-})
+}
 
-onboarding = json.dumps({
+onboarding = {
     "children": [
         {
             "typeName": "heading",
@@ -32,4 +32,4 @@ onboarding = json.dumps({
             }
         }
     ]
-})
+}
