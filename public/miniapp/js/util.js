@@ -23,3 +23,40 @@ export async function callAPI(method, endpoint, payload) {
 
     return await fetch(`/api/${endpoint}`, params);
 }
+
+export function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export function switchActiveChild(parentElement, childSelector) {
+    // adds class "active" to the child by given selector
+    // ensures only one child is active
+
+    const activeChildren = parentElement.querySelectorAll(":scope>.active");
+    for (const element of activeChildren)
+        element.classList.remove("active");
+
+    let targetChild = null;
+    if (childSelector) {
+        targetChild = parentElement.querySelector(childSelector);
+        targetChild?.classList?.add?.("active");
+    }
+
+    return !!targetChild;
+}
+
+export function removeArrayItem(array, item) {
+    const index = array.indexOf(item);
+
+    if (index > -1) {
+        array.splice(index, 1);
+    }
+
+    return index != -1;
+}
+
+export function tgConfirm(message) {
+    return new Promise(resolve => {
+        window.Telegram.WebApp.showConfirm(message, resolve);
+    });
+}
