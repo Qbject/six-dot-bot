@@ -12,7 +12,9 @@ def init_database():
             id TEXT PRIMARY KEY,
             title TEXT,
             ownerId INTEGER,
-            schema TEXT
+            schema TEXT,
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            modifiedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
 
@@ -46,7 +48,8 @@ def update_page(id, update_fields):
     
     # Construct the SQL query to update the page
     set_fields = ', '.join([f"{field} = ?" for field in update_fields.keys()])
-    query = f"UPDATE pages SET {set_fields} WHERE id = ?;"
+    query = f"UPDATE pages SET{set_fields}, modified_at = CURRENT_TIMESTAMP" \
+        " WHERE id = ?;"
 
     # Create a tuple of values to update, including the id
     values = tuple(update_fields.values()) + (id,)
@@ -87,7 +90,7 @@ def get_user_pages(ownerId):
     cursor = conn.cursor()
 
     cursor.execute('''
-        SELECT id, title FROM pages
+        SELECT id, title, modifiedAt FROM pages
         WHERE ownerId = ?
     ''', (ownerId,))
 
