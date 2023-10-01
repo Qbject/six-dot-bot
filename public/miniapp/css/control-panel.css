@@ -1,0 +1,152 @@
+:root {
+    --control-panel-height: 45px;
+}
+
+.controlPanel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: var(--control-panel-height);
+    z-index: 50;
+    transform: translateY(100%);
+    transition-property: bottom;
+    transition-duration: 100ms;
+    transition-timing-function: ease-out;
+}
+
+.controlPanel.active {
+    transform: translateY(0%);
+}
+
+.controlPanel>.modes {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 100%;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.controlPanel>.modes>* {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 3px;
+    transition-property: opacity, transform;
+    transition-duration: 100ms;
+    transition-timing-function: ease-out;
+    transform: translateY(50%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.controlPanel>.modes>.active~* {
+    transform: translateY(-50%);
+}
+
+.controlPanel>.modes>.active {
+    transform: translateY(0%);
+    opacity: 1;
+    transition-delay: 50ms;
+    pointer-events: all;
+}
+
+.controlPanel>.modes>*>.button {
+    height: 100%;
+}
+
+.controlPanel .pageMode {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+}
+
+.controlPanel .dragMode {
+    padding: 0;
+}
+
+.controlPanel .dragMode .deleteArea {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 2px;
+    transition-property: background-color;
+    transition-duration: 300ms;
+    transition-timing-function: ease;
+}
+
+.controlPanel .dragMode .deleteArea.active {
+    background-color: #FF0025;
+}
+
+.controlPanel .dragMode .deleteArea .animation {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 110%;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.controlPanel .dragMode .deleteArea .receiver {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.controlPanel .dragMode .deleteArea .sortable-ghost {
+    display: none;
+}
+
+.controlPanel>.menus {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin-bottom: var(--control-panel-height);
+    width: 100%;
+    height: calc(100vh - var(--control-panel-height));
+    pointer-events: none;
+}
+
+.controlPanel>.menus.active {
+    pointer-events: all;
+}
+
+.controlPanel>.menus>* {
+    pointer-events: none;
+    background-color: var(--tg-theme-bg-color);
+    opacity: 0;
+    transform: translateY(20vh);
+    transition-property: opacity, transform;
+    transition-duration: 100ms;
+    transition-timing-function: ease-out;
+}
+
+.controlPanel>.menus>.active {
+    pointer-events: all;
+    opacity: 1;
+    transform: translateY(0%);
+}
+
+.controlPanel>.menus>.pageMenu {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.controlPanel>.menus>.blockCatalog {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}

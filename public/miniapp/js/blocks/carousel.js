@@ -8,6 +8,6 @@ export default class CarouselBlock {
 
     build(blockElement) {
         const element = build("div.carousel", blockElement);
-        build("div.children.blockContainer", element);
+        build("div.children.blocksContainer", element);
     }
 }

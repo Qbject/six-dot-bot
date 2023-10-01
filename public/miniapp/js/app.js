@@ -10,16 +10,41 @@ class App {
     constructor(rootElement) {
         this.rootElement = rootElement;
         this.pagesStack = [];
+        this.dragActive = false;
 
-        // blindly trusting initData
-        // any user-specific action will be validated on the server
-        this.tgData = window.Telegram.WebApp.initDataUnsafe;
-        window.Telegram.WebApp.BackButton.onClick(() => this.goBack());
+        const { colorScheme } = window.Telegram.WebApp;
+        this.rootElement.dataset.colorScheme = colorScheme;
 
         this.userPages = null;
         this.userPagesPromise = callAPI("GET", "pages/my")
             .then(resp => resp.json())
             .then(data => this.userPages = data.pages);
+    }
+
+    setup() {
+        this.build();
+
+        this.router.addCallback("pageChange", () => {
+            const backBtn = window.Telegram.WebApp.BackButton
+            this.router.pagesStack.length > 1 ?
+                backBtn.show() : backBtn.hide();
+
+            this.updateControlPanel()
+        });
+
+        const handleDrag = event => {
+            if (event.type === "dragstart") {
+                if (event.target.classList.contains("block")) {
+                    this.setDragActive(true);
+                }
+            } else {
+                this.setDragActive(false);
+            }
+        }
+
+        this.rootElement.addEventListener("dragstart", handleDrag);
+        this.rootElement.addEventListener("dragend", handleDrag);
+        this.rootElement.addEventListener("drop", handleDrag);
     }
 
     build() {
@@ -30,14 +55,6 @@ class App {
         this.router = new PageRouter();
         this.router.build();
         this.rootElement.append(this.router.pagesContainer);
-
-        this.router.addCallback("pageChange", () => {
-            const backBtn = window.Telegram.WebApp.BackButton
-            this.router.pagesStack.length > 1 ?
-                backBtn.show() : backBtn.hide();
-
-            this.updateControlPanel()
-        });
     }
 
     async constructPageFromResp(pageResp) {
@@ -91,6 +108,7 @@ class App {
         this.router.pushPage(page);
 
         const userPages = await this.userPagesPromise;
+        // TODO
     }
 
     goBack() {
@@ -109,10 +127,15 @@ class App {
         if (curPage.constructor == HomePage) {
             controlPanelMode = curPage.selectMode ? "pageList" : "home";
         } else if (curPage.constructor == ConstructorPage) {
-            controlPanelMode = curPage.dragActive ? "drag" : "page";
+            controlPanelMode = this.dragActive ? "drag" : "page";
         }
 
         this.controlPanel.setMode(controlPanelMode);
+    }
+
+    setDragActive(isActive) {
+        this.dragActive = isActive;
+        this.updateControlPanel();
     }
 }
 
@@ -123,6 +146,6 @@ class App {
     const startPage = pageParams.get("tgWebAppStartParam")
 
     window.app = new App(appRoot);
-    window.app.build();
+    window.app.setup();
     window.app.openPage(startPage, true);
 })();

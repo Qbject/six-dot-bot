@@ -1,9 +1,11 @@
 import { blockRegistry } from "./block-registry.js";
 import { build, callAPI, removeArrayItem, tgConfirm } from "./util.js";
 import config from "./config.js";
+import EventEmitter from "./event-emitter.js";
 
-export class ConstructorPage {
+export class ConstructorPage extends EventEmitter {
     constructor(schema, id, editable) {
+        super();
         this.schema = schema;
         this.id = id;
         this.editable = editable;
@@ -18,6 +20,7 @@ export class ConstructorPage {
             this.setupDragNDrop();
 
             this.pageElement.addEventListener("click", event => {
+                // TODO: comment
                 const blockElement = event.target.closest(".block");
                 if (!blockElement) return;
                 const block = this.getBlockObject(blockElement);
@@ -40,7 +43,7 @@ export class ConstructorPage {
     }
 
     build() {
-        this.pageElement = build("div.page");
+        this.pageElement = build("div.page.constructor");
         this.contentElement = build("div.content", this.pageElement);
         this.blocksContainer = build("div.blocksContainer",
             this.contentElement);
@@ -60,7 +63,7 @@ export class ConstructorPage {
                 block.setup();
                 this.allBlocks.push(block);
                 event.item.replaceWith(block.blockElement);
-            }
+            },
         });
     }
 
@@ -141,31 +144,12 @@ export class ConstructorPage {
     }
 }
 
-export class HomePage {
+export class HomePage extends EventEmitter {
     constructor(userPages) {
+        super();
         this.userPages = userPages;
         this.selectMode = false;
         this.selectedPages = [];
-        this.callbacks = {};
-    }
-
-    addCallback(eventName, callback) {
-        if (!(eventName in this.callbacks)) {
-            this.callbacks[eventName] = [];
-        }
-        this.callbacks[eventName].push(callback);
-    }
-
-    removeCallback(eventName, callback) {
-        if (eventName in this.callbacks) {
-            removeArrayItem(this.callbacks[eventName], callback);
-        }
-    }
-
-    triggerEvent(eventName, params = []) {
-        for (const callback of this.callbacks[eventName] || []) {
-            callback(...params);
-        }
     }
 
     setup() {
@@ -175,21 +159,21 @@ export class HomePage {
     build() {
         this.pageElement = build("div.page.home");
         this.contentElement = build("div.content", this.pageElement);
-        this.pagesList = build("ul.pages", this.contentElement);
-        this.pagesList.dataset.longPressDelay = "500";
+        this.pageList = build("ul.pageList", this.contentElement);
+        this.pageList.dataset.longPressDelay = "500";
 
         for (const pageData of this.userPages) {
-            this.pagesList.append(this.buildPageItem(pageData));
+            this.pageList.append(this.buildPageItem(pageData));
         }
 
-        this.pagesList.addEventListener("click", event => {
+        this.pageList.addEventListener("click", event => {
             const itemElement = event.target.closest(".pageItem");
             if (!itemElement) return;
-            const selecting = !!event.target.closest(".selectIndicator");
+            const selecting = !!event.target.closest(".selectHandle");
 
             this.onItemInteraction(itemElement.dataset.pageId, selecting);
         });
-        this.pagesList.addEventListener("long-press", event => {
+        this.pageList.addEventListener("long-press", event => {
             const itemElement = event.target.closest(".pageItem");
             if (!itemElement) return;
             event.preventDefault();
@@ -202,21 +186,23 @@ export class HomePage {
         const itemElement = build("li.pageItem");
         itemElement.dataset.pageId = pageData.id;
 
-        const selectIndicator = build("div.selectIndicator", itemElement);
-        const contentElement = build("div.name", itemElement)
+        build("div.background", itemElement);
+        const pageInfoElement = build("div.pageInfo", itemElement);
+        const pageTitleElement = build("div.pageTitle", pageInfoElement);
+        const pageTimeElement = build("div.pageTime", pageInfoElement);
+        const selectHandle = build("div.selectHandle", itemElement);
+        const selectCheckbox = build("div.checkbox", selectHandle);
+        build("div.rippleJS", itemElement);
 
-        if (pageData.title) {
-            contentElement.textContent = pageData.title;
-        } else {
-            contentElement.classList.add("unnamed");
-            contentElement.textContent = "Unnamed";
-        }
+        pageTitleElement.textContent = pageData.title || "Unnamed";
+        if (!pageData.title) pageTitleElement.classList.add("unnamed");
+        pageTimeElement.textContent = pageData.modifiedAt;
 
         return itemElement;
     }
 
     onPageDelete() {
-        for (const pageItem of this.pagesList.children) {
+        for (const pageItem of this.pageList.children) {
             const itemDeleted = !this.userPages.find(pageData =>
                 pageData.id == pageItem.pageId)
             if (itemDeleted) pageItem.classList.add("deleted");
@@ -241,7 +227,7 @@ export class HomePage {
         this.selectMode = !!this.selectedPages.length;
         this.triggerEvent("selectionChange");
 
-        for (const itemElement of this.pagesList.children) {
+        for (const itemElement of this.pageList.children) {
             itemElement.classList.toggle("selected",
                 this.selectedPages.includes(itemElement.dataset.pageId));
         }
@@ -252,7 +238,7 @@ export class HomePage {
 
         const delCount = this.selectedPages.length;
         const confirmMessage = `Are you sure you want to delete ${delCount} ` +
-            `message${delCount - 1 ? "s" : ""}?`;
+            `page${delCount - 1 ? "s" : ""}?`;
         const confirmed = await tgConfirm(confirmMessage);
         if (!confirmed) return;
 
@@ -265,7 +251,11 @@ export class HomePage {
     }
 }
 
-export class NotFoundPage {
+export class NotFoundPage extends EventEmitter {
+    constructor() {
+        super();
+    }
+
     setup() {
         this.build();
     }
@@ -277,7 +267,11 @@ export class NotFoundPage {
     }
 }
 
-export class ErrorPage {
+export class ErrorPage extends EventEmitter {
+    constructor() {
+        super();
+    }
+
     setup() {
         this.build();
     }

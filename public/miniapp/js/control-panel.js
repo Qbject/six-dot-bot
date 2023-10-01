@@ -1,5 +1,5 @@
 import { blockRegistry } from "./block-registry.js";
-import { build, sleep, switchActiveChild } from "./util.js";
+import { build, buildButton, sleep, switchActiveChild } from "./util.js";
 
 export class ControlPanel {
     constructor(app) {
@@ -39,52 +39,73 @@ export class ControlPanel {
     buildModes() {
         this.modesContainer = build("div.modes", this.panelElement);
 
-        //  home mode
-        const homeModeElement = build("div.homeMode", this.modesContainer);
+        this.setupHomeMode();
+        this.setupDragMode();
+        this.setupPageMode();
+        this.setupPageListMode();
+    }
 
-        const newPageButton = build("button.newPage", homeModeElement);
-        newPageButton.textContent = "New Page";
-        newPageButton.addEventListener("click", async () => {
-            newPageButton.disabled = true;
-            await this.app.createNewPage();
-            newPageButton.disabled = false;
+    setupHomeMode() {
+        const modeElement = build("div.homeMode", this.modesContainer);
+
+        const newPageButton = buildButton(".button.newPage", "New Page",
+            modeElement, async () => {
+                newPageButton.disabled = true;
+                await this.app.createNewPage();
+                newPageButton.disabled = false;
+            });
+    }
+
+    setupDragMode() {
+        const modeElement = build("div.dragMode", this.modesContainer);
+        const deleteAreaElement = build("div.deleteArea", modeElement);
+        const deleteAnimElement = build("div.animation", deleteAreaElement);
+        const receiverElement = build("div.receiver", deleteAreaElement);
+
+        this.blockDeleteAnimation = lottie.loadAnimation({
+            container: deleteAnimElement,
+            renderer: "svg",
+            loop: false,
+            autoplay: false,
+            path: "/miniapp/lottie/delete.json",
         });
 
-        // page mode
-        const pageModeElement = build("div.pageMode", this.modesContainer);
+        const handleDragEvent = event => {
+            const dragActive = event.type === "dragenter";
+            deleteAreaElement.classList.toggle("active", dragActive);
+            dragActive ? this.blockDeleteAnimation.goToAndPlay(0, true) :
+                this.blockDeleteAnimation.goToAndStop(0, true)
+        }
 
-        const pageMenuButton = build("button.pageMenu", pageModeElement);
-        pageMenuButton.textContent = "Page Menu";
-        pageMenuButton.addEventListener("click", () =>
-            this.toggleMenu("pageMenu"));
+        const eventTypes = ["dragenter", "dragend", "dragleave", "drop"];
+        eventTypes.map(eventType =>
+            receiverElement.addEventListener(eventType, handleDragEvent));
 
-        const newBlockButton = build("button.newBlock", pageModeElement);
-        newBlockButton.textContent = "New Block";
-        newBlockButton.addEventListener("click", () =>
-            this.toggleMenu("blockCatalog"));
-
-        // drag mode
-        const dragModeElement = build("div.dragMode", this.modesContainer);
-        const deleteAreaElement = build("div.deleteArea", dragModeElement);
-        const blockDeleteIcon = build("span.icon", dragModeElement);
-
-        this.blockDeleteSortable = new Sortable(deleteAreaElement, {
+        this.blockDeleteSortable = new Sortable(receiverElement, {
             group: "editablePage",
+            filter: ".animation",
             onAdd: event => event.item.remove()
         });
+    }
 
-        // pageList mode
-        const pageListModeElement = build("div.pageListMode",
-            this.modesContainer);
+    setupPageMode() {
+        const modeElement = build("div.pageMode", this.modesContainer);
 
-        const deletePageButton = build("button.deletePage",
-            pageListModeElement);
-        deletePageButton.textContent = "Delete Selected";
-        deletePageButton.addEventListener("click", async () => {
-            deletePageButton.disabled = true;
-            await this.app.homePage.deleteSelectedPages();
-            deletePageButton.disabled = false;
-        });
+        buildButton(".button.pageMenu", "Page Menu", modeElement, () =>
+            this.toggleMenu("pageMenu"));
+        buildButton(".button.newBlock", "New Block", modeElement, () =>
+            this.toggleMenu("blockCatalog"));
+    }
+
+    setupPageListMode() {
+        const modeElement = build("div.pageListMode", this.modesContainer);
+
+        const deletePageButton = buildButton(".button.danger.deletePage",
+            "Delete Selected", modeElement, async () => {
+                deletePageButton.disabled = true;
+                await this.app.homePage.deleteSelectedPages();
+                deletePageButton.disabled = false;
+            });
     }
 
     buildMenus() {
@@ -149,7 +170,7 @@ export class ControlPanel {
         });
     }
 
-
+    // TODO: something
     async showButtonSplash(buttonElement, text, color = "transparent") {
         // shows button click feedback text
         const splashElement = build("div.actionSplash", buttonElement);

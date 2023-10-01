@@ -60,3 +60,14 @@ export function tgConfirm(message) {
         window.Telegram.WebApp.showConfirm(message, resolve);
     });
 }
+
+export function buildButton(classes, text, parent = null, onClick = null) {
+    // TODO: documentation/explanation
+    const button = build(`button${classes || ""}`, parent);
+    const contentElement = build("div.buttonContent", button);
+    build("div.rippleJS", button);
+
+    contentElement.textContent = text || "";
+    if (onClick) button.addEventListener("click", onClick);
+    return button;
+}

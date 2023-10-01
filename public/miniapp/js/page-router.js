@@ -1,33 +1,15 @@
-import { build, removeArrayItem } from "./util.js";
+import EventEmitter from "./event-emitter.js";
+import { build } from "./util.js";
 
-export default class PageRouter {
+export default class PageRouter extends EventEmitter {
     constructor() {
+        super();
         this.activePage = null;
         this.pagesStack = [];
-        this.callbacks = {};
     }
 
     build() {
         this.pagesContainer = build("div.pages");
-    }
-
-    addCallback(eventName, callback) {
-        if (!(eventName in this.callbacks)) {
-            this.callbacks[eventName] = [];
-        }
-        this.callbacks[eventName].push(callback);
-    }
-
-    removeCallback(eventName, callback) {
-        if (eventName in this.callbacks) {
-            removeArrayItem(this.callbacks[eventName], callback);
-        }
-    }
-
-    triggerEvent(eventName, params = []) {
-        for (const callback of this.callbacks[eventName] || []) {
-            callback(...params);
-        }
     }
 
     pushPage(page, appearInstantly) {

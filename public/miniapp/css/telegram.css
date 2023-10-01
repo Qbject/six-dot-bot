@@ -1,0 +1,61 @@
+/* styling, aesthetics, look and feel of the Telegram */
+
+:root {
+    background-color: var(--tg-theme-bg-color);
+    color: var(--tg-theme-text-color);
+    font-family: "Roboto", -apple-system, apple color emoji, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    --danger-color: #df3f40;
+}
+
+.button {
+    position: relative;
+    width: 100%;
+    border: 0;
+    padding: 0;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 10px;
+    background-color: var(--tg-theme-button-color);
+    color: var(--tg-theme-button-text-color);
+    text-transform: uppercase;
+    outline: none;
+    cursor: pointer;
+    user-select: none;
+    height: 50px;
+}
+
+.checkbox {
+    border: 2px solid #DADCE0;
+    border-radius: .25rem;
+    background-color: var(--color-background);
+    transition: border-color .1s ease, background-color .1s ease;
+    width: 1.125rem;
+    height: 1.125rem;
+    transition-property: border-color, background-color;
+    transition-duration: 100ms;
+    transition-timing-function: ease;
+}
+
+.checkbox:checked,
+.checkbox.checked {
+    border-color: #3390EC;
+    background-color: #3390EC;
+}
+
+.checkbox::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: center no-repeat url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEzLjkuOEw1LjggOC45IDIuMSA1LjJjLS40LS40LTEuMS0uNC0xLjYgMC0uNC40LS40IDEuMSAwIDEuNkw1IDExLjJjLjQuNCAxLjEuNCAxLjYgMGw4LjktOC45Yy40LS40LjQtMS4xIDAtMS42LS41LS40LTEuMi0uNC0xLjYuMXoiIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0ibm9uemVybyIvPjwvc3ZnPg==);
+    background-size: .875rem;
+    opacity: 0;
+    transition: opacity 100ms ease;
+}
+
+.checkbox:checked::after,
+.checkbox.checked::after {
+    opacity: 1;
+}
