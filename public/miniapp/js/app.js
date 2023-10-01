@@ -1,4 +1,4 @@
-import { callAPI } from "./util.js";
+import { callAPI, sleep } from "./util.js";
 import { ConstructorPage, HomePage, NotFoundPage, ErrorPage } from "./pages.js";
 import { ControlPanel } from "./control-panel.js";
 import PageRouter from "./page-router.js";
@@ -14,15 +14,12 @@ class App {
 
         const { colorScheme } = window.Telegram.WebApp;
         this.rootElement.dataset.colorScheme = colorScheme;
-
-        this.userPages = null;
-        this.userPagesPromise = callAPI("GET", "pages/my")
-            .then(resp => resp.json())
-            .then(data => this.userPages = data.pages);
     }
 
     setup() {
         this.build();
+
+        window.Telegram.WebApp.BackButton.onClick(() => this.goBack());
 
         this.router.addCallback("pageChange", () => {
             const backBtn = window.Telegram.WebApp.BackButton
@@ -63,8 +60,9 @@ class App {
         if (!pageResp.ok) return new ErrorPage();
 
         const pageData = (await pageResp.json()).page;
-        return new ConstructorPage(
-            JSON.parse(pageData.schema), pageData.id, true)
+        const page = new ConstructorPage(JSON.parse(pageData.schema),
+            pageData.id, true);
+        return [pageData, page];
     }
 
     connectHomePage(page) {
@@ -77,38 +75,34 @@ class App {
     }
 
     async openPage(pageId, appearInstantly) {
-        let page = null
-
         if (pageId) {
             const pageResp = await callAPI("GET", `pages/${pageId}`);
-            page = await this.constructPageFromResp(pageResp);
-        } else {
-            const userPages = await this.userPagesPromise;
-
-            if (userPages.length) {
-                // if user has own pages, showing page list (home page)
-                page = new HomePage(this.userPages);
-                this.connectHomePage(page);
-            } else {
-                // if user got no pages, automatically creating and opening
-                // new page with onboarding contents
-                const pageResp = await callAPI("POST", "pages", {
-                    onboarding: true
-                });
-                page = await this.constructPageFromResp(pageResp);
-            }
+            const [_, page] = await this.constructPageFromResp(pageResp);
+            this.router.pushPage(page, appearInstantly);
+            return;
         }
 
+        const userPagesResp = await callAPI("GET", "pages/my");
+        const userPages = (await userPagesResp.json()).pages;
+        const page = new HomePage(userPages);
         this.router.pushPage(page, appearInstantly);
+        this.connectHomePage(page);
+
+        if (!userPages.length) {
+            console.log("AAAA")
+            // if user got 0 pages, automatically showing the onboarding page
+            this.createNewPage(true, true);
+        }
     }
 
-    async createNewPage() {
-        const pageResp = await callAPI("POST", "pages");
-        const page = await this.constructPageFromResp(pageResp);
-        this.router.pushPage(page);
+    async createNewPage(onboarding = false, appearInstantly = false) {
+        const pageResp = await callAPI("POST", "pages", { onboarding });
+        const [pageData, page] = await this.constructPageFromResp(pageResp);
+        this.router.pushPage(page, appearInstantly);
 
-        const userPages = await this.userPagesPromise;
-        // TODO
+        // rendering item behind the scenes after the new page appear animated
+        await sleep(200);
+        this.homePage.addNewPage(pageData);
     }
 
     goBack() {

@@ -54,11 +54,11 @@ def create_page():
 		schema = json.dumps(template_schemas.default)
 	
 	user_data = json.loads(web_app_data["user"])
-	page = database.create_new_page(user_data["id"], schema, title)
+	page_id = database.create_new_page(user_data["id"], schema, title)
 	
 	return {
 		"ok": True,
-		"page": page
+		"page": database.get_page(page_id)
 	}
 
 # Update an existing page

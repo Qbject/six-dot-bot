@@ -1,10 +1,12 @@
 // TODO: docstring
 
-export function build(node_desc, parent = null) {
+export function build(node_desc, parent = null, prepend = false) {
     const [tag, ...class_list] = node_desc.split(".");
     const element = document.createElement(tag);
     if (class_list.length) element.classList.add(...class_list);
-    parent && parent.append(element);
+
+    if (parent)
+        prepend ? parent.prepend(element) : parent.append(element);
     return element;
 }
 

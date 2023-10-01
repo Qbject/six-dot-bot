@@ -35,12 +35,7 @@ def create_new_page(ownerId, schema, title):
     conn.commit()
     conn.close()
     
-    return {
-        "id": unique_id,
-        "title": title,
-        "ownerId": ownerId,
-        "schema": schema
-    }
+    return unique_id
 
 def update_page(id, update_fields):
     conn = sqlite3.connect(DB_FILE)
@@ -48,7 +43,7 @@ def update_page(id, update_fields):
     
     # Construct the SQL query to update the page
     set_fields = ', '.join([f"{field} = ?" for field in update_fields.keys()])
-    query = f"UPDATE pages SET{set_fields}, modified_at = CURRENT_TIMESTAMP" \
+    query = f"UPDATE pages SET {set_fields}, modifiedAt = CURRENT_TIMESTAMP" \
         " WHERE id = ?;"
 
     # Create a tuple of values to update, including the id
@@ -92,6 +87,7 @@ def get_user_pages(ownerId):
     cursor.execute('''
         SELECT id, title, modifiedAt FROM pages
         WHERE ownerId = ?
+        ORDER BY modifiedAt DESC
     ''', (ownerId,))
 
     pages = [dict(row) for row in cursor.fetchall()]

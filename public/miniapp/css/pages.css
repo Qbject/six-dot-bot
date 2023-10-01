@@ -62,11 +62,21 @@
     position: relative;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
+    box-sizing: border-box;
+    height: 52px;
     padding: 7px 16px;
     overflow: hidden;
     user-select: none;
     cursor: pointer;
     gap: 25px;
+    transition: height 300ms ease 100ms, padding 300ms ease 100ms, transform 100ms ease-out, opacity 100ms ease-out;
+}
+
+.page.home .pageItem.deleted {
+    height: 0;
+    padding: 0 16px;
+    transform: scale(75%);
+    opacity: 0;
 }
 
 .page.home .pageItem .background {

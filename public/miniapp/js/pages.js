@@ -1,5 +1,5 @@
 import { blockRegistry } from "./block-registry.js";
-import { build, callAPI, removeArrayItem, tgConfirm } from "./util.js";
+import { build, callAPI, removeArrayItem, sleep, tgConfirm } from "./util.js";
 import config from "./config.js";
 import EventEmitter from "./event-emitter.js";
 
@@ -201,14 +201,6 @@ export class HomePage extends EventEmitter {
         return itemElement;
     }
 
-    onPageDelete() {
-        for (const pageItem of this.pageList.children) {
-            const itemDeleted = !this.userPages.find(pageData =>
-                pageData.id == pageItem.pageId)
-            if (itemDeleted) pageItem.classList.add("deleted");
-        }
-    }
-
     onItemInteraction(pageId, selecting) {
         if (this.selectMode || selecting) {
             if (this.selectedPages.includes(pageId)) {
@@ -235,9 +227,32 @@ export class HomePage extends EventEmitter {
         this.triggerEvent("selectionChange");
     }
 
-    async deleteSelectedPages() {
-        // TODO: animate
+    updatePageitems() {
+        // building items for newly added pages
+        for (const pageData of this.userPages) {
+            const itemSelector = `.pageItem[data-page-id="${pageData.id}"]`;
+            const itemElement = this.pageList.querySelector(itemSelector);
 
+            if (!itemElement)
+                this.pageList.prepend(this.buildPageItem(pageData));
+        }
+
+        // removing releted items for deleted pages (with animation)
+        const deletedItems = [];
+        for (const pageItem of this.pageList.children) {
+            const itemDeleted = !this.userPages.find(pageData =>
+                pageData.id == pageItem.dataset.pageId)
+
+            if (itemDeleted) {
+                pageItem.classList.add("deleted");
+                deletedItems.push(pageItem);
+            }
+        }
+        // deleting from DOM after animation is complete
+        return sleep(500).then(() => deletedItems.map(el => el.remove()));
+    }
+
+    async deleteSelectedPages() {
         const delCount = this.selectedPages.length;
         const confirmMessage = `Are you sure you want to delete ${delCount} ` +
             `page${delCount - 1 ? "s" : ""}?`;
@@ -247,9 +262,17 @@ export class HomePage extends EventEmitter {
         for (const pageId of this.selectedPages) {
             await callAPI("DELETE", `pages/${pageId}`)
         }
+        this.userPages = this.userPages.filter(pageData =>
+            !this.selectedPages.includes(pageData.id));
 
         this.selectedPages = [];
         this.updateSelectedPages();
+        this.updatePageitems();
+    }
+
+    addNewPage(pageData) {
+        this.userPages.unshift(pageData);
+        this.updatePageitems();
     }
 }
 
