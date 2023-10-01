@@ -57,19 +57,15 @@
 
 /* home page */
 
-.page.home .pageList {
-    padding: 8px;
-}
-
 .page.home .pageItem {
     position: relative;
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     padding: 7px 16px;
     overflow: hidden;
-    border-radius: 10px;
     user-select: none;
     cursor: pointer;
+    gap: 25px;
 }
 
 .page.home .pageItem .background {
@@ -83,20 +79,21 @@
 }
 
 .page.home .pageItem:hover .background {
-    background-color: var(--tg-theme-button-color);
-    opacity: .2;
+    background-color: var(--tg-theme-text-color);
+    opacity: .075;
 }
 
 .page.home .pageItem.selected .background {
     background-color: var(--tg-theme-text-color);
-    opacity: .2;
+    opacity: .1;
 }
 
 .page.home .pageItem .pageTitle {
     font-size: 16px;
-    word-break: break-word;
+    display: block;
     text-overflow: ellipsis;
     overflow: hidden;
+    white-space: nowrap;
     margin-bottom: 8px;
 }
 
@@ -114,10 +111,16 @@
     display: grid;
     align-items: center;
     justify-items: center;
-    width: 30px;
     align-self: stretch;
     font-size: 16px;
     z-index: 1;
+    opacity: 0;
+    transition: opacity 100ms ease;
+}
+
+.page.home .pageList.selectMode .pageItem .selectHandle,
+.page.home .pageItem:hover .selectHandle {
+    opacity: 1
 }
 
 .page.home .pageItem.selected .selectHandle .checkbox {
@@ -127,4 +130,8 @@
 
 .page.home .pageItem.selected .selectHandle .checkbox::after {
     opacity: 1;
+}
+
+.page.home .pageItem .rippleJS {
+    opacity: .3;
 }

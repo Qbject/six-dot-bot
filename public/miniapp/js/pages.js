@@ -225,12 +225,14 @@ export class HomePage extends EventEmitter {
 
     updateSelectedPages() {
         this.selectMode = !!this.selectedPages.length;
-        this.triggerEvent("selectionChange");
+        this.pageList.classList.toggle("selectMode", this.selectMode);
 
         for (const itemElement of this.pageList.children) {
             itemElement.classList.toggle("selected",
                 this.selectedPages.includes(itemElement.dataset.pageId));
         }
+
+        this.triggerEvent("selectionChange");
     }
 
     async deleteSelectedPages() {
