@@ -34,6 +34,7 @@
     background-color: var(--tg-theme-secondary-bg-color);
     overflow-y: auto;
     overflow-x: hidden;
+    z-index: 1;
     transition-property: opacity, transform;
     transition-duration: 100ms;
     transition-timing-function: ease-out;
