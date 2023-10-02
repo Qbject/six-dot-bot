@@ -1,5 +1,3 @@
-// TODO: docstring
-
 export function build(node_desc, parent = null, prepend = false) {
     const [tag, ...class_list] = node_desc.split(".");
     const element = document.createElement(tag);
@@ -64,7 +62,6 @@ export function tgConfirm(message) {
 }
 
 export function buildButton(classes, text, parent = null, onClick = null) {
-    // TODO: documentation/explanation
     const button = build(`button${classes || ""}`, parent);
     const contentElement = build("div.buttonContent", button);
     build("div.rippleJS", button);

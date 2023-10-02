@@ -131,7 +131,7 @@ export class ControlPanel {
             renderer: "svg",
             loop: false,
             autoplay: false,
-            path: "/miniapp/lottie/delete.json",
+            path: "/lottie/delete.json",
         });
 
         const handleDragEvent = event => {

@@ -25,18 +25,22 @@ export class PageActivity extends EventEmitter {
         this.setupDragNDrop();
 
         this.activityElement.addEventListener("click", event => {
-            // TODO: comment
             const blockElement = event.target.closest(".block");
             if (!blockElement) return;
-            const block = this.getBlockObject(blockElement);
+            // user clicked a block
+            const clickedBlock = this.getBlockObject(blockElement);
 
             if (!this.editingBlock) {
-                this.editingBlock = block;
-                block.enterEditMode();
+                // no block is editing, start entering for clicked block
+                this.editingBlock = clickedBlock;
+                clickedBlock.enterEditMode();
                 event.preventDefault();
                 event.stopPropagation();
             } else {
-                if (this.editingBlock != block) {
+                // other block is editing
+                if (this.editingBlock != clickedBlock) {
+                    // user clicked outside currently editing block
+                    // exiting its edit mode
                     this.editingBlock.exitEditMode();
                     this.editingBlock = null;
                     event.preventDefault();

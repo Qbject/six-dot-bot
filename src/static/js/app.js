@@ -3,9 +3,6 @@ import { PageActivity, HomeActivity, NotFoundActivity, ErrorActivity } from "./a
 import { ControlPanel } from "./control-panel.js";
 import ActivityRouter from "./activity-router.js";
 
-// TODO: DOCSTRINGS
-// TODO: better snapping animation?
-
 class App {
     constructor(rootElement) {
         this.rootElement = rootElement;
@@ -55,10 +52,10 @@ class App {
 
     async getActivityFromResp(pageResp) {
         // reusable logic for constructing activity based on backend response
-        if (pageResp.status == 404) return [null, new NotFoundActivity()];
-        if (!pageResp.ok) return [null, new ErrorActivity()];
+        if (pageResp.status == 404) return new NotFoundActivity();
+        if (!pageResp.ok) return new ErrorActivity();
         
-        const pageData = (await pageResp.json()).page;
+        const pageData = (await pageResp.json()).result;
         return new PageActivity(pageData);
     }
 
@@ -80,13 +77,12 @@ class App {
         }
 
         const userPagesResp = await callAPI("GET", "pages/my");
-        const userPages = (await userPagesResp.json()).pages;
+        const userPages = (await userPagesResp.json()).result;
         const page = new HomeActivity(userPages);
         this.router.pushActivity(page, appearInstantly);
         this.connectHomeActivity(page);
 
         if (!userPages.length) {
-            console.log("AAAA")
             // if user got 0 pages, automatically showing the onboarding page
             this.createNewPage(true, true);
         }
