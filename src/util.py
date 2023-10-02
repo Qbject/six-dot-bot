@@ -79,3 +79,8 @@ def init_database():
 def get_random_str(length=16):
 	characters = string.ascii_letters + string.digits
 	return ''.join(random.choice(characters) for _ in range(length))
+
+def ucfirst(input_str):
+	if input_str:
+		return input_str[0].upper() + input_str[1:]
+	return input_str

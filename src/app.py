@@ -1,18 +1,47 @@
-from bottle import static_file, response, get, run
+from bottle import static_file, response, get, run, request, post
 from pathlib import Path
 import os
 import json
 import dotenv
 from util import init_database
 import tgapi
-import rest_api
+import rest_api # adds additional route handles upon importing
 
 # Telegram updates
-@get("/api/handle_tg_update/<secret>")
-def handle_tg_update(secret):
-	if secret != os.environ["WEB_SECRET"]:
+@post("/api/handle_tg_update")
+def handle_tg_update():
+	secret = request.headers.get("X-Telegram-Bot-Api-Secret-Token")
+	if secret != os.environ["TG_SECRET_TOKEN"]:
 		response.status = 403
 		return "Not allowed"
+	
+	update = request.json
+	if "message" not in update: return
+	if update["message"]["text"] == "/start":
+		greeting_msg = f"""
+👋 Welcome to the {os.environ["BOT_DISPLAY_NAME"]}!
+
+Here's what I can do for you:
+
+📝 Create Rich Pages: I can help you create visually appealing pages using the power of MiniApps. You can easily design and edit your own interactive pages with a simple drag-and-drop interface.
+
+📤 Share Pages: Once you've created your masterpiece, I'll generate link that open your MiniApp page. Share these links with your friends on Telegram and amaze them with your creativity!
+
+🚀 Let's get started! To create a new page, just press the button below and I'll guide you through the process.
+
+Let's embark on a creative journey! ✨
+	""".strip()
+	message_button = json.dumps({
+		"inline_keyboard": [[{
+			"text": "Open Editor",
+			"web_app": {
+				"url": os.environ["APP_HOST"]
+			}
+		}]],
+	})
+	
+	tgapi.send_message(update["message"]["chat"]["id"], greeting_msg,
+		reply_markup=message_button)
 
 @get("/")
 def index():
@@ -48,7 +77,7 @@ def init():
 	data_path.mkdir(exist_ok=True)
 	init_database()
 	
-	# initializing button shown in private chats
+	# setting up button shown in private chats
 	tgapi.call("setChatMenuButton", {
 		"menu_button": json.dumps({
 			"type": "web_app",
@@ -57,6 +86,13 @@ def init():
 				"url": os.environ["APP_HOST"]
 			}
 		})
+	})
+	
+	# setting Telegram update listening endpoint
+	webhook_url = f"{os.environ['APP_HOST']}/api/handle_tg_update"
+	tgapi.call("setWebhook", {
+		"url": webhook_url,
+		"secret_token": os.environ["TG_SECRET_TOKEN"]
 	})
 
 if __name__ == "__main__":
