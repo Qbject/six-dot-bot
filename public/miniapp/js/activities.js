@@ -3,48 +3,52 @@ import { build, callAPI, removeArrayItem, sleep, tgConfirm } from "./util.js";
 import config from "./config.js";
 import EventEmitter from "./event-emitter.js";
 
-export class ConstructorPage extends EventEmitter {
-    constructor(schema, id, editable) {
+export class PageActivity extends EventEmitter {
+    constructor(pageData) {
         super();
-        this.schema = schema;
-        this.id = id;
-        this.editable = editable;
+        this.initData = pageData;
+        this.schema = JSON.parse(pageData.schema);
+        this.id = pageData.id;
         this.allBlocks = [];
         this.editingBlock = null;
+
+        const isOwn = pageData.ownerId === window.Telegram.WebApp
+            .initDataUnsafe.user.id;
+        this.editable = isOwn;
     }
 
     setup() {
         this.build();
 
-        if (this.editable) {
-            this.setupDragNDrop();
+        if (!this.editable) return
 
-            this.pageElement.addEventListener("click", event => {
-                // TODO: comment
-                const blockElement = event.target.closest(".block");
-                if (!blockElement) return;
-                const block = this.getBlockObject(blockElement);
+        this.setupDragNDrop();
 
-                if (!this.editingBlock) {
-                    this.editingBlock = block;
-                    block.enterEditMode();
+        this.activityElement.addEventListener("click", event => {
+            // TODO: comment
+            const blockElement = event.target.closest(".block");
+            if (!blockElement) return;
+            const block = this.getBlockObject(blockElement);
+
+            if (!this.editingBlock) {
+                this.editingBlock = block;
+                block.enterEditMode();
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                if (this.editingBlock != block) {
+                    this.editingBlock.exitEditMode();
+                    this.editingBlock = null;
                     event.preventDefault();
                     event.stopPropagation();
-                } else {
-                    if (this.editingBlock != block) {
-                        this.editingBlock.exitEditMode();
-                        this.editingBlock = null;
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
                 }
-            })
-        }
+            }
+        })
     }
 
     build() {
-        this.pageElement = build("div.page.constructor");
-        this.contentElement = build("div.content", this.pageElement);
+        this.activityElement = build("div.activity.page");
+        this.contentElement = build("div.content", this.activityElement);
         this.blocksContainer = build("div.blocksContainer",
             this.contentElement);
         this.applySchema(this.schema);
@@ -134,7 +138,7 @@ export class ConstructorPage extends EventEmitter {
     getTitle() {
         // getting title from a first heding on the page
 
-        const heading = this.pageElement.querySelector("h1");
+        const heading = this.activityElement.querySelector("h1");
         return heading?.textContent || "";
     }
 
@@ -144,7 +148,7 @@ export class ConstructorPage extends EventEmitter {
     }
 }
 
-export class HomePage extends EventEmitter {
+export class HomeActivity extends EventEmitter {
     constructor(userPages) {
         super();
         this.userPages = userPages;
@@ -157,8 +161,8 @@ export class HomePage extends EventEmitter {
     }
 
     build() {
-        this.pageElement = build("div.page.home");
-        this.contentElement = build("div.content", this.pageElement);
+        this.activityElement = build("div.activity.home");
+        this.contentElement = build("div.content", this.activityElement);
         this.pageList = build("ul.pageList", this.contentElement);
         this.pageList.dataset.longPressDelay = "500";
 
@@ -276,7 +280,7 @@ export class HomePage extends EventEmitter {
     }
 }
 
-export class NotFoundPage extends EventEmitter {
+export class NotFoundActivity extends EventEmitter {
     constructor() {
         super();
     }
@@ -286,13 +290,13 @@ export class NotFoundPage extends EventEmitter {
     }
 
     build() {
-        this.pageElement = build("div.page.notFound");
-        this.contentElement = build("div.content", this.pageElement);
+        this.activityElement = build("div.activity.notFound");
+        this.contentElement = build("div.content", this.activityElement);
         this.contentElement.textContent = "Page not found";
     }
 }
 
-export class ErrorPage extends EventEmitter {
+export class ErrorActivity extends EventEmitter {
     constructor() {
         super();
     }
@@ -302,8 +306,8 @@ export class ErrorPage extends EventEmitter {
     }
 
     build() {
-        this.pageElement = build("div.page.error");
-        this.contentElement = build("div.content", this.pageElement);
+        this.activityElement = build("div.activity.error");
+        this.contentElement = build("div.content", this.activityElement);
         this.contentElement.textContent = "Error";
     }
 }

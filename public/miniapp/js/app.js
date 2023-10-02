@@ -1,7 +1,7 @@
 import { callAPI, sleep } from "./util.js";
-import { ConstructorPage, HomePage, NotFoundPage, ErrorPage } from "./pages.js";
+import { PageActivity, HomeActivity, NotFoundActivity, ErrorActivity } from "./activities.js";
 import { ControlPanel } from "./control-panel.js";
-import PageRouter from "./page-router.js";
+import ActivityRouter from "./activity-router.js";
 
 // TODO: DOCSTRINGS
 // TODO: better snapping animation?
@@ -9,7 +9,6 @@ import PageRouter from "./page-router.js";
 class App {
     constructor(rootElement) {
         this.rootElement = rootElement;
-        this.pagesStack = [];
         this.dragActive = false;
 
         const { colorScheme } = window.Telegram.WebApp;
@@ -21,9 +20,9 @@ class App {
 
         window.Telegram.WebApp.BackButton.onClick(() => this.goBack());
 
-        this.router.addCallback("pageChange", () => {
+        this.router.addCallback("activityChange", () => {
             const backBtn = window.Telegram.WebApp.BackButton
-            this.router.pagesStack.length > 1 ?
+            this.router.stack.length > 1 ?
                 backBtn.show() : backBtn.hide();
 
             this.updateControlPanel()
@@ -46,47 +45,45 @@ class App {
 
     build() {
         this.controlPanel = new ControlPanel(this);
-        this.controlPanel.build();
+        this.controlPanel.setup();
         this.rootElement.append(this.controlPanel.panelElement);
 
-        this.router = new PageRouter();
-        this.router.build();
-        this.rootElement.append(this.router.pagesContainer);
+        this.router = new ActivityRouter();
+        this.router.setup();
+        this.rootElement.append(this.router.activitiesContainer);
     }
 
-    async constructPageFromResp(pageResp) {
-        // reusable logic for constructing page based on backend response
-        if (pageResp.status == 404) return new NotFoundPage();
-        if (!pageResp.ok) return new ErrorPage();
-
+    async getActivityFromResp(pageResp) {
+        // reusable logic for constructing activity based on backend response
+        if (pageResp.status == 404) return [null, new NotFoundActivity()];
+        if (!pageResp.ok) return [null, new ErrorActivity()];
+        
         const pageData = (await pageResp.json()).page;
-        const page = new ConstructorPage(JSON.parse(pageData.schema),
-            pageData.id, true);
-        return [pageData, page];
+        return new PageActivity(pageData);
     }
 
-    connectHomePage(page) {
-        // only one home page can be in the stack,
-        this.homePage = page;
-        this.homePage.addCallback("pageOpen", pageId =>
+    connectHomeActivity(activity) {
+        // only one home activity can be in the stack,
+        this.home = activity;
+        this.home.addCallback("pageOpen", pageId =>
             this.openPage(pageId));
-        this.homePage.addCallback("selectionChange", () =>
+        this.home.addCallback("selectionChange", () =>
             this.updateControlPanel());
     }
 
     async openPage(pageId, appearInstantly) {
         if (pageId) {
             const pageResp = await callAPI("GET", `pages/${pageId}`);
-            const [_, page] = await this.constructPageFromResp(pageResp);
-            this.router.pushPage(page, appearInstantly);
+            const activity = await this.getActivityFromResp(pageResp);
+            this.router.pushActivity(activity, appearInstantly);
             return;
         }
 
         const userPagesResp = await callAPI("GET", "pages/my");
         const userPages = (await userPagesResp.json()).pages;
-        const page = new HomePage(userPages);
-        this.router.pushPage(page, appearInstantly);
-        this.connectHomePage(page);
+        const page = new HomeActivity(userPages);
+        this.router.pushActivity(page, appearInstantly);
+        this.connectHomeActivity(page);
 
         if (!userPages.length) {
             console.log("AAAA")
@@ -97,12 +94,12 @@ class App {
 
     async createNewPage(onboarding = false, appearInstantly = false) {
         const pageResp = await callAPI("POST", "pages", { onboarding });
-        const [pageData, page] = await this.constructPageFromResp(pageResp);
-        this.router.pushPage(page, appearInstantly);
+        const activity = await this.getActivityFromResp(pageResp);
+        this.router.pushActivity(activity, appearInstantly);
 
         // rendering item behind the scenes after the new page appear animated
         await sleep(200);
-        this.homePage.addNewPage(pageData);
+        this.home.addNewPage(activity.initData);
     }
 
     goBack() {
@@ -111,17 +108,17 @@ class App {
             return;
         }
 
-        this.router.popPage();
+        this.router.popActivity();
     }
 
     updateControlPanel() {
         let controlPanelMode = null;
-        const curPage = this.router.activePage;
+        const curActivity = this.router.curActivity;
 
-        if (curPage.constructor == HomePage) {
-            controlPanelMode = curPage.selectMode ? "pageList" : "home";
-        } else if (curPage.constructor == ConstructorPage) {
-            controlPanelMode = this.dragActive ? "drag" : "page";
+        if (curActivity.constructor == HomeActivity) {
+            controlPanelMode = curActivity.selectMode ? "homeSelect" : "home";
+        } else if (curActivity.constructor == PageActivity) {
+            controlPanelMode = this.dragActive ? "pageDrag" : "page";
         }
 
         this.controlPanel.setMode(controlPanelMode);

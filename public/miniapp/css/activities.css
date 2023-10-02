@@ -1,4 +1,4 @@
-@keyframes pageSlideIn {
+@keyframes activitySlideIn {
     0% {
         transform: translateX(10%);
         opacity: 0;
@@ -10,21 +10,21 @@
     }
 }
 
-.pages {
+.activities {
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: 100%;
-    --page-height: 100vh;
-    height: var(--page-height);
+    --content-height: 100vh;
+    height: var(--content-height);
     overflow: hidden;
 }
 
-.controlPanel.active~.pages {
-    /* avoiding bottom-most page part getting covered by a panel */
-    --page-height: calc(100vh - var(--control-panel-height));
+.controlPanel.active~.activities {
+    /* avoiding bottom-most activity part getting covered by a panel */
+    --content-height: calc(100vh - var(--control-panel-height));
 }
 
-.pages>.page {
+.activity {
     grid-column-start: 1;
     grid-column-end: 2;
     grid-row-start: 1;
@@ -40,25 +40,25 @@
     transition-timing-function: ease-out;
 }
 
-/* disposed pages */
-.pages>.page.active~.page {
+/* disposed activities */
+.activity.active~.activity {
     opacity: 0;
     transform: translateX(10%);
     pointer-events: none;
     user-select: none;
 }
 
-.pages>.page.active:last-child:not(.appearInstantly) {
-    animation: pageSlideIn 100ms;
+.activity.active:last-child:not(.appearInstantly) {
+    animation: activitySlideIn 100ms;
 }
 
-.pages>.page.constructor>.content>.blocksContainer {
-    min-height: var(--page-height)
+.activity.page>.content>.blocksContainer {
+    min-height: var(--content-height)
 }
 
-/* home page */
+/* home activity */
 
-.page.home .pageItem {
+.activity.home .pageItem {
     position: relative;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
@@ -72,14 +72,14 @@
     transition: height 300ms ease 100ms, padding 300ms ease 100ms, transform 100ms ease-out, opacity 100ms ease-out;
 }
 
-.page.home .pageItem.deleted {
+.activity.home .pageItem.deleted {
     height: 0;
     padding: 0 16px;
     transform: scale(75%);
     opacity: 0;
 }
 
-.page.home .pageItem .background {
+.activity.home .pageItem .background {
     background-color: transparent;
     position: absolute;
     top: 0;
@@ -89,17 +89,17 @@
     pointer-events: none;
 }
 
-.page.home .pageItem:hover .background {
+.activity.home .pageItem:hover .background {
     background-color: var(--tg-theme-text-color);
     opacity: .075;
 }
 
-.page.home .pageItem.selected .background {
+.activity.home .pageItem.selected .background {
     background-color: var(--tg-theme-text-color);
     opacity: .1;
 }
 
-.page.home .pageItem .pageTitle {
+.activity.home .pageItem .pageTitle {
     font-size: 16px;
     display: block;
     text-overflow: ellipsis;
@@ -108,16 +108,16 @@
     margin-bottom: 8px;
 }
 
-.page.home .pageItem .pageTitle.unnamed {
+.activity.home .pageItem .pageTitle.unnamed {
     font-style: italic;
 }
 
-.page.home .pageItem .pageTime {
+.activity.home .pageItem .pageTime {
     color: var(--tg-theme-hint-color);
     font-size: 14px;
 }
 
-.page.home .pageItem .selectHandle {
+.activity.home .pageItem .selectHandle {
     box-sizing: border-box;
     display: grid;
     align-items: center;
@@ -129,20 +129,20 @@
     transition: opacity 100ms ease;
 }
 
-.page.home .pageList.selectMode .pageItem .selectHandle,
-.page.home .pageItem:hover .selectHandle {
+.activity.home .pageList.selectMode .pageItem .selectHandle,
+.activity.home .pageItem:hover .selectHandle {
     opacity: 1
 }
 
-.page.home .pageItem.selected .selectHandle .checkbox {
+.activity.home .pageItem.selected .selectHandle .checkbox {
     border-color: #3390EC;
     background-color: #3390EC;
 }
 
-.page.home .pageItem.selected .selectHandle .checkbox::after {
+.activity.home .pageItem.selected .selectHandle .checkbox::after {
     opacity: 1;
 }
 
-.page.home .pageItem .rippleJS {
+.activity.home .pageItem .rippleJS {
     opacity: .3;
 }

@@ -66,11 +66,11 @@
     gap: 4px;
 }
 
-.controlPanel .dragMode {
+.controlPanel .pageDragMode {
     padding: 0;
 }
 
-.controlPanel .dragMode .deleteArea {
+.controlPanel .pageDragMode .deleteArea {
     position: relative;
     box-sizing: border-box;
     width: 100%;
@@ -81,11 +81,11 @@
     transition-timing-function: ease;
 }
 
-.controlPanel .dragMode .deleteArea.active {
+.controlPanel .pageDragMode .deleteArea.active {
     background-color: #FF0025;
 }
 
-.controlPanel .dragMode .deleteArea .animation {
+.controlPanel .pageDragMode .deleteArea .animation {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -94,7 +94,7 @@
     transform: translateX(-50%) translateY(-50%);
 }
 
-.controlPanel .dragMode .deleteArea .receiver {
+.controlPanel .pageDragMode .deleteArea .receiver {
     position: absolute;
     top: 0;
     left: 0;
@@ -102,7 +102,7 @@
     height: 100%;
 }
 
-.controlPanel .dragMode .deleteArea .sortable-ghost {
+.controlPanel .pageDragMode .deleteArea .sortable-ghost {
     display: none;
 }
 

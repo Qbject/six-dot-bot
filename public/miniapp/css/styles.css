@@ -1,8 +1,8 @@
-@import "reset.css";
-@import "telegram.css";
-@import "control-panel.css";
-@import "pages.css";
-@import "blocks.css";
+@import "./reset.css";
+@import "./telegram.css";
+@import "./control-panel.css";
+@import "./activities.css";
+@import "./blocks.css";
 
 #app {
     position: relative;
