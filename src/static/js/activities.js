@@ -32,8 +32,8 @@ export class PageActivity extends EventEmitter {
 
 			if (!this.editingBlock) {
 				// no block is editing, start entering for clicked block
-				this.editingBlock = clickedBlock;
 				clickedBlock.enterEditMode();
+				this.editingBlock = clickedBlock;
 				event.preventDefault();
 				event.stopPropagation();
 			} else {

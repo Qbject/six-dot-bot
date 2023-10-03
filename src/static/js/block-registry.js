@@ -29,8 +29,8 @@ export const blockRegistry = new BlockRegistry();
 // import CardBlock from "./blocks/card.js";
 // blockRegistry.registerType("card", CardBlock);
 
-import HeadingBlock from "./blocks/heading.js";
+import HeadingBlock from "./blocks-types/heading.js";
 blockRegistry.registerType(HeadingBlock);
 
-import ParagraphBlock from "./blocks/paragraph.js";
+import ParagraphBlock from "./blocks-types/paragraph.js";
 blockRegistry.registerType(ParagraphBlock);

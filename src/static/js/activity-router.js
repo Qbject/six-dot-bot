@@ -27,9 +27,9 @@ export default class ActivityRouter extends EventEmitter {
         if (appearInstantly)
             activity.activityElement.classList.add("appearInstantly");
 
+        // preventing inactive activities from stretching body height
         activity.activityElement.addEventListener("transitionrun", event => {
             if (!event.target.classList.contains("activity")) return;
-            console.log(event.target.classList);
             if (event.target.classList.contains("active"))
                 event.target.style.height = "auto";
         });

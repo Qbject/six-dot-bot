@@ -1,4 +1,4 @@
-import { callAPI, sleep } from "./util.js";
+import { callAPI, hexToRGBA, sleep } from "./util.js";
 import { PageActivity, HomeActivity, NotFoundActivity, ErrorActivity } from "./activities.js";
 import { ControlPanel } from "./control-panel.js";
 import ActivityRouter from "./activity-router.js";
@@ -8,8 +8,10 @@ class App {
         this.rootElement = rootElement;
         this.dragActive = false;
 
-        const { colorScheme } = window.Telegram.WebApp;
-        this.rootElement.dataset.colorScheme = colorScheme;
+        // calculating highlight color based on user app theme
+        const textColor = window.Telegram.WebApp.themeParams.text_color;
+        this.rootElement.style.setProperty("--highlight-color",
+            hexToRGBA(textColor, .1));
     }
 
     setup() {
@@ -54,7 +56,7 @@ class App {
         // reusable logic for constructing activity based on backend response
         if (pageResp.status == 404) return new NotFoundActivity();
         if (!pageResp.ok) return new ErrorActivity();
-        
+
         const pageData = (await pageResp.json()).result;
         return new PageActivity(pageData);
     }
