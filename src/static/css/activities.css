@@ -87,15 +87,12 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
-}
-
-.activity.home .pageItem:hover .background {
     background-color: var(--tg-theme-text-color);
-    opacity: .075;
+    opacity: 0;
+    transition: opacity 200ms ease;
 }
 
 .activity.home .pageItem.selected .background {
-    background-color: var(--tg-theme-text-color);
     opacity: .1;
 }
 
@@ -129,9 +126,14 @@
     transition: opacity 100ms ease;
 }
 
-.activity.home .pageList.selectMode .pageItem .selectHandle,
-.activity.home .pageItem:hover .selectHandle {
-    opacity: 1
+.activity.home .pageList.selectMode .pageItem .selectHandle {
+    opacity: 1;
+}
+
+@media (hover: hover) {
+    .activity.home .pageItem:hover .selectHandle {
+        opacity: 1;
+    }
 }
 
 .activity.home .pageItem.selected .selectHandle .checkbox {
