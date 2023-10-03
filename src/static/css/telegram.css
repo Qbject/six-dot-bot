@@ -21,13 +21,18 @@
     color: var(--tg-theme-button-text-color);
     text-transform: uppercase;
     outline: none;
-    cursor: pointer;
     user-select: none;
     height: 50px;
 }
 
+@media (hover: hover) {
+    .button {
+        cursor: pointer;
+    }
+}
+
 .checkbox {
-    border: 2px solid #DADCE0;
+    border: 2px solid var(--tg-theme-text-color);
     border-radius: .25rem;
     background-color: var(--color-background);
     transition: border-color .1s ease, background-color .1s ease;

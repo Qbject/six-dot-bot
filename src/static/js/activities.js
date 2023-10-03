@@ -1,5 +1,5 @@
 import { blockRegistry } from "./block-registry.js";
-import { build, callAPI, removeArrayItem, sleep, tgConfirm } from "./util.js";
+import { build, callAPI, isTouchDevice, removeArrayItem, sleep, tgConfirm } from "./util.js";
 import config from "./config.js";
 import EventEmitter from "./event-emitter.js";
 
@@ -183,13 +183,15 @@ export class HomeActivity extends EventEmitter {
 
 			this.onItemInteraction(itemElement.dataset.pageId, selecting);
 		});
-		this.pageList.addEventListener("long-press", event => {
-			const itemElement = event.target.closest(".pageItem");
-			if (!itemElement) return;
-			event.preventDefault();
 
-			this.onItemInteraction(itemElement.dataset.pageId, true);
-		});
+		if (isTouchDevice()) {
+			this.pageList.addEventListener("long-press", event => {
+				const itemElement = event.target.closest(".pageItem");
+				if (!itemElement) return;
+
+				this.onItemInteraction(itemElement.dataset.pageId, true);
+			});
+		}
 	}
 
 	buildPageItem(pageData) {
