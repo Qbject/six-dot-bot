@@ -8,10 +8,10 @@ export default class ActivityRouter extends EventEmitter {
         this.stack = [];
     }
 
-    setup(){
+    setup() {
         this.build();
     }
-    
+
     build() {
         this.activitiesContainer = build("div.activities");
     }
@@ -26,6 +26,18 @@ export default class ActivityRouter extends EventEmitter {
         this.activitiesContainer.append(activity.activityElement);
         if (appearInstantly)
             activity.activityElement.classList.add("appearInstantly");
+
+        activity.activityElement.addEventListener("transitionrun", event => {
+            if (!event.target.classList.contains("activity")) return;
+            console.log(event.target.classList);
+            if (event.target.classList.contains("active"))
+                event.target.style.height = "auto";
+        });
+        activity.activityElement.addEventListener("transitionend", event => {
+            if (!event.target.classList.contains("activity")) return;
+            if (!event.target.classList.contains("active"))
+                event.target.style.height = "0";
+        });
 
         this.stack.push(activity);
         this.updateStack();

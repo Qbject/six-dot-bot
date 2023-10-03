@@ -8,6 +8,7 @@
     left: 0;
     width: 100%;
     height: var(--control-panel-height);
+    background-color: var(--tg-theme-bg-color);
     z-index: 50;
     transform: translateY(100%);
     transition-property: bottom;

@@ -1,6 +1,6 @@
 @keyframes activitySlideIn {
     0% {
-        transform: translateX(10%);
+        transform: translateX(20%);
         opacity: 0;
     }
 
@@ -15,11 +15,13 @@
     grid-template-columns: 100%;
     grid-template-rows: 100%;
     --content-height: 100vh;
-    height: var(--content-height);
+    min-height: var(--content-height);
     overflow: hidden;
 }
 
 .controlPanel.active~.activities {
+    margin-bottom: var(--control-panel-height);
+    /* TODO: rename content-height */
     /* avoiding bottom-most activity part getting covered by a panel */
     --content-height: calc(100vh - var(--control-panel-height));
 }
@@ -32,24 +34,27 @@
     height: 100%;
     width: 100%;
     background-color: var(--tg-theme-secondary-bg-color);
-    overflow-y: auto;
-    overflow-x: hidden;
     z-index: 1;
+    transform: translateX(-10%);
     transition-property: opacity, transform;
-    transition-duration: 100ms;
+    transition-duration: 150ms;
     transition-timing-function: ease-out;
+}
+
+.activity.active {
+    transform: translateX(0%);
 }
 
 /* disposed activities */
 .activity.active~.activity {
     opacity: 0;
-    transform: translateX(10%);
+    transform: translateX(20%);
     pointer-events: none;
     user-select: none;
 }
 
 .activity.active:last-child:not(.appearInstantly) {
-    animation: activitySlideIn 100ms;
+    animation: activitySlideIn 150ms ease-out;
 }
 
 .activity.page>.content>.blocksContainer {
@@ -67,9 +72,14 @@
     padding: 7px 16px;
     overflow: hidden;
     user-select: none;
-    cursor: pointer;
     gap: 25px;
     transition: height 300ms ease 100ms, padding 300ms ease 100ms, transform 100ms ease-out, opacity 100ms ease-out;
+}
+
+@media (hover: hover) {
+    .activity.home .pageItem {
+        cursor: pointer;
+    }
 }
 
 .activity.home .pageItem.deleted {
