@@ -1,16 +1,14 @@
 import Block from "../block.js";
 import { build } from "../util.js";
 
-const defaultProps = {
-    text: "Page title"
-}
-
 export default class HeadingBlock extends Block {
     static name = "Main heading";
     static typeName = "heading";
 
-    constructor(props) {
-        super(props || defaultProps);
+    getDefaultProps() {
+        return {
+            text: "Page title"
+        }
     }
 
     buildContent() {
@@ -21,6 +19,14 @@ export default class HeadingBlock extends Block {
 
     buildSettings() {
         super.buildSettings();
-        this.settingsElement.textContent = "You just opened settings";
+        this.textInput = build("input.tgInput", this.settingsElement);
+        this.textInput.value = this.props.text;
+    }
+
+    readSettings() {
+        const text = this.textInput.value.trim();
+        if (!text) return false;
+        
+        this.props = { text }
     }
 }

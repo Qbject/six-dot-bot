@@ -39,25 +39,25 @@
     box-sizing: border-box;
     padding: 3px;
     transition-property: opacity, transform;
-    transition-duration: 100ms;
+    transition-duration: 60ms;
     transition-timing-function: ease-out;
-    transform: translateY(50%);
-    opacity: 0;
+    transform: translateY(100%);
+    opacity: 1;
     pointer-events: none;
 }
 
 .controlPanel>.modes>.active~* {
-    transform: translateY(-50%);
+    transform: translateY(-100%);
 }
 
 .controlPanel>.modes>.active {
     transform: translateY(0%);
     opacity: 1;
-    transition-delay: 50ms;
+    transition-delay: 60ms;
     pointer-events: all;
 }
 
-.controlPanel>.modes>*>.button {
+.controlPanel>.modes>*>button {
     height: 100%;
 }
 

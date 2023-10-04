@@ -9,7 +9,7 @@
     --danger-color: #df3f40;
 }
 
-.button {
+.tgButton {
     position: relative;
     width: 100%;
     border: 0;
@@ -26,12 +26,12 @@
 }
 
 @media (hover: hover) {
-    .button {
+    .tgButton {
         cursor: pointer;
     }
 }
 
-.checkbox {
+.tgCheckbox {
     border: 2px solid var(--tg-theme-text-color);
     border-radius: .25rem;
     background-color: var(--color-background);
@@ -43,13 +43,13 @@
     transition-timing-function: ease;
 }
 
-.checkbox:checked,
-.checkbox.checked {
+.tgCheckbox:checked,
+.tgCheckbox.checked {
     border-color: #3390EC;
     background-color: #3390EC;
 }
 
-.checkbox::after {
+.tgCheckbox::after {
     content: "";
     display: block;
     width: 100%;
@@ -60,7 +60,7 @@
     transition: opacity 100ms ease;
 }
 
-.checkbox:checked::after,
-.checkbox.checked::after {
+.tgCheckbox:checked::after,
+.tgCheckbox.checked::after {
     opacity: 1;
 }

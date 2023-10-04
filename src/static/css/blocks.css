@@ -1,7 +1,13 @@
-.block {
-    transition: background-color 1s ease-in;
+@keyframes blockJustEdited {
+    0% {
+        background-color: var(--highlight-color);
+    }
+
+    100% {
+        background-color: auto;
+    }
 }
 
-.block.editing {
-    background-color: var(--highlight-color);
+.block.justEdited {
+    animation: blockJustEdited 1s ease-in;
 }

@@ -4,6 +4,11 @@
 @import "./activities.css";
 @import "./blocks.css";
 
+body {
+    /* overflow-y: auto; */
+    overflow-y: scroll;
+}
+
 #app {
     position: relative;
     user-select: none;

@@ -150,14 +150,6 @@ export class BlockEditorActivity extends EventEmitter {
 		this.build();
 	}
 
-	onActivate() {
-		this.targetBlock.blockElement.classList.add("editing");
-	}
-
-	onDeactivate() {
-		this.targetBlock.blockElement.classList.remove("editing");
-	}
-
 	build() {
 		this.activityElement = build("div.activity.blockEditor");
 		this.contentElement = build("div.content", this.activityElement);
@@ -213,12 +205,11 @@ export class HomeActivity extends EventEmitter {
 		const itemElement = build("li.pageItem");
 		itemElement.dataset.pageId = pageData.id;
 
-		build("div.background", itemElement);
 		const pageInfoElement = build("div.pageInfo", itemElement);
 		const pageTitleElement = build("div.pageTitle", pageInfoElement);
 		const pageTimeElement = build("div.pageTime", pageInfoElement);
 		const selectHandle = build("div.selectHandle", itemElement);
-		const selectCheckbox = build("div.checkbox", selectHandle);
+		const selectCheckbox = build("div.tgCheckbox", selectHandle);
 		build("div.rippleJS", itemElement);
 
 		pageTitleElement.textContent = pageData.title || "Unnamed";
