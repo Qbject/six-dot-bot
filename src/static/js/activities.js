@@ -244,7 +244,9 @@ export class HomeActivity extends EventEmitter {
 
 		pageTitleElement.textContent = pageData.title || "Unnamed";
 		if (!pageData.title) pageTitleElement.classList.add("unnamed");
-		pageTimeElement.textContent = pageData.modifiedAt;
+
+		const modifiedAt = new Date(pageData.modifiedAt + "Z");
+		pageTimeElement.textContent = modifiedAt.toLocaleString();
 
 		return itemElement;
 	}
