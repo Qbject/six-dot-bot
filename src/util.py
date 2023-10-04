@@ -16,39 +16,30 @@ def get_schema_template(is_onboarding):
 		schema = {
 			"children": [
 				{
-					"typeName": "heading",
+					"typeName": "markdown",
 					"props": {
-						"text": "This is onboarding page!"
+						"text": f"""
+# Welcome to the {os.environ["BOT_DISPLAY_NAME"]}!
+The main idea behind me is to allow you to create pages just like the one you're currently watching
+						""".strip()
 					}
 				},
-				{
-					"typeName": "paragraph",
-					"props": {
-						"text": "TODO: explain some basics here?"
-					}
-				}
 			]
 		}
-		title = "This is onboarding page!"
+		title = f"Welcome to the {os.environ['BOT_DISPLAY_NAME']}!"
 	
 	else:
 		schema = {
 			"children": [
 				{
-					"typeName": "heading",
+					"typeName": "markdown",
 					"props": {
-						"text": "You just created a new page!"
+						"text": "# New page"
 					}
 				},
-				{
-					"typeName": "paragraph",
-					"props": {
-						"text": "TODO: explain some basics here?"
-					}
-				}
 			]
 		}
-		title = "You just created a new page!"
+		title = "New page"
 	
 	return (json.dumps(schema), title)
 

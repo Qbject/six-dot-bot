@@ -20,8 +20,11 @@ export default class BlockRegistry {
 
 export const blockRegistry = new BlockRegistry();
 
-import HeadingBlock from "./block-types/heading.js";
-blockRegistry.registerType(HeadingBlock);
+import MarkdownBlock from "./block-types/markdown.js";
+blockRegistry.registerType(MarkdownBlock);
 
-import ParagraphBlock from "./block-types/paragraph.js";
-blockRegistry.registerType(ParagraphBlock);
+import SpoilerBlock from "./block-types/spoiler.js";
+blockRegistry.registerType(SpoilerBlock);
+
+import GridBlock from "./block-types/grid.js";
+blockRegistry.registerType(GridBlock);

@@ -1,5 +1,5 @@
-export function build(node_desc, parent = null, prepend = false) {
-    const [tag, ...class_list] = node_desc.split(".");
+export function build(elementDesc, parent = null, prepend = false) {
+    const [tag, ...class_list] = elementDesc.split(".");
     const element = document.createElement(tag);
     if (class_list.length) element.classList.add(...class_list);
 
@@ -71,7 +71,18 @@ export function buildButton(classes, text, parent = null, onClick = null) {
     return button;
 }
 
-export function isTouchDevice(){
+export function buildCheckbox(classes, name, parent = null) {
+    const labelDesc = `label.tgCheckbox${classes || ""}`;
+    const label = build(labelDesc, parent);
+    const checkboxElement = build("input", label);
+    checkboxElement.type = "checkbox";
+    checkboxElement.name = name;
+    const visualizerElement = build("div.visualizer", label);
+
+    return [label, checkboxElement];
+}
+
+export function isTouchDevice() {
     return ("ontouchstart" in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
 }
 
@@ -80,5 +91,4 @@ export function hexToRGBA(hex, alpha) {
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-  }
-  
+}

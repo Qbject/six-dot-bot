@@ -100,6 +100,11 @@ class App {
         const activity = await this.getActivityFromResp(pageResp);
         this.router.pushActivity(activity, appearInstantly);
 
+        // TODO: deduplicate
+        activity.addCallback("blockEdit", block => {
+            this.router.pushActivity(new BlockEditorActivity(block));
+        });
+
         // rendering item behind the scenes after the new page appear animated
         await sleep(200);
         this.home.addNewPage(activity.initData);

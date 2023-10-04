@@ -1,5 +1,5 @@
 import { blockRegistry } from "./block-registry.js";
-import { build, callAPI, isTouchDevice, removeArrayItem, sleep, tgConfirm } from "./util.js";
+import { build, buildCheckbox, callAPI, isTouchDevice, removeArrayItem, sleep, tgConfirm } from "./util.js";
 import config from "./config.js";
 import EventEmitter from "./event-emitter.js";
 
@@ -38,6 +38,7 @@ export class PageActivity extends EventEmitter {
 
 	build() {
 		this.activityElement = build("div.activity.page");
+		if (this.editable) this.activityElement.classList.add("editable");
 		this.contentElement = build("div.content", this.activityElement);
 		this.blocksContainer = build("div.blocksContainer",
 			this.contentElement);
@@ -47,20 +48,46 @@ export class PageActivity extends EventEmitter {
 	}
 
 	setupDragNDrop() {
-		new Sortable(this.blocksContainer, {
-			group: "editablePage",
-			animation: 150,
-			delay: 300,
-			delayOnTouchOnly: true,
-			onAdd: event => {
-				const blockTypeName = event.item.dataset.typeName;
-				const blockClass = blockRegistry.getType(blockTypeName);
-				const block = new blockClass();
-				block.setup();
-				this.allBlocks.push(block);
-				event.item.replaceWith(block.blockElement);
-			},
-		});
+		const setupContainer = container => {
+			return new Sortable(container, {
+				group: "editablePage",
+				animation: 150,
+				delay: 300,
+				delayOnTouchOnly: true,
+				fallbackOnBody: true,
+				swapThreshold: 0.5,
+				onAdd: event => {
+					console.log("onAdd");
+					const isPreview = ["block", "preview"].every(c =>
+						event.item.classList.contains(c));
+
+					if (isPreview) {
+						// handle adding new block from catalog
+						const blockTypeName = event.item.dataset.typeName;
+						const blockClass = blockRegistry.getType(
+							blockTypeName);
+						const block = new blockClass(null, this.editable);
+						block.setup();
+						this.allBlocks.push(block);
+						event.item.replaceWith(block.blockElement);
+					}
+
+					console.log("AAAAA")
+					this.setupDragNDrop(); // this method will add
+					// a new sortable to the block if needed
+				},
+			});
+		}
+
+		if (!this.sortable)
+			this.sortable = setupContainer(this.blocksContainer);
+
+		for (const block of this.allBlocks) {
+			console.log(block);
+			if (!block.childrenContainer) continue;
+			if (block.sortable) continue;
+			block.sortable = setupContainer(block.childrenContainer);
+		}
 	}
 
 	getBlockObject(blockElement) {
@@ -81,17 +108,18 @@ export class PageActivity extends EventEmitter {
 
 		const fillContainer = (blockList, container) => {
 			container.innerHTML = "";
+			if (!blockList) return;
 
 			for (const blockSchema of blockList) {
 				const blockClass = blockRegistry.getType(blockSchema.typeName);
-				const block = new blockClass(blockSchema.props);
+				const block = new blockClass(blockSchema.props, this.editable);
 				this.allBlocks.push(block);
 
 				block.setup();
 				container.append(block.blockElement);
 
-				if (block.childrenElement)
-					fillContainer(blockSchema.children, block.childrenElement);
+				if (block.childrenContainer)
+					fillContainer(blockSchema.children, block.childrenContainer);
 			}
 		}
 
@@ -105,8 +133,8 @@ export class PageActivity extends EventEmitter {
 			const blockSchema = {
 				typeName: block.constructor.typeName,
 				props: block.props,
-				children: block.childrenElement ?
-					traverseContainer(block.childrenElement) : null
+				children: block.childrenContainer ?
+					readContainerSchema(block.childrenContainer) : null
 			}
 			return blockSchema;
 		}
@@ -187,6 +215,7 @@ export class HomeActivity extends EventEmitter {
 			const itemElement = event.target.closest(".pageItem");
 			if (!itemElement) return;
 			const selecting = !!event.target.closest(".selectHandle");
+			event.preventDefault(); // prevent cursor label click action
 
 			this.onItemInteraction(itemElement.dataset.pageId, selecting);
 		});
@@ -209,7 +238,8 @@ export class HomeActivity extends EventEmitter {
 		const pageTitleElement = build("div.pageTitle", pageInfoElement);
 		const pageTimeElement = build("div.pageTime", pageInfoElement);
 		const selectHandle = build("div.selectHandle", itemElement);
-		const selectCheckbox = build("div.tgCheckbox", selectHandle);
+		const [, selectCheckbox] = buildCheckbox(null, "pageitemSelect",
+			selectHandle);
 		build("div.rippleJS", itemElement);
 
 		pageTitleElement.textContent = pageData.title || "Unnamed";

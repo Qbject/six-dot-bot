@@ -2,7 +2,9 @@ import { build } from "./util.js";
 
 export default class Block {
     // abstract class for all block types to extend
-    constructor(props) {
+    constructor(props, editMode = false, isPreview = false) {
+        this.editMode = editMode;
+        this.isPreview = isPreview;
         this.props = props || this.getDefaultProps();
         this.blockElement = null;
         this.settingsElement = null;
@@ -17,27 +19,29 @@ export default class Block {
     }
 
     build() {
+        this.blockElement = build("div.block");
+        this.settingsElement = build("div.settings");
+
         this.buildContent();
         this.buildSettings();
+
+        this.applyProps();
     }
 
     buildContent() {
         // intended for subclesses to extend
-        this.blockElement = build("div.block");
+        this.settingsElement.innerHTML = "";
     }
 
     buildSettings() {
         // intended for subclesses to extend
-        this.settingsElement = build("div.settings");
+        this.settingsElement.innerHTML = "";
     }
 
     applySettings() {
         const readResult = this.readSettings();
         if (readResult === false) return false;
-
-        const prevBlockElement = this.blockElement;
-        this.buildContent();
-        prevBlockElement.replaceWith(this.blockElement);
+        this.applyProps();
 
         // triggering brief block highlight animation after editor close
         this.blockElement.classList.add("justEdited");
@@ -48,6 +52,11 @@ export default class Block {
     }
 
     readSettings() {
+        throw new Error("Subclasses must implement this method.");
+    }
+
+    // TODO: better naming
+    applyProps() {
         throw new Error("Subclasses must implement this method.");
     }
 }

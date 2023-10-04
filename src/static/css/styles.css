@@ -4,6 +4,8 @@
 @import "./activities.css";
 @import "./blocks.css";
 
+/* common styles */
+
 body {
     /* overflow-y: auto; */
     overflow-y: scroll;

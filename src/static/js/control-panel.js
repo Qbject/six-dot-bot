@@ -58,9 +58,10 @@ export class ControlPanel {
         for (const [typeName, blockClass] of blockRegistry.getAllTypes()) {
             // block objects are needed only to produce elements
             // and can be disposed afterwards
-            const block = new blockClass();
+            const block = new blockClass(null, true, true);
             block.setup();
             block.blockElement.dataset.typeName = typeName;
+            block.blockElement.classList.add("preview");
             blockCatalogElement.append(block.blockElement);
         }
 
@@ -116,7 +117,7 @@ export class ControlPanel {
     setupHomeMode() {
         const modeElement = build("div.homeMode", this.modesContainer);
 
-        const newPageButton = buildButton(".tgButton.newPage", "New Page",
+        const newPageButton = buildButton(".newPage", "New Page",
             modeElement, async () => {
                 newPageButton.disabled = true;
                 await this.app.createNewPage();
@@ -160,7 +161,7 @@ export class ControlPanel {
     setupBlockEditorMode() {
         const modeElement = build("div.blockEditorMode", this.modesContainer);
 
-        buildButton(".tgButton.apply", "Apply", modeElement, () => {
+        buildButton(".apply", "Apply", modeElement, () => {
             // current activity is guaranteed to be BlockEditor
             const applied = this.app.router.curActivity.apply();
             // false means block can't apply the settings
@@ -172,23 +173,23 @@ export class ControlPanel {
     setupPageMode() {
         const modeElement = build("div.pageMode", this.modesContainer);
 
-        buildButton(".tgButton.pageMenu", "Page Menu", modeElement, () =>
+        buildButton(".pageMenu", "Page Menu", modeElement, () =>
             this.toggleMenu("pageMenu"));
     }
 
     setupPageEditMode() {
         const modeElement = build("div.pageEditMode", this.modesContainer);
 
-        buildButton(".tgButton.pageMenu", "Page Menu", modeElement, () =>
+        buildButton(".pageMenu", "Page Menu", modeElement, () =>
             this.toggleMenu("pageMenu"));
-        buildButton(".tgButton.newBlock", "New Block", modeElement, () =>
+        buildButton(".newBlock", "New Block", modeElement, () =>
             this.toggleMenu("blockCatalog"));
     }
 
     setupHomeSelectMode() {
         const modeElement = build("div.homeSelectMode", this.modesContainer);
 
-        const deletePageButton = buildButton(".tgButton.danger.deletePage",
+        const deletePageButton = buildButton(".danger.deletePage",
             "Delete Selected", modeElement, async () => {
                 deletePageButton.disabled = true;
                 await this.app.home.deleteSelectedPages();
