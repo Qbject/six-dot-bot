@@ -57,7 +57,6 @@ export class PageActivity extends EventEmitter {
 				fallbackOnBody: true,
 				swapThreshold: 0.5,
 				onAdd: event => {
-					console.log("onAdd");
 					const isPreview = ["block", "preview"].every(c =>
 						event.item.classList.contains(c));
 
@@ -72,10 +71,10 @@ export class PageActivity extends EventEmitter {
 						event.item.replaceWith(block.blockElement);
 					}
 
-					console.log("AAAAA")
 					this.setupDragNDrop(); // this method will add
 					// a new sortable to the block if needed
 				},
+				onEnd: () => this.save()
 			});
 		}
 
@@ -83,7 +82,6 @@ export class PageActivity extends EventEmitter {
 			this.sortable = setupContainer(this.blocksContainer);
 
 		for (const block of this.allBlocks) {
-			console.log(block);
 			if (!block.childrenContainer) continue;
 			if (block.sortable) continue;
 			block.sortable = setupContainer(block.childrenContainer);

@@ -75,6 +75,7 @@ export class ControlPanel {
             delay: 300,
             delayOnTouchOnly: true,
             onStart: () => this.toggleMenu("blockCatalog"),
+            onEnd: () => this.app.router.curActivity.save(),
         });
     }
 
@@ -166,7 +167,12 @@ export class ControlPanel {
             const applied = this.app.router.curActivity.apply();
             // false means block can't apply the settings
             if (applied === false) return;
+
             this.app.goBack();
+
+            // after returning back curActivity is PageActivity
+            // saving edited block in the database
+            this.app.router.curActivity.save();
         });
     }
 

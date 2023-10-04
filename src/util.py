@@ -21,6 +21,7 @@ def get_schema_template(is_onboarding):
 						"text": f"""
 # Welcome to the {os.environ["BOT_DISPLAY_NAME"]}!
 The main idea behind me is to allow you to create pages just like the one you're currently watching
+The page is getting saved automatically as you edit it
 						""".strip()
 					}
 				},
