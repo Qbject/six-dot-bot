@@ -58,8 +58,13 @@
 
 /* page activity */
 
+.activity.page.editable>.content>.blocksContainer {
+    /* extra space for more comfortable editing */
+    padding-bottom: 50vh;
+}
+
 .activity.page>.content>.blocksContainer {
-    min-height: var(--visible-height)
+    min-height: var(--visible-height);
 }
 
 /* home activity */
