@@ -13,12 +13,14 @@ export default class ParagraphBlock extends Block {
         super(props || defaultProps);
     }
 
-    buildContent(contentWrapper) {
-        const paragraphElement = build("p", contentWrapper);
+    buildContent() {
+        super.buildContent();
+        const paragraphElement = build("p", this.blockElement);
         paragraphElement.textContent = this.props.text;
     }
 
-    buildSettings(settingsWrapper) {
-        settingsWrapper.textContent = "You just opened settings";
+    buildSettings() {
+        super.buildSettings();
+        this.settingsElement.textContent = "You just opened settings";
     }
 }

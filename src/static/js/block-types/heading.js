@@ -13,12 +13,14 @@ export default class HeadingBlock extends Block {
         super(props || defaultProps);
     }
 
-    buildContent(contentWrapper) {
-        const headingElement = build("h1", contentWrapper);
+    buildContent() {
+        super.buildContent();
+        const headingElement = build("h1", this.blockElement);
         headingElement.textContent = this.props.text;
     }
 
-    buildSettings(settingsWrapper) {
-        settingsWrapper.textContent = "You just opened settings";
+    buildSettings() {
+        super.buildSettings();
+        this.settingsElement.textContent = "You just opened settings";
     }
 }

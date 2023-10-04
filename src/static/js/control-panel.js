@@ -72,7 +72,7 @@ export class ControlPanel {
             },
             animation: 150,
             delay: 300,
-			delayOnTouchOnly: true,
+            delayOnTouchOnly: true,
             onStart: () => this.toggleMenu("blockCatalog"),
         });
     }
@@ -105,7 +105,9 @@ export class ControlPanel {
     buildModes() {
         this.modesContainer = build("div.modes", this.panelElement);
 
-        this.setupPageDragMode();
+        this.setupPageEditMode();
+        this.setupBlockEditorMode();
+        this.setupBlockDragMode();
         this.setupPageMode();
         this.setupHomeSelectMode();
         this.setupHomeMode();
@@ -122,8 +124,8 @@ export class ControlPanel {
             });
     }
 
-    setupPageDragMode() {
-        const modeElement = build("div.pageDragMode", this.modesContainer);
+    setupBlockDragMode() {
+        const modeElement = build("div.blockDragMode", this.modesContainer);
         const deleteAreaElement = build("div.deleteArea", modeElement);
         const deleteAnimElement = build("div.animation", deleteAreaElement);
         const receiverElement = build("div.receiver", deleteAreaElement);
@@ -150,13 +152,31 @@ export class ControlPanel {
         this.blockDeleteSortable = new Sortable(receiverElement, {
             group: "editablePage",
             delay: 300,
-			delayOnTouchOnly: true,
+            delayOnTouchOnly: true,
             onAdd: event => event.item.remove()
+        });
+    }
+
+    setupBlockEditorMode() {
+        const modeElement = build("div.blockEditorMode", this.modesContainer);
+
+        buildButton(".button.apply", "Apply", modeElement, () => {
+            // current activity is guaranteed to be BlockEditor
+            const applied = this.app.router.curActivity.apply();
+            if (!applied) return; // false means block can't apply the settings
+            this.app.goBack();
         });
     }
 
     setupPageMode() {
         const modeElement = build("div.pageMode", this.modesContainer);
+
+        buildButton(".button.pageMenu", "Page Menu", modeElement, () =>
+            this.toggleMenu("pageMenu"));
+    }
+
+    setupPageEditMode() {
+        const modeElement = build("div.pageEditMode", this.modesContainer);
 
         buildButton(".button.pageMenu", "Page Menu", modeElement, () =>
             this.toggleMenu("pageMenu"));

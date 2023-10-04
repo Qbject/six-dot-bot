@@ -1,5 +1,5 @@
 import { callAPI, hexToRGBA, sleep } from "./util.js";
-import { PageActivity, HomeActivity, NotFoundActivity, ErrorActivity } from "./activities.js";
+import { PageActivity, HomeActivity, NotFoundActivity, ErrorActivity, BlockEditorActivity } from "./activities.js";
 import { ControlPanel } from "./control-panel.js";
 import ActivityRouter from "./activity-router.js";
 
@@ -75,6 +75,11 @@ class App {
             const pageResp = await callAPI("GET", `pages/${pageId}`);
             const activity = await this.getActivityFromResp(pageResp);
             this.router.pushActivity(activity, appearInstantly);
+
+            activity.addCallback("blockEdit", block => {
+                this.router.pushActivity(new BlockEditorActivity(block));
+            });
+
             return;
         }
 
@@ -116,7 +121,11 @@ class App {
         if (curActivity.constructor == HomeActivity) {
             controlPanelMode = curActivity.selectMode ? "homeSelect" : "home";
         } else if (curActivity.constructor == PageActivity) {
-            controlPanelMode = this.dragActive ? "pageDrag" : "page";
+            controlPanelMode = "page";
+            if (curActivity.editable) controlPanelMode = "pageEdit";
+            if (this.dragActive) controlPanelMode = "blockDrag";
+        } else if (curActivity.constructor == BlockEditorActivity) {
+            controlPanelMode = "blockEditor";
         }
 
         this.controlPanel.setMode(controlPanelMode);

@@ -12,8 +12,8 @@ export class PageActivity extends EventEmitter {
 		this.allBlocks = [];
 		this.editingBlock = null;
 
-		const isOwn = pageData.ownerId === window.Telegram.WebApp
-			.initDataUnsafe.user.id;
+		const curUser = window.Telegram.WebApp.initDataUnsafe.user;
+		const isOwn = pageData.ownerId === curUser.id;
 		this.editable = isOwn;
 	}
 
@@ -27,27 +27,13 @@ export class PageActivity extends EventEmitter {
 		this.activityElement.addEventListener("click", event => {
 			const blockElement = event.target.closest(".block");
 			if (!blockElement) return;
-			// user clicked a block
-			const clickedBlock = this.getBlockObject(blockElement);
 
-			if (!this.editingBlock) {
-				// no block is editing, start entering for clicked block
-				clickedBlock.enterEditMode();
-				this.editingBlock = clickedBlock;
-				event.preventDefault();
-				event.stopPropagation();
-			} else {
-				// other block is editing
-				if (this.editingBlock != clickedBlock) {
-					// user clicked outside currently editing block
-					// exiting its edit mode
-					this.editingBlock.exitEditMode();
-					this.editingBlock = null;
-					event.preventDefault();
-					event.stopPropagation();
-				}
-			}
-		})
+			// user clicked a block, triggering event
+			const targetBlock = this.getBlockObject(blockElement);
+			this.triggerEvent("blockEdit", [targetBlock])
+			event.preventDefault();
+			event.stopPropagation();
+		}, { capture: true })
 	}
 
 	build() {
@@ -55,14 +41,14 @@ export class PageActivity extends EventEmitter {
 		this.contentElement = build("div.content", this.activityElement);
 		this.blocksContainer = build("div.blocksContainer",
 			this.contentElement);
+		this.settingsModal = build("div.settingsModal", this.activityElement);
+
 		this.applySchema(this.schema);
 	}
 
 	setupDragNDrop() {
 		new Sortable(this.blocksContainer, {
-			group: {
-				name: "editablePage"
-			},
+			group: "editablePage",
 			animation: 150,
 			delay: 300,
 			delayOnTouchOnly: true,
@@ -151,6 +137,35 @@ export class PageActivity extends EventEmitter {
 	getLink() {
 		return `https://t.me/${config.bot_username}/${config.bot_appname}`
 			+ `?startapp=${this.id}`
+	}
+}
+
+export class BlockEditorActivity extends EventEmitter {
+	constructor(targetBlock) {
+		super();
+		this.targetBlock = targetBlock;
+	}
+
+	setup() {
+		this.build();
+	}
+
+	onActivate() {
+		this.targetBlock.blockElement.classList.add("editing");
+	}
+
+	onDeactivate() {
+		this.targetBlock.blockElement.classList.remove("editing");
+	}
+
+	build() {
+		this.activityElement = build("div.activity.blockEditor");
+		this.contentElement = build("div.content", this.activityElement);
+		this.contentElement.append(this.targetBlock.settingsElement);
+	}
+
+	apply() {
+		return this.targetBlock.applySettings();
 	}
 }
 

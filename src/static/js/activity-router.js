@@ -49,9 +49,17 @@ export default class ActivityRouter extends EventEmitter {
     }
 
     updateStack() {
-        this.curActivity?.activityElement?.classList?.remove("active");
+        if (this.curActivity) {
+            this.curActivity.activityElement.classList.remove("active");
+            if ("onDeactivate" in this.curActivity)
+                this.curActivity.onDeactivate();
+        }
+
         this.curActivity = this.stack[this.stack.length - 1];
+
         this.curActivity.activityElement.classList.add("active");
+        if ("onActivate" in this.curActivity)
+            this.curActivity.onActivate();
 
         this.triggerEvent("activityChange")
     }

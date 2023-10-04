@@ -61,17 +61,17 @@
     height: 100%;
 }
 
-.controlPanel .pageMode {
+.controlPanel .pageEditMode {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4px;
 }
 
-.controlPanel .pageDragMode {
+.controlPanel .blockDragMode {
     padding: 0;
 }
 
-.controlPanel .pageDragMode .deleteArea {
+.controlPanel .blockDragMode .deleteArea {
     position: relative;
     box-sizing: border-box;
     width: 100%;
@@ -82,11 +82,11 @@
     transition-timing-function: ease;
 }
 
-.controlPanel .pageDragMode .deleteArea.active {
+.controlPanel .blockDragMode .deleteArea.active {
     background-color: #FF0025;
 }
 
-.controlPanel .pageDragMode .deleteArea .animation {
+.controlPanel .blockDragMode .deleteArea .animation {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -95,7 +95,7 @@
     transform: translateX(-50%) translateY(-50%);
 }
 
-.controlPanel .pageDragMode .deleteArea .receiver {
+.controlPanel .blockDragMode .deleteArea .receiver {
     position: absolute;
     top: 0;
     left: 0;
@@ -103,7 +103,7 @@
     height: 100%;
 }
 
-.controlPanel .pageDragMode .deleteArea .sortable-ghost {
+.controlPanel .blockDragMode .deleteArea .sortable-ghost {
     display: none;
 }
 
