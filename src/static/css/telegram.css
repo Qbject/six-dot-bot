@@ -9,7 +9,7 @@
     --danger-color: #df3f40;
 }
 
-button {
+button:not(.noTgStyle) {
     position: relative;
     width: 100%;
     border: 0;
@@ -21,12 +21,11 @@ button {
     color: var(--tg-theme-button-text-color);
     text-transform: uppercase;
     outline: none;
-    user-select: none;
     height: 50px;
 }
 
 @media (hover: hover) {
-    button {
+    button:not(.noTgStyle) {
         cursor: pointer;
     }
 }

@@ -8,7 +8,6 @@
     left: 0;
     width: 100%;
     height: var(--control-panel-height);
-    background-color: var(--tg-theme-bg-color);
     z-index: 50;
     transform: translateY(100%);
     transition-property: bottom;
@@ -20,13 +19,18 @@
     transform: translateY(0%);
 }
 
+/* modes */
+
 .controlPanel>.modes {
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: 100%;
+    position: relative;
     width: 100%;
     height: 100%;
     overflow: hidden;
+    z-index: 1;
+    background-color: var(--tg-theme-bg-color);
 }
 
 .controlPanel>.modes>* {
@@ -107,6 +111,8 @@
     display: none;
 }
 
+/* menus */
+
 .controlPanel>.menus {
     position: absolute;
     left: 0;
@@ -125,9 +131,9 @@
     pointer-events: none;
     background-color: var(--tg-theme-bg-color);
     opacity: 0;
-    transform: translateY(20vh);
+    transform: translateY(30vh);
     transition-property: opacity, transform;
-    transition-duration: 100ms;
+    transition-duration: 200ms;
     transition-timing-function: ease-out;
 }
 
@@ -150,4 +156,61 @@
     left: 0;
     width: 100%;
     height: 100%;
+}
+
+.pageMenu>button {
+    position: relative;
+    box-sizing: border-box;
+    height: 52px;
+    width: 100%;
+    padding: 7px 16px;
+    overflow: hidden;
+    font-size: 16px;
+    text-align: left;
+    color: var(--tg-theme-text-color);
+}
+
+/* messages */
+
+.controlPanel>.messages {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: var(--control-panel-height);
+    pointer-events: none;
+    font-size: 16px;
+}
+
+@keyframes showMessage {
+    0% {
+        transform: translateY(0%);
+    }
+
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+.controlPanel>.messages>.message {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 35px;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    animation: showMessage 250ms ease;
+    background-color: var(--tg-theme-bg-color);
+    transform: translateY(-100%);
+    transition: transform 250ms ease;
+}
+
+.controlPanel>.messages>.message.error {
+    background-color: var(--danger-color);
+}
+
+.controlPanel>.messages>.message.hidden {
+    transform: translateY(0%);
 }

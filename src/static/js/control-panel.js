@@ -37,6 +37,7 @@ export class ControlPanel {
     build() {
         this.panelElement = build("div.controlPanel");
         this.buildMenus();
+        this.buildMessages();
         this.buildModes();
     }
 
@@ -82,26 +83,19 @@ export class ControlPanel {
     buildPageMenu() {
         const menuElement = build("div.menu.pageMenu", this.menusContainer);
 
-        const addButton = (className, text, onClick) => {
-            const buttonElement = build(`button.${className}`, menuElement);
-            buttonElement.textContent = text;
-            buttonElement.addEventListener("click", onClick);
-            return buttonElement;
-        }
-
-        const savePageButton = addButton("savePage", "Save", async () => {
-            await this.app.router.curActivity.save()
-            this.showButtonSplash(savePageButton, "Saved", "lime");
-        });
-        const copyLinkButton = addButton("copyLink", "Copy Link", async () => {
+        const onClick = async () => {
+            this.toggleMenu();
             const pageLink = this.app.router.curActivity.getLink();
 
             navigator.clipboard.writeText(pageLink)
-                .then(() => this.showButtonSplash(
-                    copyLinkButton, "Copied!", "lime"))
-                .catch(() => this.showButtonSplash(
-                    copyLinkButton, "Unable", "red"));
-        });
+                .then(() => this.showMessage("Page Link Copied!"))
+                .catch(() => this.showMessage("Unable to copy link", true));
+        };
+        buildButton(".copyLink.noTgStyle", "Copy Link", menuElement, onClick);
+    }
+
+    buildMessages() {
+        this.messagesContainer = build("div.messages", this.panelElement);
     }
 
     buildModes() {
@@ -204,12 +198,16 @@ export class ControlPanel {
     }
 
     // TODO: something
-    async showButtonSplash(buttonElement, text, color = "transparent") {
-        // shows button click feedback text
-        const splashElement = build("div.actionSplash", buttonElement);
-        splashElement.style.borderColor = color;
-        splashElement.textContent = text;
-        await sleep(800);
-        splashElement.remove();
+    async showMessage(text, error = false, time = 3000) {
+        const messageElement = build("div.message", this.messagesContainer);
+        if (error) messageElement.classList.add("error");
+        const messageContentWrapper = build("span.content", messageElement);
+        messageContentWrapper.textContent = text;
+
+        await sleep(time);
+        messageElement.classList.add("hidden");
+
+        messageElement.addEventListener("transitionend", () =>
+            messageElement.remove());
     }
 }
