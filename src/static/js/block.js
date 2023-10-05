@@ -52,11 +52,12 @@ export default class Block {
     }
 
     readSettings() {
+        // reads values from inputs and updating props
         throw new Error("Subclasses must implement this method.");
     }
 
-    // TODO: better naming
     applyProps() {
+        // updates block DOM to match object props
         throw new Error("Subclasses must implement this method.");
     }
 }

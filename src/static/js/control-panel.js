@@ -197,7 +197,6 @@ export class ControlPanel {
             });
     }
 
-    // TODO: something
     async showMessage(text, error = false, time = 3000) {
         const messageElement = build("div.message", this.messagesContainer);
         if (error) messageElement.classList.add("error");
