@@ -10,7 +10,7 @@
   - [Creating a WebApp with BotFather](#creating-a-webapp-with-botfather)
 - [Simplicity Considerations](#simplicity-considerations)
 - [Behavior and Usage](#behavior-and-usage)
-- [Acknowledgments](#acknowledgments)
+- [API Reference](#api-reference)
 - [License](#license)
 
 ## About
@@ -107,7 +107,8 @@ After getting the bot up and running, follow these steps to configure it with Bo
    - The values entered here affect how the links shared by the user appear.
    - Refer to the image showcasing the shared link format below:
    ![Shared Link Example](doc/img/share.jpg)
-In this image^
+
+In this image:
 - "sixdotbot" is the username of the bot.
 - "page" is the name of the app.
 - "Page Browser" is the app title.
