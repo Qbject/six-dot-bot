@@ -1,6 +1,7 @@
-from bottle import static_file, response, get, run, request, post
+from bottle import static_file, response, get, run, request, post, default_app
 from pathlib import Path
 import os
+import sys
 import json
 import dotenv
 from util import init_database
@@ -95,6 +96,10 @@ def init():
 		"secret_token": os.environ["TG_SECRET_TOKEN"]
 	})
 
+application = default_app()
+
 if __name__ == "__main__":
-	init()
-	run(host=os.environ["SERVER_HOST"], port=os.environ["SERVER_PORT"])
+	if "--init" in sys.argv:
+		init()
+	if "--run" in sys.argv:
+		run(host=os.environ["SERVER_HOST"], port=os.environ["SERVER_PORT"])
