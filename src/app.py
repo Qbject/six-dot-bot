@@ -8,6 +8,16 @@ from util import init_database
 import tgapi
 import rest_api # adds additional route handles upon importing
 
+# setting global paths
+base_path = Path(__file__).parent.parent
+os.environ["BASE_PATH"] = str(base_path)
+os.environ["STATIC_ROOT"] = str(base_path / "src" / "static")
+os.environ["DB_PATH"] = str(base_path / "data" / "db.sqlite")
+
+# loading .env
+os.chdir(base_path)
+dotenv.load_dotenv()
+
 # Telegram updates
 @post("/api/handle_tg_update")
 def handle_tg_update():
@@ -62,15 +72,6 @@ def public_config():
 @get("/<filepath:path>")
 def static(filepath):
 	return static_file(filepath, root=os.environ["STATIC_ROOT"])
-
-# loading .env
-dotenv.load_dotenv()
-
-# setting global paths
-base_path = Path(__file__).parent.parent
-os.environ["BASE_PATH"] = str(base_path)
-os.environ["STATIC_ROOT"] = str(base_path / "src" / "static")
-os.environ["DB_PATH"] = str(base_path / "data" / "db.sqlite")
 
 def init():
 	# creating data dir and db file
