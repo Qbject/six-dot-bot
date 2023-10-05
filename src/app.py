@@ -63,16 +63,16 @@ def public_config():
 def static(filepath):
 	return static_file(filepath, root=os.environ["STATIC_ROOT"])
 
+# loading .env
+dotenv.load_dotenv()
+
+# setting global paths
+base_path = Path(__file__).parent.parent
+os.environ["BASE_PATH"] = str(base_path)
+os.environ["STATIC_ROOT"] = str(base_path / "src" / "static")
+os.environ["DB_PATH"] = str(base_path / "data" / "db.sqlite")
+
 def init():
-	# loading .env
-	dotenv.load_dotenv()
-	
-	# setting global paths
-	base_path = Path(__file__).parent.parent
-	os.environ["BASE_PATH"] = str(base_path)
-	os.environ["STATIC_ROOT"] = str(base_path / "src" / "static")
-	os.environ["DB_PATH"] = str(base_path / "data" / "db.sqlite")
-	
 	# creating data dir and db file
 	data_path = base_path / "data"
 	data_path.mkdir(exist_ok=True)
