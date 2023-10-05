@@ -336,7 +336,15 @@ export class NotFoundActivity extends EventEmitter {
 	build() {
 		this.activityElement = build("div.activity.notFound");
 		this.contentElement = build("div.content", this.activityElement);
-		this.contentElement.textContent = "Page not found";
+		this.animationElement = build("div.animation", this.contentElement);
+
+		this.animation = lottie.loadAnimation({
+			container: this.animationElement,
+			renderer: "svg",
+			loop: true,
+			autoplay: true,
+			path: "/lottie/404.json",
+		});
 	}
 }
 
@@ -352,6 +360,16 @@ export class ErrorActivity extends EventEmitter {
 	build() {
 		this.activityElement = build("div.activity.error");
 		this.contentElement = build("div.content", this.activityElement);
-		this.contentElement.textContent = "Error";
+		this.animationElement = build("div.animation", this.contentElement);
+		this.captionElement = build("div.caption", this.contentElement);
+		this.captionElement.textContent = "ERROR";
+
+		this.animation = lottie.loadAnimation({
+			container: this.animationElement,
+			renderer: "svg",
+			loop: false,
+			autoplay: true,
+			path: "/lottie/error.json",
+		});
 	}
 }

@@ -150,3 +150,39 @@
 .activity.home .pageItem .rippleJS {
     opacity: .3;
 }
+
+/* notFound activity */
+
+.activity.notFound {
+    height: var(--visible-height);
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+}
+
+.activity.notFound .content {
+    width: 90%;
+}
+
+/* error activity */
+
+.activity.error {
+    height: var(--visible-height);
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+}
+
+.activity.error .content {
+    width: 35%;
+    text-align: center;
+    font-size: 25px;
+}
+
+.activity.error .caption {
+    margin-top: 8px;
+}
