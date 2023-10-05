@@ -47,13 +47,13 @@ You can run ContentEditBot locally or on any hosting platform that supports the 
 
 Running the bot locally is useful for development and testing purposes. Ensure you have the following tools installed: git and python3. Python's executable should be configured in the PATH variable.
 
-1. (If you don't have a public IP) Use any tunneling software to make port 80 accessible from the outside. For example, using ngrok: `ngrok http 80`. The HTTP address you get will be needed for configuring the "APP_HOST" environment variable.
+1. (If you don't have a public IP) Use any tunneling software to make port 80 accessible from the outside. For example, using ngrok: `ngrok http 80`. The HTTP address you get will be needed for configuring the `APP_HOST` environment variable.
 2. Open your console (cmd, powershell, or bash).
 3. Execute the command: `git clone https://github.com/khaelar/ContentEditBot.git`
 4. Navigate to the cloned directory: `cd ./ContentEditBot`
 5. Create a Python virtual environment (recommended): `python .venv/bin/activate` (on Windows) or `source venv_name/bin/activate` (on Mac or Linux).
 6. Install the required packages: `pip install -r requirements.txt`
-7. Configure the `.env` file by following the instructions in the [Configuration](#configuration) section. Use your white IP (with https://) or the https link given by the tunneling software as the APP_HOST environment variable.
+7. Configure the `.env` file by following the instructions in the [Configuration](#configuration) section. Use your white IP (with https://) or the https link given by the tunneling software as the `APP_HOST` environment variable.
 8. Start the app by executing: `python src/app.py --init --run`
 9. Now, you can use your existing domain to proceed with BotFather configuration.
 10. Visit your site domain to ensure it doesn't show any errors. It's normal for it to appear as an empty page since it is intended to function as a MiniApp.
@@ -71,7 +71,7 @@ Here is a detailed guide on how to install the app on PythonAnywhere hosting (fu
 5. Create a Python virtual environment: `python3.10 -m venv .venv`
 6. Activate the virtual environment: `source .venv/bin/activate`
 7. Install the required packages: `pip3.10 install -r requirements.txt`
-8. Configure the `.env` file as described in the [Configuration](#configuration) section. If you haven't configured a custom domain name, your APP_HOST will be "https://<username>.pythonanywhere.com".
+8. Configure the `.env` file as described in the [Configuration](#configuration) section. If you haven't configured a custom domain name, your `APP_HOST` will be "https://<username>.pythonanywhere.com".
 9. Initialize the app: `python3.10 src/app.py --init`
 10. Type "exit" and close the console.
 11. Navigate to the "Web" tab.
@@ -114,7 +114,7 @@ In this image:
 - "Page Browser" is the app title.
 - "Page Browser allows creating..." is the app description.
 - The white square on the right is the image you submit.
-- The most important setting is Web App URL, which should match the link set in the APP_HOST environment variable.
+- The most important setting is Web App URL, which should match the link set in the `APP_HOST` environment variable.
 
 ## Simplicity Considerations
 
