@@ -312,8 +312,8 @@ This class provides a simple event subscription mechanism and is not meant to be
 
 To extend the app with a new block type, you need to follow two key steps:
 
-1. [Implement the New Block Type](#implementing-block-type)
-2. [Register Your Block Type](#registering-block-type)
+1. [Implement the New Block Type](#implementing-a-block-type)
+2. [Register Your Block Type](#registering-a-block-type)
 
 Before adding a new block type, it's essential to understand the block's lifecycle.
 
