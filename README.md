@@ -106,7 +106,8 @@ After getting the bot up and running, follow these steps to configure it with Bo
 2. Send the `/newapp` command, select your bot, and follow the instructions.
    - The values entered here affect how the links shared by the user appear.
    - Refer to the image showcasing the shared link format below:
-   ![Shared Link Example](docs/img/share.jpg)
+
+![Shared Link Example](docs/img/share.jpg)
 
 In this image:
 - "sixdotbot" is the username of the bot.
