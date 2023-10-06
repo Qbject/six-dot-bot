@@ -36,7 +36,7 @@ ContentEditBot is designed not as a complete, ready-to-use bot, but as a core or
 
 You can run ContentEditBot locally or on any hosting platform that supports the WSGI interface. Here are the general steps:
 
-1. Create your bot with BotFather [BotFather Link](https://t.me/BotFather). You'll need the bot token and username later.
+1. Create your bot with [BotFather](https://t.me/BotFather). You'll need the bot token and username later.
 2. Set up and run the app locally or on the hosting platform.
    - For local setup, follow the [Local Setup Guide](#local-setup).
    - For hosting setup, refer to the [Hosting Setup Guide](#hosting-setup).
@@ -71,7 +71,7 @@ Here is a detailed guide on how to install the app on PythonAnywhere hosting (fu
 5. Create a Python virtual environment: `python3.10 -m venv .venv`
 6. Activate the virtual environment: `source .venv/bin/activate`
 7. Install the required packages: `pip3.10 install -r requirements.txt`
-8. Configure the `.env` file as described in the [Configuration](#configuration) section. If you haven't configured a custom domain name, your `APP_HOST` will be "https://<username>.pythonanywhere.com".
+8. Configure the `.env` file as described in the [Configuration](#configuration) section. If you haven't configured a custom domain name, your `APP_HOST` will be `https://<username>.pythonanywhere.com`.
 9. Initialize the app: `python3.10 src/app.py --init`
 10. Type "exit" and close the console.
 11. Navigate to the "Web" tab.
