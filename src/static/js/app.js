@@ -4,18 +4,17 @@ import { ControlPanel } from "./control-panel.js";
 import ActivityRouter from "./activity-router.js";
 
 class App {
-    constructor(rootElement) {
-        this.rootElement = rootElement;
+    constructor() {
         this.dragActive = false;
-
-        // calculating highlight color based on user app theme
-        const textColor = window.Telegram.WebApp.themeParams.text_color;
-        this.rootElement.style.setProperty("--highlight-color",
-            hexToRGBA(textColor, .1));
     }
 
     setup() {
         this.build();
+
+        // calculating highlight color based on user app theme
+        const textColor = window.Telegram.WebApp.themeParams.text_color;
+        this.appElement.style.setProperty("--highlight-color",
+            hexToRGBA(textColor, .1));
 
         window.Telegram.WebApp.BackButton.onClick(() => this.goBack());
 
@@ -37,19 +36,22 @@ class App {
             }
         }
 
-        this.rootElement.addEventListener("dragstart", handleDrag);
-        this.rootElement.addEventListener("dragend", handleDrag);
-        this.rootElement.addEventListener("drop", handleDrag);
+        this.appElement.addEventListener("dragstart", handleDrag);
+        this.appElement.addEventListener("dragend", handleDrag);
+        this.appElement.addEventListener("drop", handleDrag);
     }
 
     build() {
+        this.appElement = build("div");
+        this.appElement.id = "app";
+
         this.controlPanel = new ControlPanel(this);
         this.controlPanel.setup();
-        this.rootElement.append(this.controlPanel.panelElement);
+        this.appElement.append(this.controlPanel.panelElement);
 
         this.router = new ActivityRouter();
         this.router.setup();
-        this.rootElement.append(this.router.activitiesContainer);
+        this.appElement.append(this.router.activitiesContainer);
     }
 
     async getActivityFromResp(pageResp) {
@@ -143,12 +145,11 @@ class App {
 }
 
 (function () {
-    const appRoot = document.querySelector("#app");
-
     const pageParams = new URLSearchParams(document.location.search);
     const startPage = pageParams.get("tgWebAppStartParam")
 
     window.app = new App(appRoot);
     window.app.setup();
+    document.body.append(window.app.appElement);
     window.app.openPage(startPage, true);
 })();
