@@ -6,6 +6,7 @@ import ActivityRouter from "./activity-router.js";
 class App {
     constructor() {
         this.dragActive = false;
+        this.home = null;
     }
 
     setup() {

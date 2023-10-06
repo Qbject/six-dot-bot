@@ -36,10 +36,12 @@ export default class SpoilerBlock extends Block {
         const headText = this.textInput.value.trim();
         const defaultOpen = this.defaultOpenCheckbox.checked;
 
-        this.props = { headText, defaultOpen }
+        return { headText, defaultOpen }
     }
 
-    applyProps() {
+    applyProps(props) {
+        this.props = props;
+        
         this.headElement.textContent = this.props.headText;
         this.spoilerElement.open = this.editMode || this.props.defaultOpen;
     }

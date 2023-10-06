@@ -25,23 +25,21 @@ export default class Block {
         this.buildContent();
         this.buildSettings();
 
-        this.applyProps();
+        this.applyProps(this.props);
     }
 
     buildContent() {
-        // intended for subclesses to extend
-        this.settingsElement.innerHTML = "";
+        throw new Error("Subclasses must implement this method.");
     }
 
     buildSettings() {
-        // intended for subclesses to extend
-        this.settingsElement.innerHTML = "";
+        throw new Error("Subclasses must implement this method.");
     }
 
     applySettings() {
         const readResult = this.readSettings();
         if (readResult === false) return false;
-        this.applyProps();
+        this.applyProps(readResult);
 
         // triggering brief block highlight animation after editor close
         this.blockElement.classList.add("justEdited");
@@ -56,7 +54,7 @@ export default class Block {
         throw new Error("Subclasses must implement this method.");
     }
 
-    applyProps() {
+    applyProps(props) {
         // updates block DOM to match object props
         throw new Error("Subclasses must implement this method.");
     }

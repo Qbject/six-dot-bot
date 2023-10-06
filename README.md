@@ -30,7 +30,7 @@ This app was developed by a single person as a submission for the Telegram MiniA
 
 ## Extensibility
 
-ContentEditBot is designed not as a complete, ready-to-use bot, but as a core or framework that allows anyone to tailor it to their specific needs. The out-of-the-box set of blocks and features serves as a showcase of the app's capabilities. Developers can extend it to add carousels, product cards, video embeds, map embeds, comments, reviews, analytics gathering, and more, enabling them to create their own bots that empower *their* users to create and share custom rich content. Refer to the Block Framework section for details on how to extend the bot.
+ContentEditBot is designed not as a complete, ready-to-use bot, but as a core or framework that allows anyone to tailor it to their specific needs. The out-of-the-box set of blocks and features serves as a showcase of the app's capabilities. Developers can extend it to add carousels, product cards, video embeds, map embeds, comments, reviews, analytics gathering, charts, and more, enabling them to create their own bots that empower *their* users to create and share custom rich content. Refer to the Block Framework section for details on how to extend the bot.
 
 ## Installation and Running
 
@@ -106,7 +106,7 @@ After getting the bot up and running, follow these steps to configure it with Bo
 2. Send the `/newapp` command, select your bot, and follow the instructions.
    - The values entered here affect how the links shared by the user appear.
    - Refer to the image showcasing the shared link format below:
-   ![Shared Link Example](doc/img/share.jpg)
+   ![Shared Link Example](docs/img/share.jpg)
 
 In this image:
 - "sixdotbot" is the username of the bot.
@@ -141,7 +141,7 @@ Users can use the WebApp's back button to return to the previous activity or clo
 
 ## API Reference
 
-For a detailed and comprehensive reference of the classes, methods, and interfaces used in this application, please refer to our [API Reference](doc/api-reference.md). This also includes the guidelines to [extend the bot with the own blocks](doc/api-reference.md#block).
+For a detailed and comprehensive reference of the classes, methods, and interfaces used in this application, please refer to our [API Reference](docs/api-reference.md). This also includes the guidelines to [extend the bot with the own blocks](docs/api-reference.md#adding-new-block-types).
 
 ## License
 

@@ -10,7 +10,6 @@ export class PageActivity extends EventEmitter {
 		this.schema = JSON.parse(pageData.schema);
 		this.id = pageData.id;
 		this.allBlocks = [];
-		this.editingBlock = null;
 
 		const curUser = window.Telegram.WebApp.initDataUnsafe.user;
 		const isOwn = pageData.ownerId === curUser.id;

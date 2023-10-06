@@ -32,10 +32,11 @@ export default class GridBlock extends Block {
             return false;
         }
 
-        this.props = { columnsCount }
+        return { columnsCount }
     }
 
-    applyProps() {
+    applyProps(props) {
+        this.props = props;
         const columnsCss = `repeat(${this.props.columnsCount}, 1fr)`;
         this.childrenContainer.style.gridTemplateColumns = columnsCss;
     }

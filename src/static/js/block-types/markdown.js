@@ -27,10 +27,12 @@ export default class MarkdownBlock extends Block {
             return false;
         }
 
-        this.props = { text }
+        return { text }
     }
 
-    applyProps() {
+    applyProps(props) {
+        this.props = props;
+        
         // parsing markdown to html
         const rawHTML = marked.parse(this.props.text);
         // sanitizing resulting html
