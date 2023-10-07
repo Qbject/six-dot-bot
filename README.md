@@ -4,10 +4,10 @@
 - [About](#about)
 - [Extensibility](#extensibility)
 - [Installation and Running](#installation-and-running)
-  - [Local Setup](#local-setup)
-  - [Hosting Setup](#hosting-setup)
-  - [Configuration](#configuration)
-  - [Creating a WebApp with BotFather](#creating-a-webapp-with-botfather)
+	- [Local Setup](#local-setup)
+	- [Hosting Setup](#hosting-setup)
+	- [Configuration](#configuration)
+	- [Creating a WebApp with BotFather](#creating-a-webapp-with-botfather)
 - [Simplicity Considerations](#simplicity-considerations)
 - [Behavior and Usage](#behavior-and-usage)
 - [API Reference](#api-reference)
@@ -46,8 +46,8 @@ You can run ContentEditBot locally or on any hosting platform that supports the 
 
 1. Create your bot with [BotFather](https://t.me/BotFather). You'll need the bot token and username later.
 2. Set up and run the app locally or on the hosting platform.
-   - For local setup, follow the [Local Setup Guide](#local-setup).
-   - For hosting setup, refer to the [Hosting Setup Guide](#hosting-setup).
+	- For local setup, follow the [Local Setup Guide](#local-setup).
+	- For hosting setup, refer to the [Hosting Setup Guide](#hosting-setup).
 3. Configure environment variables.
 4. Create a web app with BotFather.
 
@@ -84,9 +84,9 @@ Here is a detailed guide on how to install the app on PythonAnywhere hosting (fu
 10. Type "exit" and close the console.
 11. Navigate to the "Web" tab.
 12. Click "Add a new web app" and follow the app creation steps:
-    - Select framework "Bottle."
-    - Choose Python version "Python 3.10."
-    - Input path: `/home/<username>/ContentEditBot/src/bottle_app.py`.
+	- Select framework "Bottle."
+	- Choose Python version "Python 3.10."
+	- Input path: `/home/<username>/ContentEditBot/src/bottle_app.py`.
 13. After setup is complete, open the WSGI configuration file linked on the web app page.
 14. Replace `from bottle_app import application` with `from app import application` and save the file.
 15. Go back to the "Web" tab and reload the site.
@@ -112,8 +112,8 @@ After getting the bot up and running, follow these steps to configure it with Bo
 
 1. Head to [BotFather](https://t.me/BotFather).
 2. Send the `/newapp` command, select your bot, and follow the instructions.
-   - The values entered here affect how the links shared by the user appear.
-   - Refer to the image showcasing the shared link format below:
+	- The values entered here affect how the links shared by the user appear.
+	- Refer to the image showcasing the shared link format below:
 
 ![Shared Link Example](docs/img/share.jpg)
 

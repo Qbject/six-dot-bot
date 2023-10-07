@@ -1,21 +1,21 @@
 // singleton class allowing to easily add and remove block type classes
 
 export default class BlockRegistry {
-    constructor() {
-        this.types = {}
-    }
+	constructor() {
+		this.types = {}
+	}
 
-    getType(typeName) {
-        return this.types[typeName]
-    }
+	getType(typeName) {
+		return this.types[typeName]
+	}
 
-    getAllTypes() {
-        return Object.entries(this.types);
-    }
+	getAllTypes() {
+		return Object.entries(this.types);
+	}
 
-    registerType(typeClass) {
-        this.types[typeClass.typeName] = typeClass;
-    }
+	registerType(typeClass) {
+		this.types[typeClass.typeName] = typeClass;
+	}
 }
 
 export const blockRegistry = new BlockRegistry();

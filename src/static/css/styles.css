@@ -7,11 +7,11 @@
 /* common styles */
 
 body {
-    /* overflow-y: auto; */
-    overflow-y: scroll;
+	/* overflow-y: auto; */
+	overflow-y: scroll;
 }
 
 #app {
-    position: relative;
-    user-select: none;
+	position: relative;
+	user-select: none;
 }

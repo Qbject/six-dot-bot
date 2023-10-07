@@ -1,188 +1,188 @@
 @keyframes activitySlideIn {
-    0% {
-        transform: translateX(20%);
-        opacity: 0;
-    }
+	0% {
+		transform: translateX(20%);
+		opacity: 0;
+	}
 
-    100% {
-        transform: translateX(0%);
-        opacity: 1;
-    }
+	100% {
+		transform: translateX(0%);
+		opacity: 1;
+	}
 }
 
 .activities {
-    display: grid;
-    grid-template-columns: 100%;
-    grid-template-rows: 100%;
-    --visible-height: 100vh;
-    min-height: var(--visible-height);
-    overflow: hidden;
+	display: grid;
+	grid-template-columns: 100%;
+	grid-template-rows: 100%;
+	--visible-height: 100vh;
+	min-height: var(--visible-height);
+	overflow: hidden;
 }
 
 .controlPanel.active~.activities {
-    margin-bottom: var(--control-panel-height);
-    /* avoiding bottom-most activity part getting covered by a panel */
-    --visible-height: calc(100vh - var(--control-panel-height));
+	margin-bottom: var(--control-panel-height);
+	/* avoiding bottom-most activity part getting covered by a panel */
+	--visible-height: calc(100vh - var(--control-panel-height));
 }
 
 .activity {
-    grid-column-start: 1;
-    grid-column-end: 2;
-    grid-row-start: 1;
-    grid-row-end: 2;
-    height: 100%;
-    width: 100%;
-    background-color: var(--tg-theme-secondary-bg-color);
-    z-index: 1;
-    transform: translateX(-10%);
-    transition-property: opacity, transform;
-    transition-duration: 150ms;
-    transition-timing-function: ease-out;
+	grid-column-start: 1;
+	grid-column-end: 2;
+	grid-row-start: 1;
+	grid-row-end: 2;
+	height: 100%;
+	width: 100%;
+	background-color: var(--tg-theme-secondary-bg-color);
+	z-index: 1;
+	transform: translateX(-10%);
+	transition-property: opacity, transform;
+	transition-duration: 150ms;
+	transition-timing-function: ease-out;
 }
 
 .activity.active {
-    transform: translateX(0%);
+	transform: translateX(0%);
 }
 
 /* disposed activities */
 .activity.active~.activity {
-    opacity: 0;
-    transform: translateX(20%);
-    pointer-events: none;
+	opacity: 0;
+	transform: translateX(20%);
+	pointer-events: none;
 }
 
 .activity.active:last-child:not(.appearInstantly) {
-    animation: activitySlideIn 150ms ease-out;
+	animation: activitySlideIn 150ms ease-out;
 }
 
 /* page activity */
 
 .activity.page.editable>.content>.blocksContainer {
-    /* extra space for more comfortable editing */
-    padding-bottom: 40vh;
+	/* extra space for more comfortable editing */
+	padding-bottom: 40vh;
 }
 
 .activity.page>.content>.blocksContainer {
-    min-height: var(--visible-height);
+	min-height: var(--visible-height);
 }
 
 /* home activity */
 
 .activity.home .pageItem {
-    position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    box-sizing: border-box;
-    height: 52px;
-    padding: 7px 16px;
-    overflow: hidden;
-    gap: 25px;
-    transition: height 300ms ease 100ms, padding 300ms ease 100ms, transform 100ms ease-out, opacity 100ms ease-out, background-color 200ms ease;
-    ;
+	position: relative;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	box-sizing: border-box;
+	height: 52px;
+	padding: 7px 16px;
+	overflow: hidden;
+	gap: 25px;
+	transition: height 300ms ease 100ms, padding 300ms ease 100ms, transform 100ms ease-out, opacity 100ms ease-out, background-color 200ms ease;
+	;
 }
 
 @media (hover: hover) {
-    .activity.home .pageItem {
-        cursor: pointer;
-    }
+	.activity.home .pageItem {
+		cursor: pointer;
+	}
 }
 
 .activity.home .pageItem.deleted {
-    height: 0;
-    padding: 0 16px;
-    transform: scale(75%);
-    opacity: 0;
+	height: 0;
+	padding: 0 16px;
+	transform: scale(75%);
+	opacity: 0;
 }
 
 .activity.home .pageItem.selected {
-    background-color: var(--highlight-color);
+	background-color: var(--highlight-color);
 }
 
 .activity.home .pageItem .pageTitle {
-    font-size: 16px;
-    display: block;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    margin-bottom: 8px;
+	font-size: 16px;
+	display: block;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	margin-bottom: 8px;
 }
 
 .activity.home .pageItem .pageTitle.unnamed {
-    font-style: italic;
+	font-style: italic;
 }
 
 .activity.home .pageItem .pageTime {
-    color: var(--tg-theme-hint-color);
-    font-size: 14px;
+	color: var(--tg-theme-hint-color);
+	font-size: 14px;
 }
 
 .activity.home .pageItem .selectHandle {
-    box-sizing: border-box;
-    display: grid;
-    align-items: center;
-    justify-items: center;
-    align-self: stretch;
-    font-size: 16px;
-    z-index: 1;
-    opacity: 0;
-    transition: opacity 100ms ease;
+	box-sizing: border-box;
+	display: grid;
+	align-items: center;
+	justify-items: center;
+	align-self: stretch;
+	font-size: 16px;
+	z-index: 1;
+	opacity: 0;
+	transition: opacity 100ms ease;
 }
 
 .activity.home .pageList.selectMode .pageItem .selectHandle {
-    opacity: 1;
+	opacity: 1;
 }
 
 @media (hover: hover) {
-    .activity.home .pageItem:hover .selectHandle {
-        opacity: 1;
-    }
+	.activity.home .pageItem:hover .selectHandle {
+		opacity: 1;
+	}
 }
 
 .activity.home .pageItem.selected .selectHandle .tgCheckbox .visualizer {
-    border-color: #3390EC;
-    background-color: #3390EC;
+	border-color: #3390EC;
+	background-color: #3390EC;
 }
 
 .activity.home .pageItem.selected .selectHandle .tgCheckbox .visualizer::after {
-    opacity: 1;
+	opacity: 1;
 }
 
 .activity.home .pageItem .rippleJS {
-    opacity: .3;
+	opacity: .3;
 }
 
 /* notFound activity */
 
 .activity.notFound {
-    height: var(--visible-height);
-    display: grid;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
-    justify-items: center;
+	height: var(--visible-height);
+	display: grid;
+	align-content: center;
+	justify-content: center;
+	align-items: center;
+	justify-items: center;
 }
 
 .activity.notFound .content {
-    width: 90%;
+	width: 90%;
 }
 
 /* error activity */
 
 .activity.error {
-    height: var(--visible-height);
-    display: grid;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
-    justify-items: center;
+	height: var(--visible-height);
+	display: grid;
+	align-content: center;
+	justify-content: center;
+	align-items: center;
+	justify-items: center;
 }
 
 .activity.error .content {
-    width: 35%;
-    text-align: center;
-    font-size: 25px;
+	width: 35%;
+	text-align: center;
+	font-size: 25px;
 }
 
 .activity.error .caption {
-    margin-top: 8px;
+	margin-top: 8px;
 }

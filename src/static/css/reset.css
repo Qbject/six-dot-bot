@@ -63,13 +63,13 @@ mark,
 audio,
 video,
 button {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background-color: transparent;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background-color: transparent;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline
 }
 
 article,
@@ -83,27 +83,27 @@ hgroup,
 menu,
 nav,
 section {
-    display: block
+	display: block
 }
 
 body {
-    line-height: 1
+	line-height: 1
 }
 
 ol,
 ul {
-    list-style: none
+	list-style: none
 }
 
 table {
-    border-collapse: collapse;
-    border-spacing: 0
+	border-collapse: collapse;
+	border-spacing: 0
 }
 
 b {
-    font-weight: 700;
+	font-weight: 700;
 }
 
 i {
-    font-style: italic;
+	font-style: italic;
 }

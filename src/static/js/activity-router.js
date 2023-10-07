@@ -2,58 +2,58 @@ import EventEmitter from "./event-emitter.js";
 import { build } from "./util.js";
 
 export default class ActivityRouter extends EventEmitter {
-    constructor() {
-        super();
-        this.curActivity = null;
-        this.stack = [];
-    }
+	constructor() {
+		super();
+		this.curActivity = null;
+		this.stack = [];
+	}
 
-    setup() {
-        this.build();
-    }
+	setup() {
+		this.build();
+	}
 
-    build() {
-        this.activitiesContainer = build("div.activities");
-    }
+	build() {
+		this.activitiesContainer = build("div.activities");
+	}
 
-    pushActivity(activity, appearInstantly) {
-        // removing activities that follows the current one
-        this.activitiesContainer.querySelectorAll(":scope>.active~.activity")
-            .forEach(activityElement => activityElement.remove());
+	pushActivity(activity, appearInstantly) {
+		// removing activities that follows the current one
+		this.activitiesContainer.querySelectorAll(":scope>.active~.activity")
+			.forEach(activityElement => activityElement.remove());
 
-        // rendering and showing the new activity
-        activity.setup();
-        this.activitiesContainer.append(activity.activityElement);
-        if (appearInstantly)
-            activity.activityElement.classList.add("appearInstantly");
+		// rendering and showing the new activity
+		activity.setup();
+		this.activitiesContainer.append(activity.activityElement);
+		if (appearInstantly)
+			activity.activityElement.classList.add("appearInstantly");
 
-        // preventing inactive activities from stretching body height
-        activity.activityElement.addEventListener("transitionrun", event => {
-            if (!event.target.classList.contains("activity")) return;
-            if (event.target.classList.contains("active"))
-                event.target.style.height = "auto";
-        });
-        activity.activityElement.addEventListener("transitionend", event => {
-            if (!event.target.classList.contains("activity")) return;
-            if (!event.target.classList.contains("active"))
-                event.target.style.height = "0";
-        });
+		// preventing inactive activities from stretching body height
+		activity.activityElement.addEventListener("transitionrun", event => {
+			if (!event.target.classList.contains("activity")) return;
+			if (event.target.classList.contains("active"))
+				event.target.style.height = "auto";
+		});
+		activity.activityElement.addEventListener("transitionend", event => {
+			if (!event.target.classList.contains("activity")) return;
+			if (!event.target.classList.contains("active"))
+				event.target.style.height = "0";
+		});
 
-        this.stack.push(activity);
-        this.updateStack();
-    }
+		this.stack.push(activity);
+		this.updateStack();
+	}
 
-    popActivity() {
-        this.stack.pop();
-        this.updateStack();
-    }
+	popActivity() {
+		this.stack.pop();
+		this.updateStack();
+	}
 
-    updateStack() {
-        if (this.curActivity)
-            this.curActivity.activityElement.classList.remove("active");
-        this.curActivity = this.stack[this.stack.length - 1];
-        this.curActivity.activityElement.classList.add("active");
+	updateStack() {
+		if (this.curActivity)
+			this.curActivity.activityElement.classList.remove("active");
+		this.curActivity = this.stack[this.stack.length - 1];
+		this.curActivity.activityElement.classList.add("active");
 
-        this.triggerEvent("activityChange")
-    }
+		this.triggerEvent("activityChange")
+	}
 }

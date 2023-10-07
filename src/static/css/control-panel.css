@@ -1,216 +1,216 @@
 :root {
-    --control-panel-height: 45px;
+	--control-panel-height: 45px;
 }
 
 .controlPanel {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: var(--control-panel-height);
-    z-index: 50;
-    transform: translateY(100%);
-    transition-property: bottom;
-    transition-duration: 100ms;
-    transition-timing-function: ease-out;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: var(--control-panel-height);
+	z-index: 50;
+	transform: translateY(100%);
+	transition-property: bottom;
+	transition-duration: 100ms;
+	transition-timing-function: ease-out;
 }
 
 .controlPanel.active {
-    transform: translateY(0%);
+	transform: translateY(0%);
 }
 
 /* modes */
 
 .controlPanel>.modes {
-    display: grid;
-    grid-template-columns: 100%;
-    grid-template-rows: 100%;
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    z-index: 1;
-    background-color: var(--tg-theme-bg-color);
+	display: grid;
+	grid-template-columns: 100%;
+	grid-template-rows: 100%;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	z-index: 1;
+	background-color: var(--tg-theme-bg-color);
 }
 
 .controlPanel>.modes>* {
-    grid-column-start: 1;
-    grid-column-end: 2;
-    grid-row-start: 1;
-    grid-row-end: 2;
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 3px;
-    transition-property: opacity, transform;
-    transition-duration: 60ms;
-    transition-timing-function: ease-out;
-    transform: translateY(100%);
-    opacity: 1;
-    pointer-events: none;
+	grid-column-start: 1;
+	grid-column-end: 2;
+	grid-row-start: 1;
+	grid-row-end: 2;
+	height: 100%;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 3px;
+	transition-property: opacity, transform;
+	transition-duration: 60ms;
+	transition-timing-function: ease-out;
+	transform: translateY(100%);
+	opacity: 1;
+	pointer-events: none;
 }
 
 .controlPanel>.modes>.active~* {
-    transform: translateY(-100%);
+	transform: translateY(-100%);
 }
 
 .controlPanel>.modes>.active {
-    transform: translateY(0%);
-    opacity: 1;
-    transition-delay: 60ms;
-    pointer-events: all;
+	transform: translateY(0%);
+	opacity: 1;
+	transition-delay: 60ms;
+	pointer-events: all;
 }
 
 .controlPanel>.modes>*>button {
-    height: 100%;
+	height: 100%;
 }
 
 .controlPanel .pageEditMode {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 4px;
 }
 
 .controlPanel .blockDragMode {
-    padding: 0;
+	padding: 0;
 }
 
 .controlPanel .blockDragMode .deleteArea {
-    position: relative;
-    box-sizing: border-box;
-    width: 100%;
-    height: 100%;
-    padding: 2px;
-    transition-property: background-color;
-    transition-duration: 300ms;
-    transition-timing-function: ease;
+	position: relative;
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	padding: 2px;
+	transition-property: background-color;
+	transition-duration: 300ms;
+	transition-timing-function: ease;
 }
 
 .controlPanel .blockDragMode .deleteArea.active {
-    background-color: #FF0025;
+	background-color: #FF0025;
 }
 
 .controlPanel .blockDragMode .deleteArea .animation {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    height: 110%;
-    pointer-events: none;
-    transform: translateX(-50%) translateY(-50%);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 110%;
+	pointer-events: none;
+	transform: translateX(-50%) translateY(-50%);
 }
 
 .controlPanel .blockDragMode .deleteArea .receiver {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 }
 
 .controlPanel .blockDragMode .deleteArea .sortable-ghost {
-    display: none;
+	display: none;
 }
 
 /* menus */
 
 .controlPanel>.menus {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    margin-bottom: var(--control-panel-height);
-    width: 100%;
-    height: calc(100vh - var(--control-panel-height));
-    pointer-events: none;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	margin-bottom: var(--control-panel-height);
+	width: 100%;
+	height: calc(100vh - var(--control-panel-height));
+	pointer-events: none;
 }
 
 .controlPanel>.menus.active {
-    pointer-events: all;
+	pointer-events: all;
 }
 
 .controlPanel>.menus>* {
-    pointer-events: none;
-    background-color: var(--tg-theme-bg-color);
-    opacity: 0;
-    transform: translateY(30vh);
-    transition-property: opacity, transform;
-    transition-duration: 200ms;
-    transition-timing-function: ease-out;
+	pointer-events: none;
+	background-color: var(--tg-theme-bg-color);
+	opacity: 0;
+	transform: translateY(30vh);
+	transition-property: opacity, transform;
+	transition-duration: 200ms;
+	transition-timing-function: ease-out;
 }
 
 .controlPanel>.menus>.active {
-    pointer-events: all;
-    opacity: 1;
-    transform: translateY(0%);
+	pointer-events: all;
+	opacity: 1;
+	transform: translateY(0%);
 }
 
 .controlPanel>.menus>.pageMenu {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
 }
 
 .controlPanel>.menus>.blockCatalog {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 }
 
 .pageMenu>button {
-    position: relative;
-    box-sizing: border-box;
-    height: 52px;
-    width: 100%;
-    padding: 7px 16px;
-    overflow: hidden;
-    font-size: 16px;
-    text-align: left;
-    color: var(--tg-theme-text-color);
+	position: relative;
+	box-sizing: border-box;
+	height: 52px;
+	width: 100%;
+	padding: 7px 16px;
+	overflow: hidden;
+	font-size: 16px;
+	text-align: left;
+	color: var(--tg-theme-text-color);
 }
 
 /* messages */
 
 .controlPanel>.messages {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: var(--control-panel-height);
-    pointer-events: none;
-    font-size: 16px;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: var(--control-panel-height);
+	pointer-events: none;
+	font-size: 16px;
 }
 
 @keyframes showMessage {
-    0% {
-        transform: translateY(0%);
-    }
+	0% {
+		transform: translateY(0%);
+	}
 
-    100% {
-        transform: translateY(-100%);
-    }
+	100% {
+		transform: translateY(-100%);
+	}
 }
 
 .controlPanel>.messages>.message {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 35px;
-    display: grid;
-    align-items: center;
-    justify-items: center;
-    animation: showMessage 250ms ease;
-    background-color: var(--tg-theme-bg-color);
-    transform: translateY(-100%);
-    transition: transform 250ms ease;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 35px;
+	display: grid;
+	align-items: center;
+	justify-items: center;
+	animation: showMessage 250ms ease;
+	background-color: var(--tg-theme-bg-color);
+	transform: translateY(-100%);
+	transition: transform 250ms ease;
 }
 
 .controlPanel>.messages>.message.error {
-    background-color: var(--danger-color);
+	background-color: var(--danger-color);
 }
 
 .controlPanel>.messages>.message.hidden {
-    transform: translateY(0%);
+	transform: translateY(0%);
 }
