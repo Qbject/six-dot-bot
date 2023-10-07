@@ -1,4 +1,4 @@
-import { callAPI, hexToRGBA, sleep } from "./util.js";
+import { build, callAPI, hexToRGBA, sleep } from "./util.js";
 import { PageActivity, HomeActivity, NotFoundActivity, ErrorActivity, BlockEditorActivity } from "./activities.js";
 import { ControlPanel } from "./control-panel.js";
 import ActivityRouter from "./activity-router.js";
@@ -149,7 +149,7 @@ class App {
     const pageParams = new URLSearchParams(document.location.search);
     const startPage = pageParams.get("tgWebAppStartParam")
 
-    window.app = new App(appRoot);
+    window.app = new App();
     window.app.setup();
     document.body.append(window.app.appElement);
     window.app.openPage(startPage, true);
