@@ -7,7 +7,7 @@ export default class MarkdownBlock extends Block {
 
 	getDefaultProps() {
 		return {
-			text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+			text: "Markdown is a *lightweight* markup language that you can use to add formatting elements to **plain text documents**. This section provides you the full power of markdown."
 		}
 	}
 
