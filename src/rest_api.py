@@ -31,7 +31,7 @@ def mini_app_api(request_handler):
 		
 	return wrapper
 
-@post('/api/pages')
+@post("/api/pages")
 @mini_app_api
 def create_new_page(init_data):
 	if not init_data: raise PermissionError
@@ -42,7 +42,7 @@ def create_new_page(init_data):
 	page_id = pages.create(init_data["user"]["id"], schema, title)
 	return pages.get_by_id(page_id)
 
-@post('/api/pages/<pageId>')
+@post("/api/pages/<pageId>")
 @mini_app_api
 def update_existing_page(pageId, init_data):
 	if not init_data: raise PermissionError
@@ -59,7 +59,7 @@ def update_existing_page(pageId, init_data):
 	}
 	pages.update(pageId, page_data)
 
-@delete('/api/pages/<pageId>')
+@delete("/api/pages/<pageId>")
 @mini_app_api
 def delete_page_by_id(pageId, init_data):
 	if not init_data: raise PermissionError
@@ -72,14 +72,14 @@ def delete_page_by_id(pageId, init_data):
 	
 	pages.delete(pageId)
 
-@get('/api/pages/my')
+@get("/api/pages/my")
 @mini_app_api
 def list_user_pages(init_data):
 	if not init_data: raise PermissionError
 	
 	return pages.get_by_owner(init_data["user"]["id"])
 
-@get('/api/pages/<pageId>')
+@get("/api/pages/<pageId>")
 @mini_app_api
 def retrieve_page_by_id(pageId, init_data):
 	page = pages.get_by_id(pageId)

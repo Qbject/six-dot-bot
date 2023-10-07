@@ -4,19 +4,19 @@ def create(ownerId, schema, title):
 	with DatabaseConnection() as cursor:
 		page_id = generate_id()
 
-		cursor.execute('''
+		cursor.execute("""
 			INSERT INTO pages (id, title, ownerId, schema)
 			VALUES (?, ?, ?, ?)
-		''', (page_id, title, ownerId, schema))
+		""", (page_id, title, ownerId, schema))
 	
 		return page_id
 
 def get_by_id(id):
 	with DatabaseConnection() as cursor:
-		cursor.execute('''
+		cursor.execute("""
 			SELECT * FROM pages
 			WHERE id = ?
-		''', (id,))
+		""", (id,))
 
 		page = cursor.fetchone()
 		return dict(page) if page else None
@@ -24,11 +24,11 @@ def get_by_id(id):
 def get_by_owner(ownerId):
 	# The list doesn't include all the fields for optimization purposes
 	with DatabaseConnection() as cursor:
-		cursor.execute('''
+		cursor.execute("""
 			SELECT id, title, modifiedAt FROM pages
 			WHERE ownerId = ?
 			ORDER BY modifiedAt DESC
-		''', (ownerId,))
+		""", (ownerId,))
 
 		pages = [dict(row) for row in cursor.fetchall()]
 
@@ -37,7 +37,7 @@ def get_by_owner(ownerId):
 def update(id, update_fields):
 	with DatabaseConnection() as cursor:
 		# Construct the SQL query to update the page
-		set_fields = ', '.join([f"{field} = ?" for field in
+		set_fields = ", ".join([f"{field} = ?" for field in
 			update_fields.keys()])
 		set_fields += ", modifiedAt = CURRENT_TIMESTAMP"
 		query = f"UPDATE pages SET {set_fields} WHERE id = ?"

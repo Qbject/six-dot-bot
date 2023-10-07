@@ -58,7 +58,7 @@ class DatabaseConnection:
 
 def init_database():
 	with DatabaseConnection() as cursor:
-		cursor.execute('''
+		cursor.execute("""
 		CREATE TABLE IF NOT EXISTS pages (
 			id TEXT PRIMARY KEY,
 			title TEXT,
@@ -67,11 +67,11 @@ def init_database():
 			createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 			modifiedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 		)
-	''')
+	""")
 
 def get_random_str(length=16):
 	characters = string.ascii_letters + string.digits
-	return ''.join(random.choice(characters) for _ in range(length))
+	return "".join(random.choice(characters) for _ in range(length))
 
 def ucfirst(input_str):
 	if input_str:
