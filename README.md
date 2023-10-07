@@ -15,7 +15,7 @@
 
 ## About
 
-ContentEditBot is a versatile Telegram bot that harnesses the power of MiniApps, enabling users to effortlessly create their own MiniApp pages without any programming knowledge and share them within Telegram for easy access by other Telegram users. While the concept is simple — users create pages and populate them with content — the possibilities are limitless. For instance, a small shopkeeper can create a page to promote their merchandise, showcase products with images and descriptions, and provide contact information for potential customers. Another user might want to share a questionnaire, gathering data and feedback, similar to Google Forms but seamlessly integrated within Telegram. ContentEditBot makes all of this possible, offering a user-friendly WebApp interface with formatting capabilities that surpass regular Telegram messages.
+ContentEditBot is a versatile Telegram bot that harnesses the power of MiniApps, enabling users to effortlessly create their own MiniApp pages without any programming knowledge and share them within Telegram for easy access by other Telegram users. While the concept is simple — users create pages and populate them with content — the possibilities are limitless. For instance, a small shopkeeper can create a page to promote their merchandise, showcase products with images and descriptions, and provide PM link for potential customers. ContentEditBot makes all of this possible, offering a user-friendly WebApp interface with formatting capabilities that surpass regular Telegram messages.
 
 This app was developed by a single person as a submission for the Telegram MiniApp contest, where it had to be created from scratch in about two weeks. As a result, it may have some rough edges and is considered somewhat unpolished.
 
@@ -30,7 +30,15 @@ This app was developed by a single person as a submission for the Telegram MiniA
 
 ## Extensibility
 
-ContentEditBot is designed not as a complete, ready-to-use bot, but as a core or framework that allows anyone to tailor it to their specific needs. The out-of-the-box set of blocks and features serves as a showcase of the app's capabilities. Developers can extend it to add carousels, product cards, video embeds, map embeds, comments, reviews, analytics gathering, charts, and more, enabling them to create their own bots that empower *their* users to create and share custom rich content. Refer to the Block Framework section for details on how to extend the bot.
+ContentEditBot is designed not as a complete, ready-to-use bot, but as a core or framework that allows anyone to tailor it to their specific needs. The out-of-the-box set of blocks and features serves as a showcase of the app's capabilities. Developers can extend it to add any imaginable blocks, enabling them to create their own bots that empower *their* users to create and share custom rich content. Refer to the [Block Framework section](docs/api-reference.md#adding-new-block-types) for details on how to extend the bot.
+
+Here are just a few vercors of extending the bot that comes to mind:
+- Carouseld and product cards to enable users create own marketplaces.
+- Reactions so the visitors coming to the page from different sources can see what others thinks of it.
+- Charts with any level of interactivity.
+- Input blocks enabling page visitors to fill in their own data and submit it. Data submitted this way can be sent to the user within the bot chat.
+- Gathering advanced page analytics based on the Telegram user data
+- *And much more*
 
 ## Installation and Running
 
