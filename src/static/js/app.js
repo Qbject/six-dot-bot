@@ -40,6 +40,18 @@ class App {
 		this.appElement.addEventListener("dragstart", handleDrag);
 		this.appElement.addEventListener("dragend", handleDrag);
 		this.appElement.addEventListener("drop", handleDrag);
+
+		// capturing link clicks to prevent links being opened in webview
+		this.appElement.addEventListener("click", event => {
+			const clickedLink = event.target.closest("a");
+			if (!clickedLink) return;
+			event.preventDefault();
+
+			const host = (new URL(clickedLink.href)).host;
+			host == "t.me" ?
+				window.Telegram.WebApp.openTelegramLink(clickedLink.href) :
+				window.Telegram.WebApp.openLink(clickedLink.href);
+		})
 	}
 
 	build() {
