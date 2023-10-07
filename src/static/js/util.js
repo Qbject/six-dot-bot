@@ -72,7 +72,9 @@ export function buildButton(classes, text, parent = null, onClick = null) {
 }
 
 export function buildCheckbox(classes, name, parent = null) {
-	const labelDesc = `label.tgCheckbox${classes || ""}`;
+	let labelDesc = "label.tgCheckbox";
+	if (classes) labelDesc += `.${classes}`;
+
 	const label = build(labelDesc, parent);
 	const checkboxElement = build("input", label);
 	checkboxElement.type = "checkbox";

@@ -68,6 +68,10 @@
 
 /* home activity */
 
+.activity.home h1 {
+	margin-top: 8px;
+}
+
 .activity.home .pageItem {
 	position: relative;
 	display: grid;
@@ -99,7 +103,6 @@
 }
 
 .activity.home .pageItem .pageTitle {
-	font-size: 16px;
 	display: block;
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -113,7 +116,7 @@
 
 .activity.home .pageItem .pageTime {
 	color: var(--tg-theme-hint-color);
-	font-size: 14px;
+	font-size: .875rem;
 }
 
 .activity.home .pageItem .selectHandle {
@@ -122,10 +125,14 @@
 	align-items: center;
 	justify-items: center;
 	align-self: stretch;
-	font-size: 16px;
 	z-index: 1;
 	opacity: 0;
 	transition: opacity 100ms ease;
+}
+
+.activity.home .pageList {
+	padding: 0;
+	margin: 0;
 }
 
 .activity.home .pageList.selectMode .pageItem .selectHandle {
@@ -181,8 +188,4 @@
 	width: 35%;
 	text-align: center;
 	font-size: 25px;
-}
-
-.activity.error .caption {
-	margin-top: 8px;
 }

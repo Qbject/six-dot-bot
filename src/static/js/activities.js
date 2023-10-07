@@ -39,6 +39,7 @@ export class PageActivity extends EventEmitter {
 		this.activityElement = build("div.activity.page");
 		if (this.editable) this.activityElement.classList.add("editable");
 		this.contentElement = build("div.content", this.activityElement);
+		
 		this.blocksContainer = build("div.blocksContainer",
 			this.contentElement);
 		this.settingsModal = build("div.settingsModal", this.activityElement);
@@ -201,6 +202,10 @@ export class HomeActivity extends EventEmitter {
 	build() {
 		this.activityElement = build("div.activity.home");
 		this.contentElement = build("div.content", this.activityElement);
+		
+		this.titleElement = build("h1", this.contentElement);
+		this.titleElement.textContent = "My Pages";
+		
 		this.pageList = build("ul.pageList", this.contentElement);
 		this.pageList.dataset.longPressDelay = "500";
 
@@ -235,8 +240,7 @@ export class HomeActivity extends EventEmitter {
 		const pageTitleElement = build("div.pageTitle", pageInfoElement);
 		const pageTimeElement = build("div.pageTime", pageInfoElement);
 		const selectHandle = build("div.selectHandle", itemElement);
-		const [, selectCheckbox] = buildCheckbox(null, "pageitemSelect",
-			selectHandle);
+		buildCheckbox(null, "pageitemSelect", selectHandle);
 		build("div.rippleJS", itemElement);
 
 		pageTitleElement.textContent = pageData.title || "Unnamed";

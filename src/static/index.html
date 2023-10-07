@@ -22,6 +22,19 @@
 			integrity="sha384-OlarGErerEgz/M7123pQTTek4pUIiR6t0BK09bTmWDi2cZYbv3VHrriaXDnA0Oup"
 			crossorigin="anonymous"></script>
 
+		<script>
+			(function(){
+				// including highlightjs theme depending on the user telegram color theme
+				const colorTheme = window.Telegram.WebApp.colorScheme;
+				console.log(colorTheme)
+				const hljsStyle = document.createElement("link");
+				hljsStyle.rel = "stylesheet";
+				hljsStyle.href = `https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/styles/a11y-${colorTheme}.min.css`;
+				document.head.append(hljsStyle);
+			})();
+		</script>
+		<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/highlight.min.js"></script>
+			
 		<link rel="stylesheet" type="text/css" href="/css/styles.css">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

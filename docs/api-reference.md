@@ -174,6 +174,7 @@ The application leverages a selection of third-party libraries to provide robust
 - [DOMPurify](https://github.com/cure53/DOMPurify): This library serves as a guardian against XSS attacks by sanitizing marked output.
 - [lottie](https://airbnb.io/lottie/): It enables the rendering of Lottie graphics to enhance the user experience on pages.
 - [rippleJS](https://github.com/samthor/rippleJS): This library enables the addition of a ripple effect to interactive elements, enhancing visual feedback.
+- [Highlight.js](https://github.com/highlightjs/highlight.js): The library handling a syntax highlighting for code blocks
 
 #### Main MiniApp Code
 
@@ -399,7 +400,7 @@ If the values are invalid (e.g., a negative number or an invalid input for table
 - **Arguments**: `props` (`Object`)
 - **Returns**: None
 
-This method is called when it's necessary to update the `props`. The method should assign the `props` argument to its own `props` property and update its own `blockElement` DOM to reflect the new props. It should correctly function when run multiple times during the instance's lifetime.
+This method is called when it's necessary to update the `props`. The method should assign the `props` argument to its own `props` property and update its own `blockElement` DOM to reflect the new props. It is guaranteed to be called after `buildContent` and should correctly function when run multiple times during the instance's lifetime.
 
 ### Registering a Block Type
 

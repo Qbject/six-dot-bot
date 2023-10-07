@@ -4,7 +4,6 @@
 	background-color: var(--tg-theme-bg-color);
 	color: var(--tg-theme-text-color);
 	font-family: "Roboto", -apple-system, apple color emoji, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-	font-size: 14px;
 	font-weight: 400;
 	--danger-color: #df3f40;
 }
@@ -14,7 +13,6 @@ button:not(.noTgStyle) {
 	width: 100%;
 	border: 0;
 	padding: 0;
-	font-size: 16px;
 	font-weight: 500;
 	border-radius: 10px;
 	background-color: var(--tg-theme-button-color);
@@ -35,7 +33,7 @@ button:not(.noTgStyle) {
 }
 
 @media (hover: hover) {
-	.tgCheckbox {
+	.tgCheckbox:not(.disabled) {
 		cursor: pointer;
 	}
 }

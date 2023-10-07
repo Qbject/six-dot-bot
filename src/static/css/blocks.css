@@ -11,7 +11,7 @@
 }
 
 .block.justEdited {
-	animation: blockJustEdited 1s ease-in;
+	animation: blockJustEdited 1.5s ease-in;
 }
 
 .block.preview .blocksContainer::before {

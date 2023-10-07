@@ -1,5 +1,5 @@
 import Block from "../block.js";
-import { build } from "../util.js";
+import { build, buildCheckbox } from "../util.js";
 
 export default class MarkdownBlock extends Block {
 	static name = "Markdown Block";
@@ -32,11 +32,39 @@ export default class MarkdownBlock extends Block {
 
 	applyProps(props) {
 		this.props = props;
-		
+
 		// parsing markdown to html
 		const rawHTML = marked.parse(this.props.text);
 		// sanitizing resulting html
 		const sanitizedHTML = DOMPurify.sanitize(rawHTML);
 		this.blockElement.innerHTML = sanitizedHTML;
+
+		this.postProcessTaskLists()
+		this.highlightCode()
+	}
+
+	postProcessTaskLists() {
+		const query = "ul>li>input[type='checkbox']";
+		const search = this.blockElement.querySelectorAll(query);
+
+		for (const taskCheckbox of search) {
+			const listElement = taskCheckbox.parentElement.parentElement;
+			listElement.classList.add("taskList");
+
+			// creating custom checkbox to add styling
+			const [labelElement, checkboxElement] = buildCheckbox(
+				"disabled", "taskListMarker");
+			checkboxElement.disabled = true;
+			checkboxElement.checked = taskCheckbox.checked;
+			taskCheckbox.replaceWith(labelElement);
+		}
+	}
+
+	highlightCode() {
+		const codeElements = this.blockElement.querySelectorAll("pre>code");
+		for (const codeElement of codeElements) {
+			console.log(codeElement);
+			hljs.highlightElement(codeElement);
+		}
 	}
 }
