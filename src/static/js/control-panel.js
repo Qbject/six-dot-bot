@@ -57,18 +57,26 @@ export class ControlPanel {
 		const blockCatalogElement = build("div.menu.blockCatalog",
 			this.menusContainer);
 		const contentElement = build("div.content", blockCatalogElement);
+		const titleElement = build("h2", contentElement);
+		titleElement.textContent = "Add New Block";
+		const dragHint = build("p.dragHint", contentElement);
+		dragHint.textContent = "Start dragging a block to add it on the page";
+		const blocksListElement = build("div.blocks", contentElement);
 
 		for (const [typeName, blockClass] of blockRegistry.getAllTypes()) {
-			// block objects are needed only to produce elements
+			const blockTitle = build("h3.blockTitle", blocksListElement);
+			blockTitle.textContent = blockClass.name;
+
+			// block objects here are needed only to produce elements
 			// and can be disposed afterwards
 			const block = new blockClass(null, true, true);
 			block.setup();
 			block.blockElement.dataset.typeName = typeName;
 			block.blockElement.classList.add("preview");
-			contentElement.append(block.blockElement);
+			blocksListElement.append(block.blockElement);
 		}
 
-		this.blockCatalogSortable = new Sortable(contentElement, {
+		this.blockCatalogSortable = new Sortable(blocksListElement, {
 			group: {
 				name: "editablePage",
 				pull: "clone",
@@ -77,6 +85,7 @@ export class ControlPanel {
 			animation: 150,
 			delay: 300,
 			delayOnTouchOnly: true,
+			draggable: ".block", // avoid grabbing titles
 			onStart: () => this.toggleMenu("blockCatalog"),
 			onEnd: () => this.app.router.curActivity.save(),
 		});

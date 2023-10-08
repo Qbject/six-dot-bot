@@ -159,6 +159,11 @@
 	overflow-y: scroll;
 }
 
+.controlPanel>.menus>.blockCatalog .dragHint {
+	color: var(--tg-theme-hint-color);
+	font-size: .875rem;
+}
+
 .pageMenu>button {
 	position: relative;
 	box-sizing: border-box;
