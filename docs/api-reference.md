@@ -283,6 +283,14 @@ Methods:
 - `deleteSelectedPages()`: Prompts the user to confirm the deletion of selected pages and proceeds with the deletion from the database upon confirmation.
 - `addNewPage()`: Adds a page item to the list of user pages using the provided page data.
 
+#### `BlockEditorActivity` Interface
+
+Read-only properties:
+- `targetBlock`: A reference the instance of the block that is edited by this activity.
+
+Methods:
+- `apply()`: Causes the editing block to apply the settings entered by the user.
+
 #### `ActivityRouter` Interface
 
 Read-only properties:
@@ -361,6 +369,7 @@ This static property defines a unique value that serves as an identifier for the
 
 #### `getDefaultProps`
 
+- **Asynchronous**: No
 - **Arguments**: None
 - **Returns**: An `Object` containing the props that will be applied to the block upon initial creation.
 
@@ -368,6 +377,7 @@ The props returned by this method will be applied to the block when it is constr
 
 #### `buildContent`
 
+- **Asynchronous**: No
 - **Arguments**: None
 - **Returns**: None
 
@@ -379,6 +389,7 @@ If the block type is designed to contain children blocks, the `buildContent` met
 
 #### `buildSettings`
 
+- **Asynchronous**: No
 - **Arguments**: None
 - **Returns**: None
 
@@ -388,6 +399,7 @@ Additionally, this method should populate all input values according to the curr
 
 #### `readSettings`
 
+- **Asynchronous**: Yes
 - **Arguments**: None
 - **Returns**: `props` (`Object`) if successful or `Boolean` `false` if validation fails.
 
@@ -397,8 +409,9 @@ If the values are invalid (e.g., a negative number or an invalid input for table
 
 #### `applyProps`
 
+- **Asynchronous**: Yes
 - **Arguments**: `props` (`Object`)
-- **Returns**: None
+- **Returns**: `Promise<None>`
 
 This method is called when it's necessary to update the `props`. The method should assign the `props` argument to its own `props` property and update its own `blockElement` DOM to reflect the new props. It is guaranteed to be called after `buildContent` and should correctly function when run multiple times during the instance's lifetime.
 

@@ -182,8 +182,8 @@ export class BlockEditorActivity extends EventEmitter {
 		this.contentElement.append(this.targetBlock.settingsElement);
 	}
 
-	apply() {
-		return this.targetBlock.applySettings();
+	async apply() {
+		return await this.targetBlock.applySettings();
 	}
 }
 

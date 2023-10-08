@@ -2,7 +2,7 @@ import Block from "../block.js";
 import { build, buildCheckbox } from "../util.js";
 
 export default class MarkdownBlock extends Block {
-	static name = "Markdown Block";
+	static name = "Markdown Section";
 	static typeName = "markdown";
 
 	getDefaultProps() {
@@ -20,7 +20,7 @@ export default class MarkdownBlock extends Block {
 		this.textInput.value = this.props.text;
 	}
 
-	readSettings() {
+	async readSettings() {
 		const text = this.textInput.value.trim();
 		if (!text) {
 			window.Telegram.WebApp.showAlert("Text can't be empty");
@@ -30,7 +30,7 @@ export default class MarkdownBlock extends Block {
 		return { text }
 	}
 
-	applyProps(props) {
+	async applyProps(props) {
 		this.props = props;
 
 		// parsing markdown to html
@@ -43,7 +43,7 @@ export default class MarkdownBlock extends Block {
 		this.highlightCode()
 	}
 
-	postProcessTaskLists() {
+	async postProcessTaskLists() {
 		const query = "ul>li>input[type='checkbox']";
 		const search = this.blockElement.querySelectorAll(query);
 
@@ -63,7 +63,6 @@ export default class MarkdownBlock extends Block {
 	highlightCode() {
 		const codeElements = this.blockElement.querySelectorAll("pre>code");
 		for (const codeElement of codeElements) {
-			console.log(codeElement);
 			hljs.highlightElement(codeElement);
 		}
 	}

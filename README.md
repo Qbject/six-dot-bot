@@ -135,6 +135,11 @@ The bot code is made with simplicity in mind - so any developer can easily run a
 4. JS frameworks like React: Can simplify the front-end code. The concept of Blocks in the app is inspired by React components, making the use of actual React components a natural fit.
 5. CSS preprocessors.
 
+### ⚠️ Important
+In the current version, blocks "Lottie" and "Image" stores file data directly within own props (base64-encoded in case of Image), which is a considerable performance flaw as the data being stored in the database in a json-serialized form. This causes a variety of issues including inefficient use of database, client and server performance drops, increased network latency and others.
+
+It is recommended to disable these blocks for production use-cases, or upgrade the file handling logic.
+
 ## Behavior and Usage
 
 As a chat bot, ContentEditBot can only respond to the `/start` command with a greeting and an invitation to open the MiniApp. Users can access the MiniApp in two ways:

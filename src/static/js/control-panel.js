@@ -156,15 +156,15 @@ export class ControlPanel {
 	setupBlockEditorMode() {
 		const modeElement = build("div.blockEditorMode", this.modesContainer);
 
-		buildButton(".apply", "Apply", modeElement, () => {
+		buildButton(".apply", "Apply", modeElement, async () => {
 			// current activity is guaranteed to be BlockEditor
-			const applied = this.app.router.curActivity.apply();
+			const applied = await this.app.router.curActivity.apply();
 			// false means block can't apply the settings
 			if (applied === false) return;
 
 			this.app.goBack();
 
-			// after returning back curActivity is PageActivity
+			// after returning back curActivity becomes PageActivity
 			// saving edited block in the database
 			this.app.router.curActivity.save();
 		});

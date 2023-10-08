@@ -26,7 +26,6 @@
 			(function(){
 				// including highlightjs theme depending on the user telegram color theme
 				const colorTheme = window.Telegram.WebApp.colorScheme;
-				console.log(colorTheme)
 				const hljsStyle = document.createElement("link");
 				hljsStyle.rel = "stylesheet";
 				hljsStyle.href = `https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/styles/a11y-${colorTheme}.min.css`;

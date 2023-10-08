@@ -24,7 +24,7 @@ export default class GridBlock extends Block {
 		this.countInput.value = this.props.columnsCount;
 	}
 
-	readSettings() {
+	async readSettings() {
 		const columnsCount = +this.countInput.value.trim();
 		if (columnsCount < 2) {
 			window.Telegram.WebApp.showAlert(
@@ -35,7 +35,7 @@ export default class GridBlock extends Block {
 		return { columnsCount }
 	}
 
-	applyProps(props) {
+	async applyProps(props) {
 		this.props = props;
 		const columnsCss = `repeat(${this.props.columnsCount}, 1fr)`;
 		this.childrenContainer.style.gridTemplateColumns = columnsCss;

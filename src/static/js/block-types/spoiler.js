@@ -32,14 +32,14 @@ export default class SpoilerBlock extends Block {
 		this.defaultOpenCheckbox.checked = this.props.defaultOpen;
 	}
 
-	readSettings() {
+	async readSettings() {
 		const headText = this.textInput.value.trim();
 		const defaultOpen = this.defaultOpenCheckbox.checked;
 
 		return { headText, defaultOpen }
 	}
 
-	applyProps(props) {
+	async applyProps(props) {
 		this.props = props;
 		
 		this.headElement.textContent = this.props.headText;

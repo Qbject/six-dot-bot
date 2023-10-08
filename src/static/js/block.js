@@ -36,10 +36,10 @@ export default class Block {
 		throw new Error("Subclasses must implement this method.");
 	}
 
-	applySettings() {
-		const readResult = this.readSettings();
+	async applySettings() {
+		const readResult = await this.readSettings();
 		if (readResult === false) return false;
-		this.applyProps(readResult);
+		await this.applyProps(readResult);
 
 		// triggering brief block highlight animation after editor close
 		this.blockElement.classList.add("justEdited");
@@ -49,12 +49,12 @@ export default class Block {
 		});
 	}
 
-	readSettings() {
+	async readSettings() {
 		// reads values from inputs and updating props
 		throw new Error("Subclasses must implement this method.");
 	}
 
-	applyProps(props) {
+	async applyProps(props) {
 		// updates block DOM to match object props
 		throw new Error("Subclasses must implement this method.");
 	}

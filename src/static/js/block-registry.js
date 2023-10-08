@@ -28,3 +28,6 @@ blockRegistry.registerType(SpoilerBlock);
 
 import GridBlock from "./block-types/grid.js";
 blockRegistry.registerType(GridBlock);
+
+import LottieBlock from "./block-types/lottie.js";
+blockRegistry.registerType(LottieBlock);

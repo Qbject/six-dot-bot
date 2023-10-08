@@ -1,4 +1,4 @@
-from bottle import static_file, response, get, run, request, post, default_app
+from bottle import static_file, response, get, run, request, post, default_app, BaseRequest
 from pathlib import Path
 import os
 import sys
@@ -17,6 +17,9 @@ os.environ["DB_PATH"] = str(base_path / "data" / "db.sqlite")
 # loading .env
 os.chdir(base_path)
 dotenv.load_dotenv()
+
+# increasing max allowed request body size to accept large page schemas
+BaseRequest.MEMFILE_MAX = 1024 * 1024 * 5 # 5 MB
 
 # Telegram updates
 @post("/api/handle_tg_update")

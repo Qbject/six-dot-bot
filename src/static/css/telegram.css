@@ -19,7 +19,7 @@ button:not(.noTgStyle) {
 	color: var(--tg-theme-button-text-color);
 	text-transform: uppercase;
 	outline: none;
-	height: 50px;
+	height: 40px;
 }
 
 @media (hover: hover) {
