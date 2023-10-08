@@ -31,3 +31,6 @@ blockRegistry.registerType(GridBlock);
 
 import LottieBlock from "./block-types/lottie.js";
 blockRegistry.registerType(LottieBlock);
+
+import ImageBlock from "./block-types/image.js";
+blockRegistry.registerType(ImageBlock);

@@ -22,7 +22,7 @@ export default class LottieBlock extends Block {
 	}
 
 	buildSettings() {
-		this.previewElement = build("p.preview", this.settingsElement);
+		this.previewElement = build("div.preview", this.settingsElement);
 
 		this.fileInput = build("input", this.settingsElement);
 		this.fileInput.classList.add("fileInput");
@@ -68,7 +68,7 @@ export default class LottieBlock extends Block {
 		return new Promise((resolve, reject) => {
 			if (!this.fileInput.files.length) {
 				resolve(null);
-				return; // TODO: remove?
+				return;
 			};
 
 			const reader = new FileReader();
