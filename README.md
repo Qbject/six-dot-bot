@@ -138,7 +138,7 @@ The bot code is made with simplicity in mind - so any developer can easily run a
 ### ⚠️ Important
 In the current version, blocks "Lottie" and "Image" stores file data directly within own props (base64-encoded in case of Image), which is a considerable performance flaw as the data being stored in the database in a json-serialized form. This causes a variety of issues including inefficient use of database, client and server performance drops, increased network latency and others.
 
-It is recommended to disable these blocks for production use-cases, or upgrade the file handling logic.
+It is recommended to disable these blocks or upgrade the file handling logic for production use-cases.
 
 ## Behavior and Usage
 
