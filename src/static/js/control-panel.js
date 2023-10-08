@@ -56,6 +56,8 @@ export class ControlPanel {
 	buildBlockCatalog() {
 		const blockCatalogElement = build("div.menu.blockCatalog",
 			this.menusContainer);
+		const contentElement = build("div.content", blockCatalogElement);
+
 		for (const [typeName, blockClass] of blockRegistry.getAllTypes()) {
 			// block objects are needed only to produce elements
 			// and can be disposed afterwards
@@ -63,10 +65,10 @@ export class ControlPanel {
 			block.setup();
 			block.blockElement.dataset.typeName = typeName;
 			block.blockElement.classList.add("preview");
-			blockCatalogElement.append(block.blockElement);
+			contentElement.append(block.blockElement);
 		}
 
-		this.blockCatalogSortable = new Sortable(blockCatalogElement, {
+		this.blockCatalogSortable = new Sortable(contentElement, {
 			group: {
 				name: "editablePage",
 				pull: "clone",
