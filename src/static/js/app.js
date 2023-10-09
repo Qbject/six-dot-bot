@@ -2,11 +2,17 @@ import { build, callAPI, hexToRGBA, sleep } from "./util.js";
 import { PageActivity, HomeActivity, NotFoundActivity, ErrorActivity, BlockEditorActivity } from "./activities.js";
 import { ControlPanel } from "./control-panel.js";
 import ActivityRouter from "./activity-router.js";
+import config from "./config.js";
 
 class App {
 	constructor() {
 		this.dragActive = false;
 		this.home = null;
+
+		// assigning whether the app is in mobile environment (web view can
+		// slide in and out)
+		// assuming isExpanded is false in mobile environment by default
+		this.isExpandable = !Telegram.WebApp.isExpanded;
 	}
 
 	setup() {
@@ -38,7 +44,7 @@ class App {
 			host == "t.me" ?
 				window.Telegram.WebApp.openTelegramLink(clickedLink.href) :
 				window.Telegram.WebApp.openLink(clickedLink.href);
-		})
+		});
 	}
 
 	build() {
@@ -48,8 +54,9 @@ class App {
 		this.controlPanel = new ControlPanel(this);
 		this.controlPanel.setup();
 		this.appElement.append(this.controlPanel.panelElement);
-
-		this.router = new ActivityRouter();
+		
+		this.router = new ActivityRouter(this.isExpandable ?
+			config.use_root_scroll_mobile : config.use_root_scroll_desktop);
 		this.router.setup();
 		this.appElement.append(this.router.activitiesContainer);
 	}

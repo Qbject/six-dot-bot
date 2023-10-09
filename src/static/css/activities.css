@@ -38,14 +38,16 @@
 	transition-property: opacity, transform;
 	transition-duration: 150ms;
 	transition-timing-function: ease-out;
+	height: var(--visible-height);
+	overflow-y: scroll;
 }
 
 .activity.active {
 	transform: translateX(0%);
 }
 
-/* disposed activities */
 .activity.active~.activity {
+	/* disposed activities */
 	opacity: 0;
 	transform: translateX(20%);
 	pointer-events: none;
@@ -53,6 +55,11 @@
 
 .activity.active:last-child:not(.appearInstantly) {
 	animation: activitySlideIn 150ms ease-out;
+}
+
+.activities.useRootScroll .activity {
+	height: auto;
+	overflow-y: auto;
 }
 
 /* page activity */

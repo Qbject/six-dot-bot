@@ -67,6 +67,10 @@ def public_config():
 	config_data = {
 		"bot_username": os.environ["BOT_USERNAME"],
 		"bot_appname": os.environ["BOT_APPNAME"],
+		"use_root_scroll_desktop": os.environ["USE_ROOT_SCROLL_DESKTOP"
+			].lower() == "true",
+		"use_root_scroll_mobile": os.environ["USE_ROOT_SCROLL_MOBILE"
+			].lower() == "true",
 	}
 	
 	response.content_type = "application/javascript"

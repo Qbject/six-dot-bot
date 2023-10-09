@@ -10,6 +10,7 @@
 	- [Creating a WebApp with BotFather](#creating-a-webapp-with-botfather)
 - [Simplicity Considerations](#simplicity-considerations)
 - [Behavior and Usage](#behavior-and-usage)
+- [Mobile Scrolling Issue](#mobile-scrolling-issue)
 - [API Reference](#api-reference)
 - [License](#license)
 
@@ -105,6 +106,8 @@ All the bot configuration options are within the `.env` file. The easiest way to
 - `BOT_APPNAME`: The name of the web app you [specified in BotFather](#creating-a-webapp-with-botfather).
 - `TG_SECRET_TOKEN`: A random string needed to ensure the updates are coming from Telegram. You can generate it with any password generator.
 - `APP_HOST`: The https URL where your bot is running without the trailing slash.
+- `USE_ROOT_SCROLL_DESKTOP`: Enables [scrolling fallback](#mobile-scrolling-issue) in desktop environment
+- `USE_ROOT_SCROLL_MOBILE`: Enables [scrolling fallback](#mobile-scrolling-issue) in mobile environment
 
 ### Creating a WebApp with BotFather
 
@@ -152,6 +155,17 @@ When the user opens home page, but doesn't yet have any article created, the app
 Regardless of how users open the app, the available interaction features depend on whether the user is the page owner. Page owners can move page blocks around with drag-and-drop (or hold-tap to activate on mobile). Clicking/tapping on the blocks, even interactive elements, opens the block editor activity for the owner. The owner also has access to the "New Block" button, which toggles a menu of new blocks to add to the page. Dragging blocks from this menu allows users to drop them onto the page.
 
 Users can use the WebApp's back button to return to the previous activity or close any opened menus. The app provides automatic page saving upon any change, such as moving blocks or editing their properties.
+
+## Mobile Scrolling Issue
+
+On the mobile environment, the app is displayed as a pop-up that can slide in and out. Users can control its visible part by swiping. However, swiping up and down is also involved in scrolling the web view page contents. The official Telegram Android client handles this discrepancy quite well, but only when scrolling the document root element (i.e., `html`). When it comes to the **nested scrolling containers**, the client sometimes falsely interprets a scroll-up gesture as an attempt to minimize the widget popup. Since our app utilizes nested scrolling, it is affected by this client bug.
+
+To mitigate this issue, we have implemented a fallback solution that fixes the scrolling behavior but comes at the cost of a few UI and UX downgrades, including:
+- Reduced scrollbar aesthetics on desktop
+- Disabled drag autoscroll down
+- Possible shifting of scroll position when navigating back (not preserving the user's previous position)
+
+The app provides you with the flexibility to configure whether this fallback solution should apply. You can enable the fallback within the `.env` file by setting the variables `USE_ROOT_SCROLL_DESKTOP` and/or `USE_ROOT_SCROLL_MOBILE` to `True`.
 
 ## API Reference
 
