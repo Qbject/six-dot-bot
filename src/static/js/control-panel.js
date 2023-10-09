@@ -86,8 +86,14 @@ export class ControlPanel {
 			delay: 300,
 			delayOnTouchOnly: true,
 			draggable: ".block", // avoid grabbing titles
-			onStart: () => this.toggleMenu("blockCatalog"),
-			onEnd: () => this.app.router.curActivity.save(),
+			onStart: () => {
+				this.toggleMenu("blockCatalog");
+				this.app.setDragActive(true);
+			},
+			onEnd: () => {
+				this.app.router.curActivity.save();
+				this.app.setDragActive(false);
+			},
 		});
 	}
 
@@ -145,22 +151,28 @@ export class ControlPanel {
 			path: "/lottie/delete.json",
 		});
 
-		const handleDragEvent = event => {
-			const dragActive = event.type === "dragenter";
-			deleteAreaElement.classList.toggle("active", dragActive);
-			dragActive ? this.blockDeleteAnimation.goToAndPlay(0, true) :
-				this.blockDeleteAnimation.goToAndStop(0, true)
-		}
+		// showing interactive fedback when user is going
+		// to drop block to delete area
+		this.deleteAreaObserver = new MutationObserver((mutationsList) => {
+			for (const mutation of mutationsList) {
+				if (mutation.addedNodes.length > 0) {
+					deleteAreaElement.classList.add("active");
+					this.blockDeleteAnimation.goToAndPlay(0, true);
+				}
+				if (mutation.removedNodes.length > 0) {
+					deleteAreaElement.classList.remove("active");
+					this.blockDeleteAnimation.goToAndStop(0, true);
+				}
+			}
+		});
 
-		const eventTypes = ["dragenter", "dragend", "dragleave", "drop"];
-		eventTypes.map(eventType =>
-			receiverElement.addEventListener(eventType, handleDragEvent));
+		this.deleteAreaObserver.observe(receiverElement, { childList: true });
 
 		this.blockDeleteSortable = new Sortable(receiverElement, {
 			group: "editablePage",
 			delay: 300,
 			delayOnTouchOnly: true,
-			onAdd: event => event.item.remove()
+			onAdd: event => event.item.remove(),
 		});
 	}
 

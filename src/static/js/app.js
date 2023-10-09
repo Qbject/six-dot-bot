@@ -19,6 +19,7 @@ class App {
 
 		window.Telegram.WebApp.BackButton.onClick(() => this.goBack());
 
+		// handling navigation
 		this.router.addCallback("activityChange", () => {
 			const backBtn = window.Telegram.WebApp.BackButton
 			this.router.stack.length > 1 ?
@@ -26,20 +27,6 @@ class App {
 
 			this.updateControlPanel()
 		});
-
-		const handleDrag = event => {
-			if (event.type === "dragstart") {
-				if (event.target.classList.contains("block")) {
-					this.setDragActive(true);
-				}
-			} else {
-				this.setDragActive(false);
-			}
-		}
-
-		this.appElement.addEventListener("dragstart", handleDrag);
-		this.appElement.addEventListener("dragend", handleDrag);
-		this.appElement.addEventListener("drop", handleDrag);
 
 		// capturing link clicks to prevent links being opened in webview
 		this.appElement.addEventListener("click", event => {
@@ -85,15 +72,21 @@ class App {
 			this.updateControlPanel());
 	}
 
+	connectPageActivity(activity) {
+		// extra setup is needed before adding any page activity
+		activity.addCallback("blockEdit", block => {
+			this.router.pushActivity(new BlockEditorActivity(block));
+		});
+		activity.addCallback("dragStart", () => this.setDragActive(true));
+		activity.addCallback("dragEnd", () => this.setDragActive(false));
+	}
+
 	async openPage(pageId, appearInstantly) {
 		if (pageId) {
 			const pageResp = await callAPI("GET", `pages/${pageId}`);
 			const activity = await this.getActivityFromResp(pageResp);
+			this.connectPageActivity(activity);
 			this.router.pushActivity(activity, appearInstantly);
-
-			activity.addCallback("blockEdit", block => {
-				this.router.pushActivity(new BlockEditorActivity(block));
-			});
 
 			return;
 		}
@@ -113,12 +106,8 @@ class App {
 	async createNewPage(onboarding = false, appearInstantly = false) {
 		const pageResp = await callAPI("POST", "pages", { onboarding });
 		const activity = await this.getActivityFromResp(pageResp);
+		this.connectPageActivity(activity);
 		this.router.pushActivity(activity, appearInstantly);
-
-		// TODO: deduplicate
-		activity.addCallback("blockEdit", block => {
-			this.router.pushActivity(new BlockEditorActivity(block));
-		});
 
 		// rendering item behind the scenes after the new page appear animated
 		await sleep(200);

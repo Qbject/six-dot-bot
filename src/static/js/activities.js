@@ -39,7 +39,7 @@ export class PageActivity extends EventEmitter {
 		this.activityElement = build("div.activity.page");
 		if (this.editable) this.activityElement.classList.add("editable");
 		this.contentElement = build("div.content", this.activityElement);
-		
+
 		this.blocksContainer = build("div.blocksContainer",
 			this.contentElement);
 		this.settingsModal = build("div.settingsModal", this.activityElement);
@@ -71,10 +71,14 @@ export class PageActivity extends EventEmitter {
 						event.item.replaceWith(block.blockElement);
 					}
 
-					this.setupDragNDrop(); // this method will add
-					// a new sortable to the block if needed
+					this.setupDragNDrop(); // this method will initialize
+					// a new sortable for the block if needed
 				},
-				onEnd: () => this.save()
+				onStart: () => this.triggerEvent("dragStart"),
+				onEnd: () => {
+					this.triggerEvent("dragEnd");
+					this.save();
+				},
 			});
 		}
 
@@ -202,10 +206,10 @@ export class HomeActivity extends EventEmitter {
 	build() {
 		this.activityElement = build("div.activity.home");
 		this.contentElement = build("div.content", this.activityElement);
-		
+
 		this.titleElement = build("h1", this.contentElement);
 		this.titleElement.textContent = "My Pages";
-		
+
 		this.pageList = build("ul.pageList", this.contentElement);
 		this.pageList.dataset.longPressDelay = "500";
 
