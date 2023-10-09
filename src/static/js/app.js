@@ -161,4 +161,6 @@ class App {
 	window.app.setup();
 	document.body.append(window.app.appElement);
 	window.app.openPage(startPage, true);
+	
+	Telegram.WebApp.expand();
 })();
