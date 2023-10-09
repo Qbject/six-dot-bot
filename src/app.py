@@ -37,9 +37,9 @@ def handle_tg_update():
 
 Here's what I can do for you:
 
-📝 Create Rich Pages: I can help you create visually appealing pages using the power of MiniApps. You can easily design and edit your own interactive pages with a simple drag-and-drop interface.
+📝 Create Rich Pages: I can help you create visually appealing pages using the power of Mini Apps. You can easily design and edit your own interactive pages with a simple drag-and-drop interface.
 
-📤 Share Pages: Once you've created your masterpiece, I'll generate link that open your MiniApp page. Share these links with your friends on Telegram and amaze them with your creativity!
+📤 Share Pages: Once you've created your masterpiece, I'll generate link that open your Mini App page. Share these links with your friends on Telegram and amaze them with your creativity!
 
 🚀 Let's get started! To create a new page, just press the button below and I'll guide you through the process.
 

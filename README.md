@@ -16,9 +16,9 @@
 
 ## About
 
-ContentEditBot is a versatile Telegram bot that harnesses the power of MiniApps, enabling users to effortlessly create their own MiniApp pages without any programming knowledge and share them within Telegram for easy access by other Telegram users. While the concept is simple — users create pages and populate them with content — the possibilities are limitless. For instance, a small shopkeeper can create a page to promote their merchandise, showcase products with images and descriptions, and provide PM link for potential customers. ContentEditBot makes all of this possible, offering a user-friendly WebApp interface with formatting capabilities that surpass regular Telegram messages.
+ContentEditBot is a versatile Telegram bot that harnesses the power of Mini Apps, enabling users to effortlessly create their own Mini App pages without any programming knowledge and share them within Telegram for easy access by other Telegram users. While the concept is simple — users create pages and populate them with content — the possibilities are limitless. For instance, a small shopkeeper can create a page to promote their merchandise, showcase products with images and descriptions, and provide PM link for potential customers. ContentEditBot makes all of this possible, offering a user-friendly WebApp interface with formatting capabilities that surpass regular Telegram messages.
 
-This app was developed by a single person as a submission for the Telegram MiniApp contest, where it had to be created from scratch in about two weeks. As a result, it may have some rough edges and is considered somewhat unpolished.
+This app was developed by a single person as a submission for the Telegram Mini App contest, where it had to be created from scratch in about two weeks. As a result, it may have some rough edges and is considered somewhat unpolished.
 
 ## Features
 
@@ -65,7 +65,7 @@ Running the bot locally is useful for development and testing purposes. Ensure y
 7. Configure the `.env` file by following the instructions in the [Configuration](#configuration) section. Use your white IP (with https://) or the https link given by the tunneling software as the `APP_HOST` environment variable.
 8. Start the app by executing: `python src/app.py --init --run`
 9. Now, you can use your existing domain to proceed with BotFather configuration.
-10. Visit your site domain to ensure it doesn't show any errors. It's normal for it to appear as an empty page since it is intended to function as a MiniApp.
+10. Visit your site domain to ensure it doesn't show any errors. It's normal for it to appear as an empty page since it is intended to function as a Mini App.
 
 ### Hosting Setup
 
@@ -92,7 +92,7 @@ Here is a detailed guide on how to install the app on PythonAnywhere hosting (fu
 14. Replace `from bottle_app import application` with `from app import application` and save the file.
 15. Go back to the "Web" tab and reload the site.
 16. Now, you can use your existing domain to proceed with BotFather configuration.
-17. Visit your site domain to ensure it doesn't show any errors. It's normal for it to appear as an empty page since it is intended to function as a MiniApp.
+17. Visit your site domain to ensure it doesn't show any errors. It's normal for it to appear as an empty page since it is intended to function as a Mini App.
 
 ### Configuration
 
@@ -145,7 +145,7 @@ It is recommended to disable these blocks or upgrade the file handling logic for
 
 ## Behavior and Usage
 
-As a chat bot, ContentEditBot can only respond to the `/start` command with a greeting and an invitation to open the MiniApp. Users can access the MiniApp in two ways:
+As a chat bot, ContentEditBot can only respond to the `/start` command with a greeting and an invitation to open the Mini App. Users can access the Mini App in two ways:
 
 1. Direct WebApp link: Opens the home activity, allowing users to view their own pages, open, and edit them.
 2. WebApp link to a specific page: Users can copy the page link and share it with others. Opening this link takes users directly to the page, with no way to return to the home activity.

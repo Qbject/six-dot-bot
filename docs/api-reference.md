@@ -4,7 +4,7 @@
 
 1. [Introduction](#introduction)
 
-2. [MiniApp Fundamentals](#miniapp-fundamentals)
+2. [Mini App Fundamentals](#mini-app-fundamentals)
 
 3. [Main Concepts](#main-concepts)
 	- [Page](#page)
@@ -19,7 +19,7 @@
 	- [Server](#server)
 	- [Client](#client)
 		- [Third-party libraries](#third-party-libraries)
-		- [Main MiniApp code](#main-miniapp-code)
+		- [Main Mini App code](#main-mini-app-code)
 		- [Styles](#styles)
 
 5. [Client Architecture](#client-architecture)
@@ -53,13 +53,13 @@
 
 This page delves into the inner workings of ContentEditBot.
 
-## MiniApp Fundamentals
+## Mini App Fundamentals
 
-Telegram MiniApps, also known as WebApps, are the core technology enabling the functionality of this project. The concept behind MiniApps is straightforward but crucial to grasp.
+Telegram Mini Apps, also known as WebApps, are the core technology enabling the functionality of this project. The concept behind Mini Apps is straightforward but crucial to grasp.
 
-Telegram MiniApps do not operate in isolation; they extend the capabilities of Telegram bots. There are various ways a bot can guide users to access a MiniApp. In short, Telegram bot provides users with special buttons or links that allow them to access the MiniApp (for more information, refer to the [official documentation](https://core.telegram.org/bots/webapps#implementing-mini-apps)).
+Telegram Mini Apps do not operate in isolation; they extend the capabilities of Telegram bots. There are various ways a bot can guide users to access a Mini App. In short, Telegram bot provides users with special buttons or links that allow them to access the Mini App (for more information, refer to the [official documentation](https://core.telegram.org/bots/webapps#implementing-mini-apps)).
 
-When a user opens a MiniApp, the Telegram client creates a new window containing a **webview**. Think of a webview as a browser within the Telegram client, devoid of the usual browser UI elements, providing only the web page itself. The development of this web page is the essence of MiniApp development. This web page exhibits some differences from typical web pages, such as offering several methods and properties for interacting with the Telegram client, which are not available on regular web pages. These interactions include:
+When a user opens a Mini App, the Telegram client creates a new window containing a **webview**. Think of a webview as a browser within the Telegram client, devoid of the usual browser UI elements, providing only the web page itself. The development of this web page is the essence of Mini App development. This web page exhibits some differences from typical web pages, such as offering several methods and properties for interacting with the Telegram client, which are not available on regular web pages. These interactions include:
 
 - Accessing user information
 - Retrieving user theme parameters (to seamlessly blend with the Telegram UI)
@@ -67,7 +67,7 @@ When a user opens a MiniApp, the Telegram client creates a new window containing
 - Displaying native popups
 - And much more
 
-For more comprehensive MiniApp documentation, refer to the [official Telegram documentation](https://core.telegram.org/bots/webapps).
+For more comprehensive Mini App documentation, refer to the [official Telegram documentation](https://core.telegram.org/bots/webapps).
 
 ## Main Concepts
 
@@ -144,7 +144,7 @@ The server is written in Python and utilizes the [Bottle framework](https://bott
 
 1. Hosting the static front-end, which is stored under the `src/static` directory.
 2. Managing Telegram updates and interactions with the Telegram API.
-3. Providing a REST API that allows the client to interact with persistent database records. This also includes validating Telegram MiniApp `initData` since the client blindly trusts it.
+3. Providing a REST API that allows the client to interact with persistent database records. This also includes validating Telegram Mini App `initData` since the client blindly trusts it.
 4. Exposing certain environment variables to the client as a JavaScript module at `/js/config.js`.
 
 The entry file for the server is `src/app.py`, which exports the `application` object for use when connecting with WSGI interfaces. It can also be run in CLI mode, with behavior defined by the following flags:
@@ -168,7 +168,7 @@ The client-side files are housed within the `src/static` directory. The entry po
 The application leverages a selection of third-party libraries to provide robust solutions for specific challenges:
 
 - [long-press-event](https://github.com/john-doherty/long-press-event): This library is essential for detecting long touches on mobile devices. Implementing this reliably with DOM-provided methods can be tricky, making this well-maintained, time-tested solution invaluable. As it isn't widely available on common content delivery networks (CDNs), it is hosted within the project.
-- `telegram-web-app.js`: This library furnishes an official API for incorporating MiniApp features.
+- `telegram-web-app.js`: This library furnishes an official API for incorporating Mini App features.
 - [SortableJS](https://github.com/SortableJS/Sortable): A highly effective library that manages block drag-and-drop functionality.
 - [marked](https://github.com/markedjs/marked): Another excellent library that facilitates the conversion of markdown to HTML.
 - [DOMPurify](https://github.com/cure53/DOMPurify): This library serves as a guardian against XSS attacks by sanitizing marked output.
@@ -176,9 +176,9 @@ The application leverages a selection of third-party libraries to provide robust
 - [rippleJS](https://github.com/samthor/rippleJS): This library enables the addition of a ripple effect to interactive elements, enhancing visual feedback.
 - [Highlight.js](https://github.com/highlightjs/highlight.js): The library handling a syntax highlighting for code blocks
 
-#### Main MiniApp Code
+#### Main Mini App Code
 
-The code responsible for displaying a MiniApp resides in the `src/static/js` directory. The entry point is the `app.js` file, which defines the `App` class and initiates the app's initialization process. The project employs ES imports to load other necessary modules.
+The code responsible for displaying a Mini App resides in the `src/static/js` directory. The entry point is the `app.js` file, which defines the `App` class and initiates the app's initialization process. The project employs ES imports to load other necessary modules.
 
 #### Styles
 
@@ -261,7 +261,7 @@ Methods:
 #### `PageActivity` Interface
 
 Read-only properties:
-- `initData`: An object storing raw data retrieved from the database row. This should not be confused with Telegram MiniApp's `initData`.
+- `initData`: An object storing raw data retrieved from the database row. This should not be confused with Telegram Mini App's `initData`.
 - `schema`: The schema of the current page.
 - `id`: The ID of the page.
 - `editable`: A boolean value indicating whether the page is in edit mode.
