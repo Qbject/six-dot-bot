@@ -197,6 +197,7 @@ export class HomeActivity extends EventEmitter {
 		this.userPages = userPages;
 		this.selectMode = false;
 		this.selectedPages = [];
+		this.longPressDelay = 500;
 	}
 
 	setup() {
@@ -211,7 +212,7 @@ export class HomeActivity extends EventEmitter {
 		this.titleElement.textContent = "My Pages";
 
 		this.pageList = build("ul.pageList", this.contentElement);
-		this.pageList.dataset.longPressDelay = "500";
+		this.pageList.dataset.longPressDelay = this.longPressDelay;
 
 		for (const pageData of this.userPages) {
 			this.pageList.append(this.buildPageItem(pageData));
@@ -227,9 +228,18 @@ export class HomeActivity extends EventEmitter {
 		});
 
 		if (isTouchDevice()) {
+			let lastViewportChange = 0;
+			// TODO: cleanup
+			Telegram.WebApp.onEvent("viewportChanged", () =>
+				lastViewportChange = Date.now())
+
 			this.pageList.addEventListener("long-press", event => {
 				const itemElement = event.target.closest(".pageItem");
 				if (!itemElement) return;
+
+				// preventing false triggering during viewport change gesture
+				if (Date.now() - lastViewportChange < this.longPressDelay)
+					return;
 
 				this.onItemInteraction(itemElement.dataset.pageId, true);
 			});

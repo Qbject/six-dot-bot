@@ -39,7 +39,7 @@
 	transition-duration: 150ms;
 	transition-timing-function: ease-out;
 	height: var(--visible-height);
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 .activity.active {
@@ -59,12 +59,12 @@
 
 .activities.useRootScroll .activity {
 	height: auto;
-	overflow-y: auto;
 }
 
 /* page activity */
 
 .activity.page.editable>.content>.blocksContainer {
+	box-sizing: border-box;
 	/* extra space for more comfortable editing */
 	padding-bottom: 40vh;
 }
@@ -74,10 +74,6 @@
 }
 
 /* home activity */
-
-.activity.home h1 {
-	margin-top: 8px;
-}
 
 .activity.home .pageItem {
 	position: relative;

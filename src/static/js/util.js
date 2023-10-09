@@ -56,6 +56,11 @@ export function removeArrayItem(array, item) {
 }
 
 export function tgConfirm(message) {
+	// There's currently seems to be a bug with telegram Windows client
+	// preventing to invoke `callback` parameter and onEvent("popupClosed" ...)
+	// when user closes the popup with ESC button or X button.
+	// So the promise won't resolve in this case
+
 	return new Promise(resolve => {
 		window.Telegram.WebApp.showConfirm(message, resolve);
 	});

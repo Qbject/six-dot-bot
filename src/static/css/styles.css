@@ -33,10 +33,6 @@ h6 {
 	margin-bottom: 16px;
 }
 
-:where(h1, h2, h3, h4, h5, h6):first-child {
-	margin-top: 8px;
-}
-
 h1 {
 	padding-bottom: .3em;
 	border-bottom: 1px solid var(--tg-theme-hint-color);
@@ -64,6 +60,12 @@ h5 {
 h6 {
 	font-size: .85em;
 	color: var(--tg-theme-hint-color);
+}
+
+:where(h1, h2, h3, h4, h5, h6):first-child {
+	/* prevent margin "bleeding" through the parent element */
+	margin-top: 0;
+	padding-top: 8px;
 }
 
 a {
