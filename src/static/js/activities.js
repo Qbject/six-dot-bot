@@ -74,11 +74,17 @@ export class PageActivity extends EventEmitter {
 					this.setupDragNDrop(); // this method will initialize
 					// a new sortable for the block if needed
 				},
-				onStart: () => this.triggerEvent("dragStart"),
+				onStart: () => {
+					Telegram.WebApp.HapticFeedback.impactOccurred("soft");
+					this.triggerEvent("dragStart")
+				},
 				onEnd: () => {
 					this.triggerEvent("dragEnd");
 					this.save();
 				},
+				onChange: () => {
+					Telegram.WebApp.HapticFeedback.impactOccurred("light");
+				}
 			});
 		}
 
@@ -241,6 +247,7 @@ export class HomeActivity extends EventEmitter {
 				if (Date.now() - lastViewportChange < this.longPressDelay)
 					return;
 
+				Telegram.WebApp.HapticFeedback.impactOccurred("medium");
 				this.onItemInteraction(itemElement.dataset.pageId, true);
 			});
 		}
@@ -290,6 +297,7 @@ export class HomeActivity extends EventEmitter {
 		}
 
 		this.triggerEvent("selectionChange");
+		Telegram.WebApp.HapticFeedback.selectionChanged();
 	}
 
 	updatePageitems() {
@@ -333,6 +341,8 @@ export class HomeActivity extends EventEmitter {
 		this.selectedPages = [];
 		this.updateSelectedPages();
 		this.updatePageitems();
+
+		Telegram.WebApp.HapticFeedback.notificationOccurred("success");
 	}
 
 	addNewPage(pageData) {

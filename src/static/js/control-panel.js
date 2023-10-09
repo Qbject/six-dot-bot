@@ -94,6 +94,9 @@ export class ControlPanel {
 				this.app.router.curActivity.save();
 				this.app.setDragActive(false);
 			},
+			onStart: () => {
+				Telegram.WebApp.HapticFeedback.impactOccurred("soft");
+			},
 		});
 	}
 
@@ -172,7 +175,10 @@ export class ControlPanel {
 			group: "editablePage",
 			delay: 300,
 			delayOnTouchOnly: true,
-			onAdd: event => event.item.remove(),
+			onAdd: event => {
+				Telegram.WebApp.HapticFeedback.notificationOccurred("success");
+				event.item.remove();
+			},
 		});
 	}
 
