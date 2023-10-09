@@ -54,7 +54,7 @@ class App {
 		this.controlPanel = new ControlPanel(this);
 		this.controlPanel.setup();
 		this.appElement.append(this.controlPanel.panelElement);
-		
+
 		this.router = new ActivityRouter(this.isExpandable ?
 			config.use_root_scroll_mobile : config.use_root_scroll_desktop);
 		this.router.setup();
@@ -106,7 +106,7 @@ class App {
 
 		if (!userPages.length) {
 			// if user got 0 pages, automatically showing the onboarding page
-			this.createNewPage(true, true);
+			await this.createNewPage(true, true);
 		}
 	}
 
@@ -116,9 +116,11 @@ class App {
 		this.connectPageActivity(activity);
 		this.router.pushActivity(activity, appearInstantly);
 
-		// rendering item behind the scenes after the new page appear animated
-		await sleep(200);
-		this.home.addNewPage(activity.initData);
+		if (!appearInstantly) {
+			// rendering item behind the scenes after the page appear animated
+			await sleep(200);
+			this.home.addNewPage(activity.initData);
+		}
 	}
 
 	goBack() {
@@ -160,7 +162,6 @@ class App {
 	window.app = new App();
 	window.app.setup();
 	document.body.append(window.app.appElement);
-	window.app.openPage(startPage, true);
-	
-	Telegram.WebApp.expand();
+	window.app.openPage(startPage, true)
+		.then(() => Telegram.WebApp.expand());
 })();
