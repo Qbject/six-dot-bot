@@ -1,17 +1,11 @@
 /* common */
 
-@keyframes blockJustEdited {
-	0% {
-		background-color: var(--highlight-color);
-	}
-
-	100% {
-		background-color: auto;
-	}
+.block.justEdited {
+	animation: highlight_ 1.5s ease-in;
 }
 
-.block.justEdited {
-	animation: blockJustEdited 1.5s ease-in;
+.page.editable .block:hover:not(:has(.block:hover)) {
+	background-color: var(--highlight-color);
 }
 
 .block.preview .blocksContainer::before {
@@ -27,9 +21,10 @@
 
 /* spoiler */
 
-.block.spoiler>details>.body>.blocksContainer {
-	min-height: 50px;
-	background-color: red;
+.settings.spoiler h2 {
+	margin-bottom: 8px;
+	padding-bottom: 0;
+	border-bottom: 0;
 }
 
 /* grid */
@@ -49,7 +44,7 @@
 	opacity: .2;
 }
 
-.block.grid.preview .blocksContainer::after {
+.page.editable .block.grid .blocksContainer::after {
 	content: "";
 	display: block;
 	box-sizing: border-box;

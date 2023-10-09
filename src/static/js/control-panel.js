@@ -59,7 +59,7 @@ export class ControlPanel {
 		const contentElement = build("div.content", blockCatalogElement);
 		const titleElement = build("h2", contentElement);
 		titleElement.textContent = "Add New Block";
-		const dragHint = build("p.dragHint", contentElement);
+		const dragHint = build("p.hintAddin", contentElement);
 		dragHint.textContent = "Start dragging a block to add it on the page";
 		const blocksListElement = build("div.blocks", contentElement);
 

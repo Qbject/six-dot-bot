@@ -31,12 +31,13 @@ export default class MarkdownBlock extends Block {
 		hintElement.append(" if you're new to markdown");
 
 		this.textInput = build("textarea", this.settingsElement);
-		this.textInput.placehilder = "Start typing here";
+		this.textInput.placeholder = "Start typing here";
 		this.textInput.value = this.props.text;
 
 		const adjustHeight = () => {
-			this.textInput.style.height = "auto";
-			this.textInput.style.height = this.textInput.scrollHeight + "px";
+			this.textInput.style.height = "0";
+			this.textInput.style.height = this.textInput.scrollHeight
+				+ 2 + "px";
 		}
 
 		this.textInput.addEventListener("input", adjustHeight);

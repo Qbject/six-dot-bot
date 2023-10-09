@@ -88,7 +88,7 @@ h5,
 h6 {
 	font-weight: 600;
 	line-height: 1.25;
-	margin: var(--global-margin);
+	margin: var(--vertical-page-padding);
 	margin-top: 24px;
 	margin-bottom: 16px;
 }
@@ -144,7 +144,7 @@ ul,
 table,
 hr,
 blockquote {
-	margin: var(--global-margin);
+	margin: var(--vertical-page-padding);
 }
 
 img {
@@ -165,7 +165,7 @@ hr {
 }
 
 .hintAddin {
-	padding: 8px 10px;
+	padding: 8px var(--vertical-page-padding);
 	color: var(--tg-theme-hint-color);
 	font-size: .85rem;
 }
@@ -246,16 +246,99 @@ ul.taskList>li {
 	gap: 5px;
 }
 
+input,
 textarea {
 	box-sizing: border-box;
-	width: 100%;
+	position: relative;
+	width: calc(100% - var(--vertical-page-padding) * 2);
 	border: 0;
-	padding: 15px 10px;
-	margin: 0;
+	border-bottom: 2px solid var(--tg-theme-secondary-bg-color);
+	margin: 10px var(--vertical-page-padding);
+	padding: 6px 0;
 	background-color: var(--tg-theme-bg-color);
 	color: var(--tg-theme-text-color);
 	font: inherit;
 	resize: none;
 	outline: none;
 	display: block;
+	transition: border-bottom-color 150ms ease-out;
+}
+
+input:focus,
+textarea:focus {
+	border-bottom-color: var(--tg-theme-button-color);
+}
+
+::placeholder {
+	color: var(--tg-theme-hint-color);
+	opacity: 1;
+}
+
+::-ms-input-placeholder {
+	color: var(--tg-theme-hint-color);
+}
+
+label.checkboxSection {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: var(--vertical-page-padding);
+	padding: 15px var(--vertical-page-padding);
+	align-items: center;
+}
+
+@media (hover: hover) {
+	label.checkboxSection {
+		cursor: pointer;
+	}
+}
+
+
+.spoiler {
+	padding-bottom: var(--vertical-page-padding);
+	overflow: hidden;
+}
+
+.spoiler>.summary {
+	position: relative;
+	display: grid;
+	grid-template-columns: auto auto;
+	justify-content: start;
+	align-items: center;
+	gap: .25em;
+	padding: var(--vertical-page-padding);
+	font-weight: 600;
+	font-size: 1em;
+	border-bottom: 1px dashed var(--tg-theme-hint-color);
+}
+
+.spoiler>.summary>.icon {
+	width: 1.25em;
+	height: 1.25em;
+	transition: transform 100ms ease;
+}
+
+.spoiler[data-open="true"]>.summary>.icon {
+	transform: rotate(90deg);
+}
+
+@keyframes spoilerBodyShow {
+	0% {
+		opacity: 0;
+		transform: translateY(-20%);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0%);
+	}
+}
+
+.spoiler>.body {
+	height: 0;
+	overflow: hidden;
+}
+
+.spoiler[data-open="true"]>.body {
+	height: auto;
+	animation: spoilerBodyShow 250ms ease;
 }

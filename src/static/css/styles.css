@@ -8,7 +8,7 @@
 
 :root {
 	font-size: 16px;
-	--global-margin: 10px;
+	--vertical-page-padding: 16px;
 }
 
 body {
@@ -20,4 +20,14 @@ body {
 #app {
 	position: relative;
 	user-select: none;
+}
+
+@keyframes highlight_ {
+	0% {
+		background-color: var(--highlight-color);
+	}
+
+	100% {
+		background-color: auto;
+	}
 }

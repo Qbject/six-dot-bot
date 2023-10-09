@@ -1,4 +1,4 @@
-import { build, callAPI, hexToRGBA, sleep } from "./util.js";
+import { blendColors, build, callAPI, sleep } from "./util.js";
 import { PageActivity, HomeActivity, NotFoundActivity, ErrorActivity, BlockEditorActivity } from "./activities.js";
 import { ControlPanel } from "./control-panel.js";
 import ActivityRouter from "./activity-router.js";
@@ -18,10 +18,16 @@ class App {
 	setup() {
 		this.build();
 
-		// calculating highlight color based on user app theme
-		const textColor = window.Telegram.WebApp.themeParams.text_color;
-		this.appElement.style.setProperty("--highlight-color",
-			hexToRGBA(textColor, .1));
+		// calculating highlight colors based on user app theme
+		const { text_color, bg_color, button_text_color, button_color } =
+			window.Telegram.WebApp.themeParams;
+		const highlightColor = blendColors(text_color, bg_color, .9);
+		const buttonHighlightColor = blendColors(button_text_color,
+			button_color, .9);
+
+		this.appElement.style.setProperty("--highlight-color", highlightColor);
+		this.appElement.style.setProperty("--button-highlight-color",
+			buttonHighlightColor);
 
 		window.Telegram.WebApp.BackButton.onClick(() => this.goBack());
 
@@ -44,6 +50,16 @@ class App {
 			host == "t.me" ?
 				window.Telegram.WebApp.openTelegramLink(clickedLink.href) :
 				window.Telegram.WebApp.openLink(clickedLink.href);
+		});
+
+		// handling custom spoilers
+		this.appElement.addEventListener("click", event => {
+			const clickedSummary = event.target.closest(".spoiler>.summary");
+			if (!clickedSummary) return;
+			
+			const spoilerElement = clickedSummary.parentElement;
+			const isOpen = spoilerElement.dataset.open == "true";
+			spoilerElement.dataset.open = !isOpen;
 		});
 	}
 

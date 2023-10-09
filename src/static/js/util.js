@@ -90,14 +90,28 @@ export function buildCheckbox(classes, name, parent = null) {
 }
 
 export function isTouchDevice() {
-	return ("ontouchstart" in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+	return ("ontouchstart" in window) || (navigator.MaxTouchPoints > 0)
+		|| (navigator.msMaxTouchPoints > 0);
 }
 
-export function hexToRGBA(hex, alpha) {
-	const r = parseInt(hex.slice(1, 3), 16);
-	const g = parseInt(hex.slice(3, 5), 16);
-	const b = parseInt(hex.slice(5, 7), 16);
-	return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+export function blendColors(hexColor1, hexColor2, ratio) {
+	const color1 = hexToRgb(hexColor1);
+	const color2 = hexToRgb(hexColor2);
+
+	const blendedColor = color1.map((channel, index) =>
+		Math.round(channel * (1 - ratio) + color2[index] * ratio)
+	);
+
+	return `#${blendedColor.map(c =>
+		c.toString(16).padStart(2, "0")).join("")}`;
+}
+
+export function hexToRgb(hex) {
+	return [
+		parseInt(hex.slice(1, 3), 16),
+		parseInt(hex.slice(3, 5), 16),
+		parseInt(hex.slice(5, 7), 16)
+	];
 }
 
 export function doMounted(element, callback) {

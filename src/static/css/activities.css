@@ -87,7 +87,7 @@
 	grid-template-columns: minmax(0, 1fr) auto;
 	box-sizing: border-box;
 	height: 58px;
-	padding: 10px;
+	padding: 10px var(--vertical-page-padding);
 	overflow: hidden;
 	gap: 25px;
 	transition: height 300ms ease 100ms, padding 300ms ease 100ms, transform 100ms ease-out, opacity 100ms ease-out, background-color 200ms ease;
@@ -116,7 +116,7 @@
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-	margin-bottom: 5px;
+	margin-bottom: 4px;
 }
 
 .activity.home .pageItem .pageTitle.unnamed {
@@ -164,7 +164,7 @@
 }
 
 .activity.home .pageItem .rippleJS {
-	opacity: .3;
+	opacity: .2;
 }
 
 /* blockEditor activity */
