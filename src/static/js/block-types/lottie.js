@@ -22,6 +22,8 @@ export default class LottieBlock extends Block {
 	}
 
 	buildSettings() {
+		this.settingsElement.classList.add("lottie");
+		
 		this.previewElement = build("div.preview", this.settingsElement);
 
 		this.fileInput = build("input", this.settingsElement);

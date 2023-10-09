@@ -216,6 +216,7 @@ export class HomeActivity extends EventEmitter {
 
 		this.titleElement = build("h1", this.contentElement);
 		this.titleElement.textContent = "My Pages";
+		build("hr", this.contentElement);
 
 		this.pageList = build("ul.pageList", this.contentElement);
 		this.pageList.dataset.longPressDelay = this.longPressDelay;

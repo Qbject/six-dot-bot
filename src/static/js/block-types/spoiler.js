@@ -22,6 +22,8 @@ export default class SpoilerBlock extends Block {
 	}
 
 	buildSettings() {
+		this.settingsElement.classList.add("spoiler");
+		
 		this.textInput = build("input", this.settingsElement);
 		this.textInput.value = this.props.headText;
 

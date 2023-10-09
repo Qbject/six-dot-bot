@@ -1,5 +1,5 @@
 import Block from "../block.js";
-import { build, buildCheckbox } from "../util.js";
+import { build, buildCheckbox, doMounted } from "../util.js";
 
 export default class MarkdownBlock extends Block {
 	static name = "Markdown Section";
@@ -16,8 +16,32 @@ export default class MarkdownBlock extends Block {
 	}
 
 	buildSettings() {
+		this.settingsElement.classList.add("markdown");
+
+		const titleElement = build("h2", this.settingsElement);
+		titleElement.textContent = "Edit Markdown Section";
+
+		const hintElement = build("div.hintAddin", this.settingsElement);
+		hintElement.textContent = "Markdown includes a lot of useful " +
+			"formatting features including images, tables, headings, lists," +
+			" links and more. Check out the ";
+		const referenceLink = build("a", hintElement);
+		referenceLink.href = "https://www.markdownguide.org"
+		referenceLink.textContent = "guide"
+		hintElement.append(" if you're new to markdown");
+
 		this.textInput = build("textarea", this.settingsElement);
+		this.textInput.placehilder = "Start typing here";
 		this.textInput.value = this.props.text;
+
+		const adjustHeight = () => {
+			this.textInput.style.height = "auto";
+			this.textInput.style.height = this.textInput.scrollHeight + "px";
+		}
+
+		this.textInput.addEventListener("input", adjustHeight);
+		// scrollHeight isn't available if element isn't mounted
+		doMounted(this.textInput, adjustHeight);
 	}
 
 	async readSettings() {

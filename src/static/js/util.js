@@ -99,3 +99,31 @@ export function hexToRGBA(hex, alpha) {
 	const b = parseInt(hex.slice(5, 7), 16);
 	return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
+
+export function doMounted(element, callback) {
+	// temporarily adds DOM element to the document tree and executes a
+	// callback. Useful for interacting with DOM properties that is not
+	// addessible when element isn't mounted
+
+	const prevParent = element.parentNode;
+	const prevSibling = element.previousSibling;
+
+	element.remove();
+
+	const tmpContainer = build("div", document.body);
+	tmpContainer.style.position = "fixed";
+	tmpContainer.style.width = "100vw";
+	tmpContainer.style.top = "0";
+	tmpContainer.style.left = "100vw";
+	tmpContainer.append(element);
+
+	callback(element);
+
+	if (prevParent) {
+		prevSibling ?
+			prevParent.insertBefore(element, prevSibling.nextSibling) :
+			prevParent.insertBefore(element, prevParent.firstChild);
+	}
+
+	tmpContainer.remove();
+}

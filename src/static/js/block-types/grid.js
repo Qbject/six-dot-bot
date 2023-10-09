@@ -19,6 +19,8 @@ export default class GridBlock extends Block {
 	}
 
 	buildSettings() {
+		this.settingsElement.classList.add("grid");
+		
 		this.countInput = build("input", this.settingsElement);
 		this.countInput.type = "number";
 		this.countInput.value = this.props.columnsCount;

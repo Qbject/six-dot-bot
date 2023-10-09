@@ -18,6 +18,8 @@ export default class ImagBlock extends Block {
 	}
 
 	buildSettings() {
+		this.settingsElement.classList.add("image");
+		
 		this.previewElement = build("img.preview", this.settingsElement);
 		this.previewElement.alt = "";
 

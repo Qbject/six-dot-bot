@@ -32,7 +32,7 @@
 	grid-row-end: 2;
 	height: 100%;
 	width: 100%;
-	background-color: var(--tg-theme-secondary-bg-color);
+	background-color: var(--tg-theme-bg-color);
 	z-index: 1;
 	transform: translateX(-10%);
 	transition-property: opacity, transform;
@@ -70,18 +70,24 @@
 }
 
 .activity.page>.content>.blocksContainer {
+	/* making whe whole visible page a valid drop area */
 	min-height: var(--visible-height);
 }
 
 /* home activity */
+
+.activity.home h1 {
+	border-bottom: 0;
+	margin-bottom: 0;
+}
 
 .activity.home .pageItem {
 	position: relative;
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) auto;
 	box-sizing: border-box;
-	height: 52px;
-	padding: 7px 16px;
+	height: 58px;
+	padding: 10px;
 	overflow: hidden;
 	gap: 25px;
 	transition: height 300ms ease 100ms, padding 300ms ease 100ms, transform 100ms ease-out, opacity 100ms ease-out, background-color 200ms ease;
@@ -110,7 +116,7 @@
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-	margin-bottom: 8px;
+	margin-bottom: 5px;
 }
 
 .activity.home .pageItem .pageTitle.unnamed {
@@ -159,6 +165,12 @@
 
 .activity.home .pageItem .rippleJS {
 	opacity: .3;
+}
+
+/* blockEditor activity */
+
+.activity.blockEditor .settings {
+	min-height: var(--visible-height);
 }
 
 /* notFound activity */
