@@ -69,9 +69,10 @@ export function tgConfirm(message) {
 export function buildButton(classes, text, parent = null, onClick = null) {
 	const button = build(`button${classes || ""}`, parent);
 	const contentElement = build("div.buttonContent", button);
+	build("span.icon", contentElement);
 	build("div.rippleJS", button);
 
-	contentElement.textContent = text || "";
+	text && contentElement.append(text);
 	if (onClick) button.addEventListener("click", onClick);
 	return button;
 }

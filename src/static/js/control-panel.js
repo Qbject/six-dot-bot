@@ -24,6 +24,13 @@ export class ControlPanel {
 		else
 			this.activeMenu = menuName;
 
+		// TODO: refactor
+		Array.from(this.modesContainer.querySelectorAll("button.pageMenu"))
+			.map(btn => btn.classList.toggle("active",
+				this.activeMenu == "pageMenu"));
+		Array.from(this.modesContainer.querySelectorAll("button.newBlock"))
+			.map(btn => btn.classList.toggle("active",
+				this.activeMenu == "blockCatalog"));
 
 		this.menusContainer.classList.toggle("active", this.activeMenu);
 		switchActiveChild(this.menusContainer, this.activeMenu ?

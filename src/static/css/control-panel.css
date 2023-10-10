@@ -112,6 +112,90 @@
 	opacity: 0;
 }
 
+.controlPanel button.pageMenu .icon,
+.controlPanel button.newBlock .icon {
+	display: inline-block;
+	position: relative;
+	width: 16px;
+	height: 16px;
+	box-sizing: border-box;
+	margin-right: 8px;
+	overflow: hidden;
+	transform: scale(1.15);
+}
+
+.controlPanel button.pageMenu .icon {
+	padding: 7px 0;
+	background-clip: content-box;
+	transition: padding 150ms ease;
+	background-color: var(--tg-theme-text-color);
+}
+
+.controlPanel button.newBlock .icon {
+	transition: transform 150ms ease;
+	transform-origin: center;
+}
+
+.controlPanel button.newBlock.active .icon {
+	transform: scale(1.15) rotate(45deg);
+}
+
+.controlPanel button.pageMenu .icon::before,
+.controlPanel button.pageMenu .icon::after {
+	content: "";
+	display: block;
+	position: absolute;
+	left: 0;
+	transform-origin: 1px;
+	height: 2px;
+	width: 200%;
+	background-color: var(--tg-theme-text-color);
+	transition: transform 150ms ease;
+}
+
+.controlPanel button.pageMenu .icon::before {
+	top: 0;
+}
+
+.controlPanel button.pageMenu .icon::after {
+	bottom: 0;
+}
+
+.controlPanel button.pageMenu.active .icon {
+	padding: 8px 0;
+}
+
+.controlPanel button.pageMenu.active .icon::before {
+	transform: rotate(45deg);
+}
+
+.controlPanel button.pageMenu.active .icon::after {
+	transform: rotate(-45deg);
+}
+
+
+.controlPanel button.newBlock .icon::before,
+.controlPanel button.newBlock .icon::after {
+	content: "";
+	display: block;
+	position: absolute;
+	background-color: var(--tg-theme-text-color);
+}
+
+.controlPanel button.newBlock .icon::before {
+	top: 0;
+	left: calc(50% - 1px);
+	width: 2px;
+	height: 100%;
+}
+
+.controlPanel button.newBlock .icon::after {
+	top: calc(50% - 1px);
+	left: 0;
+	width: 100%;
+	height: 2px;
+}
+
 /* menus */
 
 .controlPanel>.menus {

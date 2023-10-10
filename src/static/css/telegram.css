@@ -35,11 +35,23 @@ button:not(.noTgStyle) {
 	text-transform: uppercase;
 	outline: none;
 	height: 40px;
+	transition: background-color 100ms ease;
+}
+
+button.active:not(.danger):not(.noTgStyle) {
+	background-color: var(--button-highlight-color);
 }
 
 button.danger:not(.noTgStyle) {
 	background-color: var(--danger-color);
 	color: white;
+}
+
+button:not(.noTgStyle) .buttonContent {
+	display: grid;
+	grid-template-columns: auto auto;
+	justify-content: center;
+	align-content: center;
 }
 
 @media (hover: hover) {
