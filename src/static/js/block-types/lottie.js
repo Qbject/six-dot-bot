@@ -19,22 +19,25 @@ export default class LottieBlock extends Block {
 
 	buildContent() {
 		this.blockElement.classList.add("lottie");
+		this.animationElement = build("div.animation", this.blockElement);
 	}
 
 	buildSettings() {
 		this.settingsElement.classList.add("lottie");
 
 		this.previewElement = build("div.preview", this.settingsElement);
+		this.previewElement.addEventListener("click", () =>
+			this.fileInput.click());
+
+		const hintElement = build("div.hintAddin", this.settingsElement);
+		hintElement.textContent =
+			"Click on the preview to upload another file";
 
 		this.fileInput = build("input", this.settingsElement);
 		this.fileInput.classList.add("fileInput");
 		this.fileInput.type = "file";
 		this.fileInput.accept = ".json";
 		this.fileInput.multiple = false;
-		this.fileInput.hidden = true;
-
-		this.changeFileButton = buildButton(".changeFile", "Change",
-			this.settingsElement, () => this.fileInput.click());
 
 		const updatePreview = async () => {
 			const animationData = JSON.parse(await this.readFileInput()) ||
@@ -61,7 +64,7 @@ export default class LottieBlock extends Block {
 
 		const animationConfig = this.getAnimationConfig(
 			this.props.animationData);
-		animationConfig.container = this.blockElement;
+		animationConfig.container = this.animationElement;
 		this.animation?.destroy?.();
 		this.animation = lottie.loadAnimation(animationConfig);
 	}

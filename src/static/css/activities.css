@@ -88,6 +88,7 @@
 	box-sizing: border-box;
 	height: 58px;
 	padding: 10px var(--vertical-page-padding);
+	margin: 0;
 	overflow: hidden;
 	gap: 25px;
 	transition: height 300ms ease 100ms, padding 300ms ease 100ms, transform 100ms ease-out, opacity 100ms ease-out, background-color 200ms ease;

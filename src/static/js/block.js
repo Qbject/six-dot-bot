@@ -21,6 +21,8 @@ export default class Block {
 	build() {
 		this.blockElement = build("div.block");
 		this.settingsElement = build("div.settings");
+		if(this.isPreview) this.blockElement.classList.add("preview");
+		if(this.editMode) this.blockElement.classList.add("editable");
 
 		this.buildContent();
 		this.buildSettings();

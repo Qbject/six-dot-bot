@@ -8,6 +8,17 @@
 	--danger-color: #df3f40;
 }
 
+input[type="number"] {
+	-moz-appearance: textfield;
+	appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
 button:not(.noTgStyle) {
 	position: relative;
 	width: 100%;
@@ -146,10 +157,6 @@ blockquote {
 	margin: var(--vertical-page-padding);
 }
 
-img {
-	width: 100%;
-}
-
 hr,
 .hintAddin {
 	border: 0;
@@ -210,6 +217,10 @@ code {
 	color: var(--tg-theme-button-color);
 }
 
+pre code.hljs {
+	padding: var(--vertical-page-padding);
+}
+
 ul {
 	list-style: disc;
 }
@@ -232,17 +243,19 @@ ol :where(ol, ul) {
 	margin: 5px 0;
 }
 
-ul.taskList {
-	padding-left: 0;
+ol>li,
+ul>li {
+	margin: .3em 0;
 }
 
 ul.taskList>li {
 	list-style: none;
-	display: grid;
-	grid-template-columns: auto auto;
-	justify-content: left;
-	align-items: center;
-	gap: 5px;
+}
+
+ul.taskList>li>label.tgCheckbox {
+	vertical-align: middle;
+	margin-left: -1.5em;
+	margin-right: .3em;
 }
 
 input,
@@ -293,7 +306,6 @@ label.checkboxSection {
 
 
 .spoiler {
-	padding-bottom: var(--vertical-page-padding);
 	overflow: hidden;
 }
 

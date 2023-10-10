@@ -122,7 +122,7 @@ class App {
 
 		if (!userPages.length) {
 			// if user got 0 pages, automatically showing the onboarding page
-			await this.createNewPage(true, true);
+			await this.createNewPage(true, false);
 		}
 	}
 

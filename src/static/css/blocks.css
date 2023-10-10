@@ -4,11 +4,13 @@
 	animation: highlight_ 1.5s ease-in;
 }
 
-.page.editable .block:hover:not(:has(.block:hover)) {
+.block.editable:hover:not(:has(.block.editable:hover)) {
 	background-color: var(--highlight-color);
 }
 
-.block.preview .blocksContainer::before {
+/* spoiler */
+
+.block.spoiler.editable .blocksContainer::after {
 	content: "";
 	display: block;
 	box-sizing: border-box;
@@ -18,8 +20,6 @@
 	min-height: 100px;
 	opacity: .2;
 }
-
-/* spoiler */
 
 .settings.spoiler h2 {
 	margin-bottom: 8px;
@@ -32,9 +32,10 @@
 .block.grid>.grid {
 	display: grid;
 	align-items: center;
+	margin: var(--vertical-page-padding);
 }
 
-.block.grid .blocksContainer:empty::before {
+.block.grid.preview .blocksContainer::before {
 	content: "";
 	display: block;
 	box-sizing: border-box;
@@ -45,7 +46,7 @@
 	opacity: .2;
 }
 
-.page.editable .block.grid .blocksContainer::after {
+.block.grid.editable .blocksContainer::after {
 	content: "";
 	display: block;
 	box-sizing: border-box;
@@ -54,9 +55,32 @@
 	margin: 5px;
 	min-height: 100px;
 	opacity: .2;
+}
+
+.block.grid .blocksContainer>.block>* {
+	margin: auto;
+}
+
+.block.grid .blocksContainer>.block.markdown code {
+	padding: 6px;
+}
+
+.settings.grid .countSection {
+	display: grid;
+	grid-template-columns: 3fr 1fr;
+	align-items: center;
+	padding: 0 var(--vertical-page-padding);
+}
+
+.settings.grid input {
+	text-align: center;
 }
 
 /* markdown */
+
+.block.markdown img {
+	max-width: 100%;
+}
 
 .settings.markdown h2 {
 	margin-bottom: 8px;
@@ -66,4 +90,40 @@
 
 .settings.markdown textarea {
 	box-shadow: 0 1px 2px rgba(0, 0, 0, .08) inset;
+}
+
+/* image */
+
+.block.image>img {
+	margin: var(--vertical-page-padding);
+	width: calc(100% - var(--vertical-page-padding) * 2);
+}
+
+.settings.image .fileInput {
+	display: none;
+}
+
+.settings.lottie .preview {
+	padding: var(--vertical-page-padding);
+}
+
+.settings.image img.preview {
+	margin: var(--vertical-page-padding);
+	max-width: calc(100% - var(--vertical-page-padding) * 2);
+}
+
+/* lottie */
+
+.block.lottie>.animation {
+	margin: var(--vertical-page-padding);
+	width: calc(100% - var(--vertical-page-padding) * 2);
+}
+
+.settings.lottie .fileInput {
+	display: none;
+}
+
+.settings.lottie .preview {
+	padding: var(--vertical-page-padding);
+	margin-bottom: 12px;
 }

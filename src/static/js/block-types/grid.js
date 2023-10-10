@@ -20,17 +20,23 @@ export default class GridBlock extends Block {
 
 	buildSettings() {
 		this.settingsElement.classList.add("grid");
-		
-		this.countInput = build("input", this.settingsElement);
+
+		const countSection = build("div.countSection", this.settingsElement);
+		const countHintElement = build("span", countSection);
+		countHintElement.textContent = "Number of columns";
+
+		this.countInput = build("input", countSection);
 		this.countInput.type = "number";
 		this.countInput.value = this.props.columnsCount;
+
+		build("hr", this.settingsElement);
 	}
 
 	async readSettings() {
 		const columnsCount = +this.countInput.value.trim();
-		if (columnsCount < 2) {
+		if (columnsCount < 2 || columnsCount > 6) {
 			window.Telegram.WebApp.showAlert(
-				"Grid should have 2 or more columns");
+				"Grid should have 2-6 columns");
 			return false;
 		}
 
