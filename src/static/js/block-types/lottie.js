@@ -23,7 +23,7 @@ export default class LottieBlock extends Block {
 
 	buildSettings() {
 		this.settingsElement.classList.add("lottie");
-		
+
 		this.previewElement = build("div.preview", this.settingsElement);
 
 		this.fileInput = build("input", this.settingsElement);
@@ -37,7 +37,7 @@ export default class LottieBlock extends Block {
 			this.settingsElement, () => this.fileInput.click());
 
 		const updatePreview = async () => {
-			const animationData = (await this.readFileInput()) ||
+			const animationData = JSON.parse(await this.readFileInput()) ||
 				this.props.animationData;
 
 			const animationConfig = this.getAnimationConfig(animationData);
@@ -51,7 +51,7 @@ export default class LottieBlock extends Block {
 	}
 
 	async readSettings() {
-		const animationData = await this.readFileInput() ||
+		const animationData = JSON.parse(await this.readFileInput()) ||
 			this.props.animationData;
 		return { animationData };
 	}
@@ -92,7 +92,7 @@ export default class LottieBlock extends Block {
 		}
 
 		if (animationData)
-			animationConfig.animationData = JSON.parse(animationData);
+			animationConfig.animationData = animationData;
 		else
 			animationConfig.path = this.defaultFile;
 

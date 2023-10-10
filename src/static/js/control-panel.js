@@ -89,13 +89,11 @@ export class ControlPanel {
 			onStart: () => {
 				this.toggleMenu("blockCatalog");
 				this.app.setDragActive(true);
+				Telegram.WebApp.HapticFeedback.impactOccurred("soft");
 			},
 			onEnd: () => {
 				this.app.router.curActivity.save();
 				this.app.setDragActive(false);
-			},
-			onStart: () => {
-				Telegram.WebApp.HapticFeedback.impactOccurred("soft");
 			},
 		});
 	}

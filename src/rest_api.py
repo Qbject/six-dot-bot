@@ -31,6 +31,7 @@ def mini_app_api(request_handler):
 		
 	return wrapper
 
+# create new page
 @post("/api/pages")
 @mini_app_api
 def create_new_page(init_data):
@@ -42,6 +43,7 @@ def create_new_page(init_data):
 	page_id = pages.create(init_data["user"]["id"], schema, title)
 	return pages.get_by_id(page_id)
 
+# update a page
 @post("/api/pages/<pageId>")
 @mini_app_api
 def update_existing_page(pageId, init_data):
@@ -59,6 +61,7 @@ def update_existing_page(pageId, init_data):
 	}
 	pages.update(pageId, page_data)
 
+# delete a page
 @delete("/api/pages/<pageId>")
 @mini_app_api
 def delete_page_by_id(pageId, init_data):
@@ -72,6 +75,7 @@ def delete_page_by_id(pageId, init_data):
 	
 	pages.delete(pageId)
 
+# list user pages (some fields are omitted)
 @get("/api/pages/my")
 @mini_app_api
 def list_user_pages(init_data):
@@ -79,6 +83,7 @@ def list_user_pages(init_data):
 	
 	return pages.get_by_owner(init_data["user"]["id"])
 
+# retrieve a page
 @get("/api/pages/<pageId>")
 @mini_app_api
 def retrieve_page_by_id(pageId, init_data):
