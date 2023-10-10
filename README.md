@@ -171,6 +171,10 @@ The app provides you with the flexibility to configure whether this fallback sol
 
 For a detailed and comprehensive reference of the classes, methods, and interfaces used in this application, please refer to our [API Reference](docs/api-reference.md). This also includes the guidelines to [extend the bot with the own blocks](docs/api-reference.md#adding-new-block-types).
 
+## Try it
+
+If you want to see the bot/Mini App in action, it's running publicly on [https://t.me/sixdotbot](https://t.me/sixdotbot).
+
 ## License
 
 Licensed under [MIT License](LICENSE)
