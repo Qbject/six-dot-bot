@@ -1,4 +1,5 @@
-import os, json, sqlite3, string, random
+import os, sqlite3, string, random
+from pathlib import Path
 
 def sanitize_html(text):
 	text = text.replace("&", "&amp;")
@@ -12,38 +13,21 @@ def ucfirst(input_str):
 	return input_str
 
 def get_schema_template(is_onboarding):
+	tpl_dir = Path(os.environ["BASE_PATH"]) / "src" / "schema_templates"
+	
 	if is_onboarding:
-		schema = {
-			"children": [
-				{
-					"typeName": "markdown",
-					"props": {
-						"text": f"""
-# Welcome to the {os.environ["BOT_DISPLAY_NAME"]}!
-The main idea behind me is to allow you to create pages just like the one you're currently watching
-The page is getting saved automatically as you edit it
-The space below is added for your comfort
-						""".strip()
-					}
-				},
-			]
-		}
-		title = f"Welcome to the {os.environ['BOT_DISPLAY_NAME']}!"
+		bot_name = os.environ["BOT_DISPLAY_NAME"]
+		schema_path = tpl_dir / "onboarding.json"
+		schema = schema_path.read_text(encoding="utf-8")
+		schema = schema.replace("%BOT_NAME%", bot_name)
+		title = f"Welcome to the {bot_name}!"
 	
 	else:
-		schema = {
-			"children": [
-				{
-					"typeName": "markdown",
-					"props": {
-						"text": "# New page"
-					}
-				},
-			]
-		}
+		schema_path = tpl_dir / "default.json"
+		schema = schema_path.read_text(encoding="utf-8")
 		title = "New page"
 	
-	return (json.dumps(schema), title)
+	return (schema, title)
 
 class DatabaseConnection:
 	def __enter__(self):

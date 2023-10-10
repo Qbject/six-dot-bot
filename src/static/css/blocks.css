@@ -31,6 +31,7 @@
 
 .block.grid>.grid {
 	display: grid;
+	align-items: center;
 }
 
 .block.grid .blocksContainer:empty::before {

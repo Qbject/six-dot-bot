@@ -56,7 +56,7 @@ class App {
 		this.appElement.addEventListener("click", event => {
 			const clickedSummary = event.target.closest(".spoiler>.summary");
 			if (!clickedSummary) return;
-			
+
 			const spoilerElement = clickedSummary.parentElement;
 			const isOpen = spoilerElement.dataset.open == "true";
 			spoilerElement.dataset.open = !isOpen;
@@ -132,11 +132,9 @@ class App {
 		this.connectPageActivity(activity);
 		this.router.pushActivity(activity, appearInstantly);
 
-		if (!appearInstantly) {
-			// rendering item behind the scenes after the page appear animated
-			await sleep(200);
-			this.home.addNewPage(activity.initData);
-		}
+		// rendering item behind the scenes after the page appear animated
+		if (!appearInstantly) await sleep(200);
+		this.home.addNewPage(activity.initData);
 	}
 
 	goBack() {
@@ -179,5 +177,9 @@ class App {
 	window.app.setup();
 	document.body.append(window.app.appElement);
 	window.app.openPage(startPage, true)
-		.then(() => Telegram.WebApp.expand());
+		.then(() => {
+			Telegram.WebApp.expand()
+			document.querySelector(".loadingAnimation")?.remove?.();
+		});
+
 })();

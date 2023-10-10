@@ -8,7 +8,7 @@ export default class LottieBlock extends Block {
 	constructor(...args) {
 		super(...args);
 
-		this.defaultFile = "/lottie/dancing-dog.json";
+		this.defaultFile = "/lottie/day-night.json";
 	}
 
 	getDefaultProps() {
