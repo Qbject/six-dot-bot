@@ -31,6 +31,7 @@
 	overflow: hidden;
 	z-index: 1;
 	background-color: var(--tg-theme-bg-color);
+	box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .controlPanel>.modes>* {
@@ -45,13 +46,13 @@
 	transition-property: opacity, transform;
 	transition-duration: 60ms;
 	transition-timing-function: ease-out;
-	transform: translateY(100%);
+	transform: translateY(-100%);
 	opacity: 0;
 	pointer-events: none;
 }
 
 .controlPanel>.modes>.active~* {
-	transform: translateY(-100%);
+	transform: translateY(100%);
 }
 
 .controlPanel>.modes>.active {
@@ -131,10 +132,11 @@
 	pointer-events: none;
 	background-color: var(--tg-theme-bg-color);
 	opacity: 0;
-	transform: translateY(30vh);
+	transform: translateY(70vh);
 	transition-property: opacity, transform;
 	transition-duration: 200ms;
 	transition-timing-function: ease-out;
+	box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .controlPanel>.menus>.active {
@@ -209,6 +211,7 @@
 	background-color: var(--tg-theme-bg-color);
 	transform: translateY(-100%);
 	transition: transform 250ms ease;
+	box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .controlPanel>.messages>.message.error {

@@ -119,12 +119,12 @@ export class ControlPanel {
 	buildModes() {
 		this.modesContainer = build("div.modes", this.panelElement);
 
+		this.setupHomeMode();
+		this.setupHomeSelectMode();
 		this.setupPageEditMode();
 		this.setupBlockEditorMode();
 		this.setupBlockDragMode();
 		this.setupPageMode();
-		this.setupHomeSelectMode();
-		this.setupHomeMode();
 	}
 
 	setupHomeMode() {

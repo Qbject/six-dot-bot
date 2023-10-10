@@ -4,8 +4,10 @@
 	animation: highlight_ 1.5s ease-in;
 }
 
-.block.editable:hover:not(:has(.block.editable:hover)) {
-	background-color: var(--highlight-color);
+@media (hover: hover) {
+	.block.editable:hover:not(:has(.block.editable:hover)) {
+		background-color: var(--highlight-color);
+	}
 }
 
 /* spoiler */
