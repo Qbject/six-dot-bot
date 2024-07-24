@@ -1,4 +1,4 @@
-# ContentEditBot
+# SixDotBot
 
 ## Table of Contents
 - [About](#about)
@@ -16,7 +16,7 @@
 
 ## About
 
-ContentEditBot is a versatile Telegram bot that harnesses the power of Mini Apps, enabling users to effortlessly create their own Mini App pages without any programming knowledge and share them within Telegram for easy access by other Telegram users. While the concept is simple — users create pages and populate them with content — the possibilities are limitless. For instance, a small shopkeeper can create a page to promote their merchandise, showcase products with images and descriptions, and provide PM link for potential customers. ContentEditBot makes all of this possible, offering a user-friendly WebApp interface with formatting capabilities that surpass regular Telegram messages.
+SixDotBot is a versatile Telegram bot that harnesses the power of Mini Apps, enabling users to effortlessly create their own Mini App pages without any programming knowledge and share them within Telegram for easy access by other Telegram users. While the concept is simple — users create pages and populate them with content — the possibilities are limitless. For instance, a small shopkeeper can create a page to promote their merchandise, showcase products with images and descriptions, and provide PM link for potential customers. SixDotBot makes all of this possible, offering a user-friendly WebApp interface with formatting capabilities that surpass regular Telegram messages.
 
 This app was developed by a single person as a submission for the Telegram Mini App contest, where it had to be created from scratch in about two weeks. As a result, it may have some rough edges and is considered somewhat unpolished.
 
@@ -31,7 +31,7 @@ This app was developed by a single person as a submission for the Telegram Mini 
 
 ## Extensibility
 
-ContentEditBot is designed not as a complete, ready-to-use bot, but as a core or framework that allows anyone to tailor it to their specific needs. The out-of-the-box set of blocks and features serves as a showcase of the app's capabilities. Developers can extend it to add any imaginable blocks, enabling them to create their own bots that empower *their* users to create and share custom rich content. Refer to the [Block Framework section](docs/api-reference.md#adding-new-block-types) for details on how to extend the bot.
+SixDotBot is designed not as a complete, ready-to-use bot, but as a core or framework that allows anyone to tailor it to their specific needs. The out-of-the-box set of blocks and features serves as a showcase of the app's capabilities. Developers can extend it to add any imaginable blocks, enabling them to create their own bots that empower *their* users to create and share custom rich content. Refer to the [Block Framework section](docs/api-reference.md#adding-new-block-types) for details on how to extend the bot.
 
 Here are just a few vercors of extending the bot that comes to mind:
 - Carouseld and product cards to enable users create own marketplaces.
@@ -43,7 +43,7 @@ Here are just a few vercors of extending the bot that comes to mind:
 
 ## Installation and Running
 
-You can run ContentEditBot locally or on any hosting platform that supports the WSGI interface. Here are the general steps:
+You can run SixDotBot locally or on any hosting platform that supports the WSGI interface. Here are the general steps:
 
 1. Create your bot with [BotFather](https://t.me/BotFather). You'll need the bot token and username later.
 2. Set up and run the app locally or on the hosting platform.
@@ -58,8 +58,8 @@ Running the bot locally is useful for development and testing purposes. Ensure y
 
 1. (If you don't have a public IP) Use any tunneling software to make port 80 accessible from the outside. For example, using ngrok: `ngrok http 80`. The HTTP address you get will be needed for configuring the `APP_HOST` environment variable.
 2. Open your console (cmd, powershell, or bash).
-3. Execute the command: `git clone https://github.com/khaelar/ContentEditBot.git`
-4. Navigate to the cloned directory: `cd ./ContentEditBot`
+3. Execute the command: `git clone https://github.com/Qbject/six-dot-bot.git`
+4. Navigate to the cloned directory: `cd ./six-dot-bot`
 5. Create a Python virtual environment (recommended): `python .venv/bin/activate` (on Windows) or `source venv_name/bin/activate` (on Mac or Linux).
 6. Install the required packages: `pip install -r requirements.txt`
 7. Configure the `.env` file by following the instructions in the [Configuration](#configuration) section. Use your white IP (with https://) or the https link given by the tunneling software as the `APP_HOST` environment variable.
@@ -75,8 +75,8 @@ Here is a detailed guide on how to install the app on PythonAnywhere hosting (fu
 
 1. Navigate to the "Files" tab, ensuring the home directory is selected.
 2. Click "Open Bash Console Here."
-3. Execute the command: `git clone https://github.com/khaelar/ContentEditBot.git`
-4. Go to the cloned directory: `cd ./ContentEditBot`
+3. Execute the command: `git clone https://github.com/Qbject/six-dot-bot.git`
+4. Go to the cloned directory: `cd ./six-dot-bot`
 5. Create a Python virtual environment: `python3.10 -m venv .venv`
 6. Activate the virtual environment: `source .venv/bin/activate`
 7. Install the required packages: `pip3.10 install -r requirements.txt`
@@ -87,7 +87,7 @@ Here is a detailed guide on how to install the app on PythonAnywhere hosting (fu
 12. Click "Add a new web app" and follow the app creation steps:
 	- Select framework "Bottle."
 	- Choose Python version "Python 3.10."
-	- Input path: `/home/<username>/ContentEditBot/src/bottle_app.py`.
+	- Input path: `/home/<username>/six-dot-bot/src/bottle_app.py`.
 13. After setup is complete, open the WSGI configuration file linked on the web app page.
 14. Replace `from bottle_app import application` with `from app import application` and save the file.
 15. Go back to the "Web" tab and reload the site.
@@ -145,7 +145,7 @@ It is recommended to disable these blocks or upgrade the file handling logic for
 
 ## Behavior and Usage
 
-As a chat bot, ContentEditBot can only respond to the `/start` command with a greeting and an invitation to open the Mini App. Users can access the Mini App in two ways:
+As a chat bot, SixDotBot can only respond to the `/start` command with a greeting and an invitation to open the Mini App. Users can access the Mini App in two ways:
 
 1. Direct WebApp link: Opens the home activity, allowing users to view their own pages, open, and edit them.
 2. WebApp link to a specific page: Users can copy the page link and share it with others. Opening this link takes users directly to the page, with no way to return to the home activity.

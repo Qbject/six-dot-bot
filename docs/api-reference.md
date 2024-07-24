@@ -51,7 +51,7 @@
 
 ## Introduction
 
-This page delves into the inner workings of ContentEditBot.
+This page delves into the inner workings of SixDotBot.
 
 ## Mini App Fundamentals
 
