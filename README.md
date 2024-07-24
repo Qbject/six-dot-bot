@@ -18,6 +18,8 @@
 
 SixDotBot is a versatile Telegram bot that harnesses the power of Mini Apps, enabling users to effortlessly create their own Mini App pages without any programming knowledge and share them within Telegram for easy access by other Telegram users. While the concept is simple — users create pages and populate them with content — the possibilities are limitless. For instance, a small shopkeeper can create a page to promote their merchandise, showcase products with images and descriptions, and provide PM link for potential customers. SixDotBot makes all of this possible, offering a user-friendly WebApp interface with formatting capabilities that surpass regular Telegram messages.
 
+https://github.com/user-attachments/assets/3bede449-ad4f-47fe-ae28-e99fd7c6cd23
+
 This app was developed by a single person as a submission for the Telegram Mini App contest, where it had to be created from scratch in about two weeks. As a result, it may have some rough edges and is considered somewhat unpolished.
 
 ## Features
